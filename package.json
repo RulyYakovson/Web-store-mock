@@ -1,0 +1,18 @@
+{
+  "name": "final-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo \nNo start specified... please run:\nnpm run start-all - to run client && server,\nnpm run start-client - to run only client side,\nnpm run start-server - to run server side only",
+    "start-all": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
+    "start-client": "cd client && npm start",
+    "start-server": "cd server && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ruli Yakovson & Itzchak Weiss",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
