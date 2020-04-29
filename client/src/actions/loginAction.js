@@ -7,13 +7,14 @@ export const endLoading = () => ({ type: loginActionTypes.END_LOADING });
 export const login = () => async dispatch => {
     dispatch(beginLoading());
     try {
-        const response = await httpclient.post('/login', { userName: 'name', password: 'pass' });
-        dispatch({ type: loginActionTypes.LOGIN_OK, user: response.data.user });
-        console.log(response);
-        dispatch(endLoading());
+        const res = await httpclient.post('/login', { userName: 'name', password: 'pass' });
+        dispatch({ type: loginActionTypes.LOGIN_OK, user: res.data.user });
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        console.log(res);
     } catch (err) {
         console.log(err.message);
         console.log(err);
+    } finally {
         dispatch(endLoading());
     }
 }

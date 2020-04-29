@@ -1,6 +1,6 @@
 import { loginActionTypes } from '../actions/actionTypes';
 
-const defaultAction = { type: null, payload: null };
+const defaultAction = { type: null, user: null };
 
 const defaultState = { user: null, isLoading: false };
 

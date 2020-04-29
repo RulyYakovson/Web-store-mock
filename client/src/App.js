@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
+import { createBrowserHistory } from 'history';
 import store from './store';
+import Routes from './routes/routes';
 import logo from './logo.svg';
-import Login from './components/Login';
+import Login from './components/login';
 import './App.css';
 
 function App() {
   return (
-    <Provider store={store} >
+    <Provider store={ store } >
       <div>
-        <Login />
+        <Routes history={ createBrowserHistory() } />
+        {/*<Login />*/}
       </div>
     </Provider>
     // <div className="App">
