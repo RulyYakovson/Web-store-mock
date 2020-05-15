@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { createBrowserHistory } from 'history';
 import store from './store';
-import Routes from './routes/routes';
-import logo from './logo.svg';
-import Login from './components/login';
+import Routes from './routes/Routes';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <Provider store={ store } >
       <div>
         <Routes history={ createBrowserHistory() } />
-        {/*<Login />*/}
       </div>
     </Provider>
     // <div className="App">
@@ -32,6 +29,6 @@ function App() {
     //   </header>
     // </div>
   );
-}
+};
 
 export default App;

@@ -1,19 +1,76 @@
-import React from 'react';
-import { Redirect, Route, Router } from 'react-router-dom';
-import Login from '../components/login';
-import Home from '../components/home';
+import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux';
+import {Redirect, Route, Switch, BrowserRouter} from 'react-router-dom';
+import {Backdrop, CircularProgress} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import LoginPage from '../components/auth/LoginPage';
+import PrivateRoutes from './PrivateRoutes';
+import CreateAccount from "../components/auth/CreateAccount";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import {refresh} from "../actions/loginAction";
 
-const Routes = ({ history }) => {
-    return(
-        <Router history={ history }>
-            {localStorage.user ? 
-                <Redirect from='/' to='/home' />
-                : <Redirect from='/' to='/login' />
-            }
-            <Route path='/login' render={ () => <Login history={ history }/> }/>
-            <Route path='/home' render={ () => <Home /> }/>
-        </Router>
+const RestrictedRoute = ({component: Component, user, ...rest}) => {
+   // const [allow, setAllow] = useState(!!user);
+
+    // useEffect(() => {
+    //     setAllow(!!user);
+    // }, [user]);
+
+    // return (
+    //     localStorage.getItem('user') ? <Route {...rest} component={PrivateRoutes}/>
+    //     : <Route {...rest} render={props => (
+    //             <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+    //     )} />
+    // );
+
+    return (
+        <Route {...rest} render={props => (
+            localStorage.getItem('user') ? <PrivateRoutes {...props} />
+                : <Redirect to={{pathname: '/login', state: {from: props.location}}}/>
+        )}/>
     );
 };
 
-export default Routes;
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}));
+
+const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSeverity, snackBarMessage}) => {
+    const classes = useStyles();
+
+    useEffect(() => {
+        async function fetchUser() {
+            await dispatch(refresh());
+            history.push(history.location.pathname)
+        }
+        fetchUser();
+    }, []);
+
+    return (
+        <BrowserRouter history={history}>
+            <Snackbar open={showSnackBar} autoHideDuration={10000} onClose={() => {}}> // TODO:
+                <Alert onClose={() => {}} severity={snackBarSeverity}>
+                    {snackBarMessage}
+                </Alert>
+            </Snackbar>
+            <Backdrop className={classes.backdrop} open={isLoading}>
+                <CircularProgress color="inherit"/>
+            </Backdrop>
+            <Switch>
+                <Route path='/login' component={LoginPage}/>
+                <Route path='/create-account' component={CreateAccount}/>
+                <Route exact path='/' render={() => <Redirect to='home'/>}/>
+                <RestrictedRoute path='/home' /*component={PrivateRoutes}*/ history={history} user={user}/>
+            </Switch>
+        </BrowserRouter>
+    );
+};
+
+export default connect(store => ({
+    user: store.login.user,
+    isLoading: store.login.isLoading,
+}))(Routes);
