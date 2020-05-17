@@ -1,5 +1,11 @@
 export const loginActionTypes = {
     BEGIN_LOADING: 'LOGIN_BEGIN_LOADING',
     END_LOADING: 'LOGIN_END_LOADING',
-    LOGIN_OK: 'LOGIN_OK'
+    AUTH_FINISH: 'AUTH_FINISH'
+};
+
+export const fetchUsersActionTypes = {
+    USERS_BEGIN_LOADING: 'USERS_BEGIN_LOADING',
+    USERS_END_LOADING: 'USERS_END_LOADING',
+    FETCH_USERS: 'SET_USERS_DATA'
 };

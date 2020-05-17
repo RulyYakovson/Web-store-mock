@@ -13,7 +13,7 @@ export const login = (email, password) => async dispatch => {
             password: encrypt(password)
         };
         const res = await httpclient.post('/login', requestData);
-        dispatch({type: loginActionTypes.LOGIN_OK, user: res.data.user});
+        dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
         localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO:
         console.info(res);
     } catch (err) {
@@ -23,12 +23,34 @@ export const login = (email, password) => async dispatch => {
     }
 };
 
+export const logOut = (history) => async dispatch => {
+    dispatch(beginLoading());
+    try {
+        const res = await httpclient.get('/logout');
+        // await removeUserLocal(history);
+        dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
+        localStorage.removeItem('user');
+        history.push('/session-expired');
+        console.info(res);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        dispatch(endLoading());
+    }
+};
+
+export const removeUserLocal = (history) => async dispatch => {
+    dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
+    localStorage.removeItem('user');
+    history.replace('/session-expired'); // TODO: not working...
+}
+
 export const refresh = () => async dispatch => {
     dispatch(beginLoading());
     try {
         const res = await httpclient.get('/user');
-        dispatch({type: loginActionTypes.LOGIN_OK, user: res.data.user});
-        localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO:
+        dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
+        localStorage.setItem('user', JSON.stringify(res.data.user));
         console.info(res);
     } catch (err) {
         console.error(err);
@@ -49,7 +71,7 @@ export const createAccount = (user) => async dispatch => {
         };
         const res = await httpclient.post('/customer/add', requestData); // TODO: change path
         // TODO: get the created user
-        dispatch({type: loginActionTypes.LOGIN_OK, user: res.data.user});
+        dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
         localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO:
         console.info(res);
     } catch (err) {

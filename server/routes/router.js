@@ -32,7 +32,8 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
         req.session.email = user.address;
     }
     console.info(`Session for User: '${user.username}', Role: '${user.role}' added successfully`);
-    res.status(200).json({user: {name: 'name 1', role: 'Role 1', success: 'true'}}); // TODO:
+    const {firstName, lastName, id, gender, phone, role, address} = user;
+    res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address}}); // TODO:
 });
 
 router.get('/logout', async (req, res) => {
@@ -40,7 +41,7 @@ router.get('/logout', async (req, res) => {
     console.log(`Received logout request for user: ${user}`);
     req.session.regenerate(() => {
         console.log(`User ${user} logged out`);
-        res.redirect('/');
+        res.status(200).json({success: true})
     });
 });
 

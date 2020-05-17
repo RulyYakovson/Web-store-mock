@@ -4,9 +4,9 @@ import Home from '../components/Home';
 import Dashboard from '../components/dashboard/Dashboard';
 import LoginPage from "../components/auth/LoginPage";
 
-const PrivateRoutes = ({history}) => {
+const PrivateRoutes = ({...rest}) => {
     return (
-        <Route path='/home' component={Dashboard}/>
+        <Route {...rest} path='/home' component={Dashboard}/>
     );
 };
 

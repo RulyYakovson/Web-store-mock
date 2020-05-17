@@ -9,8 +9,9 @@ import CreateAccount from "../components/auth/CreateAccount";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import {refresh} from "../actions/loginAction";
+import SessionExpired from "../components/auth/SessionExpired";
 
-const RestrictedRoute = ({component: Component, user, ...rest}) => {
+const RestrictedRoute = ({user, ...rest}) => {
    // const [allow, setAllow] = useState(!!user);
 
     // useEffect(() => {
@@ -42,13 +43,13 @@ const useStyles = makeStyles((theme) => ({
 const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSeverity, snackBarMessage}) => {
     const classes = useStyles();
 
-    useEffect(() => {
-        async function fetchUser() {
-            await dispatch(refresh());
-            history.push(history.location.pathname)
-        }
-        fetchUser();
-    }, []);
+    // useEffect(() => {  TODO:
+    //     async function fetchUser() {
+    //         await dispatch(refresh());
+    //         history.push(history.location.pathname)
+    //     }
+    //     fetchUser();
+    // }, []);
 
     return (
         <BrowserRouter history={history}>
@@ -63,6 +64,7 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
             <Switch>
                 <Route path='/login' component={LoginPage}/>
                 <Route path='/create-account' component={CreateAccount}/>
+                <Route path='/session-expired' component={SessionExpired}/>
                 <Route exact path='/' render={() => <Redirect to='home'/>}/>
                 <RestrictedRoute path='/home' /*component={PrivateRoutes}*/ history={history} user={user}/>
             </Switch>
@@ -72,5 +74,5 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
 
 export default connect(store => ({
     user: store.login.user,
-    isLoading: store.login.isLoading,
+    isLoading: store.login.isLoading || store.users.isLoading,
 }))(Routes);

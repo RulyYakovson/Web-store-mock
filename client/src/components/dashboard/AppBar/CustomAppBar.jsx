@@ -7,11 +7,12 @@ import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {login} from "../../actions/loginAction";
+import {login} from "../../../actions/loginAction";
 import AppBar from "@material-ui/core/AppBar";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import {AccountCircle} from "@material-ui/icons";
+import AppBarMenu from "./AppBarMenu";
 
 const drawerWidth = 240;
 
@@ -50,19 +51,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CustomAppBar = ({open, setOpen}) => {
+const CustomAppBar = ({open, setOpen, history}) => {
     const classes = useStyles();
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const displayMenu = Boolean(anchorEl);
-
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <AppBar position="fixed" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -84,33 +74,7 @@ const CustomAppBar = ({open, setOpen}) => {
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleMenu}
-                    color="inherit"
-                >
-                    <AccountCircle/>
-                </IconButton>
-                <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={displayMenu}
-                    onClose={handleClose}
-                >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                </Menu>
+                <AppBarMenu history={history}/>
             </Toolbar>
         </AppBar>
     );

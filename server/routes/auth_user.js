@@ -5,7 +5,7 @@ module.exports.authEmployee = (req, res, next) => {
         next();
     }
     else {
-        console.log('Faild to authenticate employee !!!');
+        console.log('Failed to authenticate employee !!!');
         res.status(401);
         res.json({ status: 401 });
     }
@@ -17,7 +17,7 @@ module.exports.authUser = (req, res, next) => {
         req.userRole = req.session.role;
         next();
     } else {
-        console.log('Faild to authenticate user !!!');
+        console.log('Failed to authenticate user !!!');
         res.status(401);
         res.json({ status: 401 });
     }

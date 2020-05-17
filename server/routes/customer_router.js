@@ -1,10 +1,13 @@
 const express = require('express');
 const uuid = require('uuid4');
 const router = express.Router();
+const {cors} = require('../utils/helper');
 const repository = require('../repositories/customers_repository');
 const auth = require('./auth_user');
 const { decrypt } = require('../encryption/node-rsa');
 const timeout = 1000;
+
+router.use(cors);
 
 router.get('/all', auth.authEmployee, async (req, res) => {
     console.log('Received get all customers request');
@@ -14,10 +17,10 @@ router.get('/all', auth.authEmployee, async (req, res) => {
         const result = await repository.getAllCustomers();
         console.log(`Fetch customers result: ${result.data}`);
         if (result.success) {
-            data.customers = result && result.data;
+            data.users = result && result.data;
             res.status(200);
         } else {
-            console.log('An error occured while trying to fetch customers');
+            console.log('An error occurred while trying to fetch customers');
             res.status(400);
         }
         res.json(data);

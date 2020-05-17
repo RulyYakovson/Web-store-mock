@@ -1,11 +1,20 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import MaterialTable from 'material-table';
+import {connect} from "react-redux";
+import {fetchUsers} from "../../actions/usersAction";
 
-const UsersTable = () => {
-    const [state, setState] = React.useState({
+const UsersTable = ({users, isLoading, dispatch}) => {
+
+    useEffect(() => {
+        dispatch(fetchUsers())
+    }, []);
+
+    const [state, setState] = useState({
         columns: [
-            {title: 'Name', field: 'name'},
-            {title: 'Surname', field: 'surname'},
+            {title: 'First name', field: 'firstName'},
+            {title: 'Last name', field: 'lastName'},
+            {title: 'Role', field: 'role'},
+            {title: 'Gender', field: 'gender'},
             {title: 'Birth Year', field: 'birthYear', type: 'numeric'},
             {
                 title: 'Birth Place',
@@ -28,7 +37,7 @@ const UsersTable = () => {
         <MaterialTable
             title="Editable Example"
             columns={state.columns}
-            data={state.data}
+            data={users}
             editable={{
                 onRowAdd: (newData) =>
                     new Promise((resolve) => {
@@ -70,4 +79,7 @@ const UsersTable = () => {
     );
 };
 
-export default UsersTable;
+export default connect(store => ({
+    users: store.users.users,
+    isLoading: store.users.isLoading,
+}))(UsersTable);

@@ -4,12 +4,15 @@ import { createBrowserHistory } from 'history';
 import store from './store';
 import Routes from './routes/Routes';
 import './App.css';
+import HttpClient from "./utils/httpClient";
 
 const App = () => {
+    const history = createBrowserHistory();
+    HttpClient.setUp(store, history);
   return (
     <Provider store={ store } >
       <div>
-        <Routes history={ createBrowserHistory() } />
+        <Routes history={ history } />
       </div>
     </Provider>
     // <div className="App">

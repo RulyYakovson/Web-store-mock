@@ -22,7 +22,7 @@ import {innerComponents} from '../../utils/constants';
 import {connect} from "react-redux";
 import {login} from "../../actions/loginAction";
 import UsersTable from "./UsersTable";
-import CustomAppBar from "./CustomAppBar";
+import CustomAppBar from "./AppBar/CustomAppBar";
 
 const drawerWidth = 240;
 
@@ -81,19 +81,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Dashboard = ({dispatch}) => {
+const Dashboard = ({history, isLoading}) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [displayComponent, setDisplayComponent] = useState(innerComponents.HOME)
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
     return (
         <div className={classes.root}>
             <CssBaseline/>
-            <CustomAppBar open={open} setOpen={setOpen}/>
+            <CustomAppBar open={open} setOpen={setOpen} history={history}/>
             <Drawer
                 variant="permanent"
                 classes={{
@@ -132,4 +128,6 @@ const Dashboard = ({dispatch}) => {
     );
 };
 
-export default connect(store => ({}))(Dashboard);
+export default connect(store => ({
+    isLoading: store.users.isLoading,
+}))(Dashboard);
