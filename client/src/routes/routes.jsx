@@ -10,6 +10,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import {refresh} from "../actions/loginAction";
 import SessionExpired from "../components/auth/SessionExpired";
+import ResetPassPage from "../components/auth/ResetPassPage";
 
 const RestrictedRoute = ({user, ...rest}) => {
    // const [allow, setAllow] = useState(!!user);
@@ -65,6 +66,7 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
                 <Route path='/login' component={LoginPage}/>
                 <Route path='/create-account' component={CreateAccount}/>
                 <Route path='/session-expired' component={SessionExpired}/>
+                <Route path='/reset-password' component={ResetPassPage}/>
                 <Route exact path='/' render={() => <Redirect to='home'/>}/>
                 <RestrictedRoute path='/home' /*component={PrivateRoutes}*/ history={history} user={user}/>
             </Switch>

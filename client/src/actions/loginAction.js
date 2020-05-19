@@ -2,8 +2,8 @@ import httpclient from '../utils/httpClient';
 import {loginActionTypes} from './actionTypes';
 import {encrypt} from "../utils/rsa";
 
-export const beginLoading = () => ({type: loginActionTypes.BEGIN_LOADING});
-export const endLoading = () => ({type: loginActionTypes.END_LOADING});
+export const beginLoading = () => ({type: loginActionTypes.LOGIN_BEGIN_LOADING});
+export const endLoading = () => ({type: loginActionTypes.LOGIN_END_LOADING});
 
 export const login = (email, password) => async dispatch => {
     dispatch(beginLoading());
@@ -30,7 +30,7 @@ export const logOut = (history) => async dispatch => {
         // await removeUserLocal(history);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
         localStorage.removeItem('user');
-        history.push('/session-expired');
+        history.push('/login');
         console.info(res);
     } catch (err) {
         console.error(err);
@@ -39,11 +39,11 @@ export const logOut = (history) => async dispatch => {
     }
 };
 
-export const removeUserLocal = (history) => async dispatch => {
-    dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
-    localStorage.removeItem('user');
-    history.replace('/session-expired'); // TODO: not working...
-}
+// export const removeUserLocal = (history) => async dispatch => {
+//     dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
+//     localStorage.removeItem('user');
+//     history.replace('/session-expired'); // TODO: not working...
+// }
 
 export const refresh = () => async dispatch => {
     dispatch(beginLoading());

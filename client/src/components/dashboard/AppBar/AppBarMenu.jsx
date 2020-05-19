@@ -78,7 +78,7 @@ const AppBarMenu = ({dispatch, user, history}) => {
                         startIcon={<ExitToApp />}
                         onClick={handleLogOut}
                     >
-                        Log out
+                        Sign Out
                     </Button>
                 </MenuItem>
             </Menu>

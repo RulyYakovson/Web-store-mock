@@ -39,7 +39,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 router.get('/logout', async (req, res) => {
     const user = req.session.username;
     console.log(`Received logout request for user: ${user}`);
-    req.session.regenerate(() => {
+    req.session.destroy(() => {
         console.log(`User ${user} logged out`);
         res.status(200).json({success: true})
     });
@@ -130,7 +130,7 @@ const sendEmail = (email, name, token, res) => {
     transporter.sendMail(mailOptions, function (err, info) {
         if (err) {
             console.error(err.message);
-            res.status(500).send('ERROR');
+            res.status(200).send('ERROR'); // TODO:
         } else {
             console.log(info);
             res.status(200).send('OK');

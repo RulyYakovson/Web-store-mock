@@ -35,7 +35,7 @@ const UsersTable = ({users, isLoading, dispatch}) => {
 
     return (
         <MaterialTable
-            title="Editable Example"
+            title="Users details"
             columns={state.columns}
             data={users}
             editable={{

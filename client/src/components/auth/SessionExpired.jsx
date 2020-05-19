@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '4rem'
     },
     link: {
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(3)
     }
 }));
 
@@ -52,7 +52,10 @@ const SessionExpired = () => {
                     <Typography component="h1" variant="h5">
                         Session expired
                     </Typography>
-                    <Grid item xs={20} className={classes.link}>
+                    <Typography component="h7" variant="h7">
+                        Please login again to renew your session
+                    </Typography>
+                    <Grid item xs={12} className={classes.link}>
                         <Link href="/login" variant="body2">
                             {"Back to sign in"}
                         </Link>

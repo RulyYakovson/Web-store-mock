@@ -1,7 +1,13 @@
+export const isLoadingActionTypes = {
+    BEGIN_LOADING: 'BEGIN_LOADING',
+    END_LOADING: 'END_LOADING'
+};
+
 export const loginActionTypes = {
-    BEGIN_LOADING: 'LOGIN_BEGIN_LOADING',
-    END_LOADING: 'LOGIN_END_LOADING',
-    AUTH_FINISH: 'AUTH_FINISH'
+    LOGIN_BEGIN_LOADING: 'LOGIN_BEGIN_LOADING',
+    LOGIN_END_LOADING: 'LOGIN_END_LOADING',
+    AUTH_FINISH: 'AUTH_FINISH',
+    AUTH_FALSE: 'AUTH_FALSE'
 };
 
 export const fetchUsersActionTypes = {
