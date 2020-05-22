@@ -130,7 +130,7 @@ const sendEmail = (email, name, token, res) => {
     transporter.sendMail(mailOptions, function (err, info) {
         if (err) {
             console.error(err.message);
-            res.status(200).send('ERROR'); // TODO:
+            res.status(500).send('ERROR');
         } else {
             console.log(info);
             res.status(200).send('OK');

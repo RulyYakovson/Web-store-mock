@@ -12,7 +12,7 @@ module.exports = function (db) {
             lastName: String,
             password: { type: String, maxlength: [8, 'Too long password'], minlength: [3, 'Too short password'] },
             phone: { type: String, maxlength: [13, 'Invalid phone number'], minlength: [9, 'Invalid phone number'] },
-            gender: { type: String, enum: ['Male', 'Female', 'Gender'] },
+            gender: { type: String, enum: ['Male', 'Female', 'Gender', 'None'] },
             role: { type: String, enum: ['Employee', 'Admin', 'customer'] },
             address: { type: String, required: true, unique: true },
             email: { type: String, required: true, unique: true },

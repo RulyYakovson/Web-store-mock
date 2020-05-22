@@ -21,7 +21,7 @@ import Home from "./Home";
 import {innerComponents} from '../../utils/constants';
 import {connect} from "react-redux";
 import {login} from "../../actions/loginAction";
-import UsersTable from "./UsersTable";
+import UsersTable from "./AppBar/usersTable/UsersTable";
 import CustomAppBar from "./AppBar/CustomAppBar";
 
 const drawerWidth = 240;

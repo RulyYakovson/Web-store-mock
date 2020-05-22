@@ -65,8 +65,8 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
             <Switch>
                 <Route path='/login' component={LoginPage}/>
                 <Route path='/create-account' component={CreateAccount}/>
-                <Route path='/session-expired' component={SessionExpired}/>
-                <Route path='/reset-password' component={ResetPassPage}/>
+                <Route exact path='/session-expired' component={SessionExpired}/>
+                <Route exact path='/reset-password' component={ResetPassPage}/>
                 <Route exact path='/' render={() => <Redirect to='home'/>}/>
                 <RestrictedRoute path='/home' /*component={PrivateRoutes}*/ history={history} user={user}/>
             </Switch>

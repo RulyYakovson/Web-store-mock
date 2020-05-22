@@ -27,9 +27,12 @@ module.exports.addCustomer = async (req, res) => {
 module.exports.updateCustomer = async customer => {
     let user = null;
     let fieldsToUpdate = {
+        firstName: customer.firstName,
+        lastName: customer.lastName,
         phone: customer.phone,
         address: customer.address,
         email: customer.email,
+        username: customer.username,
         gender: customer.gender
     };
 
