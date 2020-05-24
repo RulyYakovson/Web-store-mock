@@ -6,22 +6,22 @@ const Schema = mongoose.Schema;
 module.exports = function (db) {
     const customerSchema = Schema(
         {
-            id: { type: String, required: true, unique: true },
-            username: { type: String, required: true, unique: true },
+            id: {type: String, required: true, unique: true},
+            username: {type: String, required: true, unique: true},
             firstName: String,
             lastName: String,
-            password: { type: String, maxlength: [8, 'Too long password'], minlength: [3, 'Too short password'] },
-            phone: { type: String, maxlength: [13, 'Invalid phone number'], minlength: [9, 'Invalid phone number'] },
-            gender: { type: String, enum: ['Male', 'Female', 'Gender', 'None'] },
-            role: { type: String, enum: ['Employee', 'Admin', 'customer'] },
-            address: { type: String, required: true, unique: true },
-            email: { type: String, required: true, unique: true },
+            password: {type: String, maxlength: [8, 'Too long password'], minlength: [3, 'Too short password']},
+            phone: {type: String, maxlength: [13, 'Invalid phone number'], minlength: [9, 'Invalid phone number']},
+            gender: {type: String, enum: ['Male', 'Female', 'Gender', 'None']},
+            role: {type: String, enum: ['Employee', 'Admin', 'customer']},
+            address: {type: String, required: true, unique: true},
+            email: {type: String, required: true, unique: true},
             token: String,
             expiresOn: String,
             lastUpdate: Date,
             created: Date
         },
-        { versionKey: false }
+        {versionKey: false}
     );
 
     customerSchema.plugin(passportLocalMongoose);
@@ -50,7 +50,8 @@ module.exports = function (db) {
                 }
             } else {
                 console.log(`A new customer:\n${createdCustomer}\nsuccessfully created !!`);
-                res.status(200).send('OK');
+                const {firstName, lastName, id, gender, phone, role, address} = createdCustomer;
+                res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address}}); // TODO:
             }
         });
     };

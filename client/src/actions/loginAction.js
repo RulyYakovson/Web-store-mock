@@ -1,4 +1,5 @@
 import httpclient from '../utils/httpClient';
+import * as NotificationsActions from './notificationsActions';
 import {loginActionTypes} from './actionTypes';
 import {encrypt} from "../utils/rsa";
 
@@ -15,8 +16,14 @@ export const login = (email, password) => async dispatch => {
         const res = await httpclient.post('/login', requestData);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
         localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO:
+        dispatch(NotificationsActions.notifySuccess('Logged in successfully !!'))
         console.info(res);
     } catch (err) {
+        if (err.response && err.response.status === 401) {
+            dispatch(NotificationsActions.notifyError('Username or password incorrect. Please try again.'))
+        } else {
+            dispatch(NotificationsActions.notifyError('An error occurred during the login request.'))
+        }
         console.error(err);
     } finally {
         dispatch(endLoading());
@@ -30,9 +37,11 @@ export const logOut = (history) => async dispatch => {
         // await removeUserLocal(history);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
         localStorage.removeItem('user');
+        dispatch(NotificationsActions.notifyWarning('You have logged out of your account.'))
         history.push('/login');
         console.info(res);
     } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred during the logout request.'))
         console.error(err);
     } finally {
         dispatch(endLoading());
@@ -53,6 +62,7 @@ export const refresh = () => async dispatch => {
         localStorage.setItem('user', JSON.stringify(res.data.user));
         console.info(res);
     } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred during the fetch user details.'))
         console.error(err);
     } finally {
         dispatch(endLoading());
@@ -61,7 +71,7 @@ export const refresh = () => async dispatch => {
 
 export const createAccount = (user) => async dispatch => {
     dispatch(beginLoading());
-    const { email, password } = user;
+    const {email, password} = user;
     try {
         const requestData = {
             ...user,
@@ -72,9 +82,11 @@ export const createAccount = (user) => async dispatch => {
         const res = await httpclient.post('/customer/add', requestData); // TODO: change path
         // TODO: get the created user
         dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
-        localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO:
+        dispatch(NotificationsActions.notifySuccess('New account created successfully !!'))
+        localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO: login !!!
         console.info(res);
     } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to create account.'))
         console.error(err);
     } finally {
         dispatch(endLoading());

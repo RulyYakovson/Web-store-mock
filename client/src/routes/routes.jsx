@@ -6,11 +6,11 @@ import {makeStyles} from '@material-ui/core/styles';
 import LoginPage from '../components/auth/LoginPage';
 import PrivateRoutes from './PrivateRoutes';
 import CreateAccount from "../components/auth/CreateAccount";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 import {refresh} from "../actions/loginAction";
 import SessionExpired from "../components/auth/SessionExpired";
 import ResetPassPage from "../components/auth/ResetPassPage";
+import {NotificationContainer} from "react-notifications";
+import '../../../client/node_modules/react-notifications/lib/notifications.css';
 
 const RestrictedRoute = ({user, ...rest}) => {
    // const [allow, setAllow] = useState(!!user);
@@ -54,14 +54,10 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
 
     return (
         <BrowserRouter history={history}>
-            <Snackbar open={showSnackBar} autoHideDuration={10000} onClose={() => {}}> // TODO:
-                <Alert onClose={() => {}} severity={snackBarSeverity}>
-                    {snackBarMessage}
-                </Alert>
-            </Snackbar>
             <Backdrop className={classes.backdrop} open={isLoading}>
                 <CircularProgress color="inherit"/>
             </Backdrop>
+            <NotificationContainer/>
             <Switch>
                 <Route path='/login' component={LoginPage}/>
                 <Route path='/create-account' component={CreateAccount}/>

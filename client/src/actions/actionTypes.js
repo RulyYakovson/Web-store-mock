@@ -15,3 +15,10 @@ export const fetchUsersActionTypes = {
     USERS_END_LOADING: 'USERS_END_LOADING',
     FETCH_USERS: 'SET_USERS_DATA'
 };
+
+export const snackBarActionTypes = {
+    SUCCESS: 'success',
+    INFO: 'info',
+    WARNING: 'warning',
+    ERROR: 'error'
+}

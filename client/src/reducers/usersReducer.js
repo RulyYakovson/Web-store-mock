@@ -1,7 +1,6 @@
 import { fetchUsersActionTypes } from '../actions/actionTypes';
 
 const defaultAction = { type: null, users: null };
-
 const defaultState = { user: null, isLoading: false };
 
 const loginBeginLoading = state => ({ ...state, isLoading: true });
