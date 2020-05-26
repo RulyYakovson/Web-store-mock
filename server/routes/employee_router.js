@@ -12,7 +12,7 @@ router.get('/all', auth.authEmployee, async (req, res) => {
         data = {};
         data.userRole = req.userRole;
         let result = await repository.getAllEmployees();
-        console.log(`Fetch employees result: ${result.data}`);
+        // console.log(`Fetch employees result: ${result.data}`);
         if (result.success) {
             data.employees = result && result.data;
             res.status(200);

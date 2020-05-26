@@ -56,11 +56,11 @@ export const secondaryListItems = (setDisplayComponent) => (
             </ListItemIcon>
             <ListItemText primary="Employees"/>
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => setDisplayComponent(innerComponents.PRODUCTS_TABLE)}>
             <ListItemIcon>
-                <AssignmentIcon/>
+                <ShoppingCartIcon/>
             </ListItemIcon>
-            <ListItemText primary="Year-end sale"/>
+            <ListItemText primary="Products"/>
         </ListItem>
     </div>
 );

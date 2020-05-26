@@ -92,12 +92,12 @@ const initNeeded = result =>
         //     await initBranchesDB();
         // }
         //
-        // result = await flowerHelper.getAllFlowers();
-        // if (initNeeded(result)) {
-        //     initFlowersDB();
-        // }
+        let result = await flowerHelper.getAllFlowers();
+        if (initNeeded(result)) {
+            await initFlowersDB();
+        }
 
-        let result = await customerHelper.getAllCustomers();
+        result = await customerHelper.getAllCustomers();
         if (initNeeded(result)) {
             await initCustomersDB();
         }

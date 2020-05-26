@@ -1,7 +1,7 @@
 import { fetchEmployeesActionTypes } from '../actions/actionTypes';
 
 const defaultAction = { type: null, employees: null };
-const defaultState = { employees: null, isLoading: false };
+const defaultState = { employee: null, isLoading: false };
 
 const loginBeginLoading = state => ({ ...state, isLoading: true });
 const loginEndLoading = state => ({ ...state, isLoading: false });

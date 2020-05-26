@@ -8,6 +8,7 @@ module.exports = function (db) {
         {
             name: { type: String, required: true, unique: true },
             price: { type: Double, required: true },
+            amount: Number,
             description: String,
             src: {
                 data: Buffer,
@@ -25,6 +26,7 @@ module.exports = function (db) {
                 name: flower.name,
                 price: flower.price,
                 src: flower.src,
+                amount: flower.amount,
                 description: flower.description
             }
         );

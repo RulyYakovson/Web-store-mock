@@ -72,5 +72,5 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
 
 export default connect(store => ({
     user: store.login.user,
-    isLoading: store.login.isLoading || store.users.isLoading || store.employees.isLoading
+    isLoading: store.login.isLoading
 }))(Routes);

@@ -24,6 +24,7 @@ import {login, refresh} from "../../actions/loginActions";
 import UsersTable from "./usersTable/UsersTable";
 import CustomAppBar from "./appBar/CustomAppBar";
 import {fetchUsers} from "../../actions/usersActions";
+import ProductsTable from "./usersTable/ProductsTable";
 
 const drawerWidth = 240;
 
@@ -131,7 +132,9 @@ const Dashboard = ({history, user, dispatch}) => {
                                 <UsersTable/>
                                 : displayComponent === innerComponents.EMPLOYEES_TABLE ?
                                     <UsersTable employeesType/>
-                                    : <Home/>
+                                    : displayComponent === innerComponents.PRODUCTS_TABLE ?
+                                        <ProductsTable/>
+                                        : <Home/>
                     }
                     <Box pt={4}>
                         <Copyright/>

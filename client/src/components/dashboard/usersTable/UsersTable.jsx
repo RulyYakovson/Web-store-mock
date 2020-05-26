@@ -4,12 +4,12 @@ import {connect} from "react-redux";
 import {addUser, deleteUser, fetchUsers, updateUser} from "../../../actions/usersActions";
 import {addEmployee, deleteEmployee, fetchEmployees, updateEmployee} from "../../../actions/employeesActions";
 
-const UsersTable = ({employeesType, users, employees, dispatch}) => {
+const UsersTable = ({employeesType, users, employees, dispatch, isLoading}) => {
 
     const columns = [
         {title: 'First name', field: 'firstName'},
         {title: 'Last name', field: 'lastName'},
-        {title: 'Email', field: 'email'/*, editable: false*/}, // TODO: find a way to add but not update
+        {title: 'Email', field: 'email', editable: 'onAdd'},
         {title: 'Phone', field: 'phone'},
         // {title: 'Birth Year', field: 'birthYear', type: 'numeric'},
         {
@@ -43,6 +43,7 @@ const UsersTable = ({employeesType, users, employees, dispatch}) => {
     return (
         <div>
             <MaterialTable
+                isLoading={isLoading}
                 title={`${employeesType ? 'Employees' : 'Customers'} details`}
                 columns={employeesType ? employeesColumns : columns}
                 data={employeesType ? employees : users}
@@ -76,5 +77,6 @@ const UsersTable = ({employeesType, users, employees, dispatch}) => {
 
 export default connect(store => ({
     users: store.users && store.users.users,
-    employees: store.employees && store.employees.employees
+    employees: store.employees && store.employees.employees,
+    isLoading: store.users.isLoading || store.employees.isLoading
 }))(UsersTable);
