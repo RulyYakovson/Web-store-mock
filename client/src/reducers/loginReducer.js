@@ -1,7 +1,6 @@
 import { loginActionTypes } from '../actions/actionTypes';
 
-const defaultAction = { type: null, payload: null };
-
+const defaultAction = { type: null, user: null };
 const defaultState = { user: null, isLoading: false };
 
 const loginBeginLoading = state => ({ ...state, isLoading: true });
@@ -14,12 +13,14 @@ const setUser = (state, action) => ({
 
 export default function login(state = { ...defaultState }, action = { ...defaultAction }) {
     switch(action.type) {
-        case loginActionTypes.BEGIN_LOADING:
+        case loginActionTypes.LOGIN_BEGIN_LOADING:
             return loginBeginLoading(state);
-        case loginActionTypes.END_LOADING:
+        case loginActionTypes.LOGIN_END_LOADING:
             return loginEndLoading(state);
-        case loginActionTypes.LOGIN_OK:
+        case loginActionTypes.AUTH_FINISH:
             return setUser(state, action);
+        case loginActionTypes.AUTH_FALSE:
+            return setUser(state, defaultAction);
         default:
             return state;
     }

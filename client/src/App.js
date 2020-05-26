@@ -1,34 +1,37 @@
-import React, { useState } from 'react';
-import { Provider } from 'react-redux';
+import React from 'react';
+import {Provider} from 'react-redux';
+import {createBrowserHistory} from 'history';
 import store from './store';
-import logo from './logo.svg';
-import Login from './components/Login';
+import Routes from './routes/Routes';
 import './App.css';
+import HttpClient from "./utils/httpClient";
 
-function App() {
-  return (
-    <Provider store={store} >
-      <div>
-        <Login />
-      </div>
-    </Provider>
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-  );
-}
+const App = () => {
+    const history = createBrowserHistory();
+    HttpClient.setUp(store.dispatch, history);
+    return (
+        <Provider store={store}>
+            <div>
+                <Routes history={history}/>
+            </div>
+        </Provider>
+        // <div className="App">
+        //   <header className="App-header">
+        //     <img src={logo} className="App-logo" alt="logo" />
+        //     <p>
+        //       Edit <code>src/App.js</code> and save to reload.
+        //     </p>
+        //     <a
+        //       className="App-link"
+        //       href="https://reactjs.org"
+        //       target="_blank"
+        //       rel="noopener noreferrer"
+        //     >
+        //       Learn React
+        //     </a>
+        //   </header>
+        // </div>
+    );
+};
 
 export default App;
