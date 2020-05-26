@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as Action from '../actions/loginAction';
+import * as Action from '../actions/loginActions';
 
 const Login = ({ dispatch, user, isLoading, history }) => {
     const signInAction = async () => {

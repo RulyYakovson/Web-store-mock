@@ -18,7 +18,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {isEmpty} from "lodash";
 import {connect} from "react-redux";
-import {createAccount} from "../../actions/loginAction";
+import {createAccount} from "../../actions/loginActions";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

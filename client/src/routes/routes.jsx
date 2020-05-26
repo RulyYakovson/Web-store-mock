@@ -6,13 +6,13 @@ import {makeStyles} from '@material-ui/core/styles';
 import LoginPage from '../components/auth/LoginPage';
 import PrivateRoutes from './PrivateRoutes';
 import CreateAccount from "../components/auth/CreateAccount";
-import {refresh} from "../actions/loginAction";
+import {refresh} from "../actions/loginActions";
 import SessionExpired from "../components/auth/SessionExpired";
 import ResetPassPage from "../components/auth/ResetPassPage";
 import {NotificationContainer} from "react-notifications";
 import '../../../client/node_modules/react-notifications/lib/notifications.css';
 
-const RestrictedRoute = ({user, ...rest}) => {
+const RestrictedRoute = ({...rest}) => {
    // const [allow, setAllow] = useState(!!user);
 
     // useEffect(() => {
@@ -72,5 +72,5 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
 
 export default connect(store => ({
     user: store.login.user,
-    isLoading: store.login.isLoading || store.users.isLoading,
+    isLoading: store.login.isLoading || store.users.isLoading || store.employees.isLoading
 }))(Routes);

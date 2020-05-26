@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import {removeUserLocal} from "../actions/loginAction";
+import {removeUserLocal} from "../actions/loginActions";
 import {loginActionTypes} from "../actions/actionTypes";
 import * as NotificationsActions from "../actions/notificationsActions";
 

@@ -54,7 +54,8 @@ router.get('/user', authUser, async (req, res) => {
         lastName: req.session.lastName,
         phone: req.session.phone,
         gender: req.session.gender,
-        email: req.session.email
+        email: req.session.email,
+        role: req.session.role
     }
     res.status(200).json({user: data});
 });

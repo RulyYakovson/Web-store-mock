@@ -28,6 +28,12 @@ module.exports.addEmployee = async (req, res) => {
 module.exports.updateEmployee = async employee => {
     let user = null;
     const fieldsToUpdate = {
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        phone: employee.phone,
+        address: employee.address,
+        email: employee.email,
+        username: employee.username,
         role: employee.role,
         branch: employee.branch,
         gender: employee.gender

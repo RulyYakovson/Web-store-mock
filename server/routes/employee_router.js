@@ -1,4 +1,5 @@
 const express = require('express');
+const uuid = require('uuid4');
 const repository = require('../repositories/employee_repository');
 const auth = require('./auth_user');
 const { decrypt } = require('../encryption/node-rsa');
@@ -47,6 +48,7 @@ router.delete('/remove/:id', auth.authEmployee, async (req, res) => {
 
 router.post('/add', auth.authEmployee, async (req, res) => {
     try {
+        req.body.id = uuid();
         req.body.password = decrypt(req.body.password);
         await repository.addEmployee(req, res);
     } catch (err) {

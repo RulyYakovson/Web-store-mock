@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,11 +18,12 @@ import {mainListItems, secondaryListItems} from './listItems';
 import Copyright from '../Copyright';
 import MockHome from "../Home";
 import Home from "./Home";
-import {innerComponents} from '../../utils/constants';
+import {innerComponents, userRole} from '../../utils/constants';
 import {connect} from "react-redux";
-import {login} from "../../actions/loginAction";
-import UsersTable from "./AppBar/usersTable/UsersTable";
-import CustomAppBar from "./AppBar/CustomAppBar";
+import {login, refresh} from "../../actions/loginActions";
+import UsersTable from "./usersTable/UsersTable";
+import CustomAppBar from "./appBar/CustomAppBar";
+import {fetchUsers} from "../../actions/usersActions";
 
 const drawerWidth = 240;
 
@@ -81,15 +82,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Dashboard = ({history, isLoading}) => {
+const Dashboard = ({history, user, dispatch}) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [displayComponent, setDisplayComponent] = useState(innerComponents.HOME)
 
+    useEffect(() => {
+        dispatch(refresh());
+    }, []);
+
     return (
         <div className={classes.root}>
             <CssBaseline/>
-            <CustomAppBar open={open} setOpen={setOpen} history={history}/>
+            <CustomAppBar
+                open={open}
+                setOpen={setOpen}
+                history={history}
+                user={user}
+            />
             <Drawer
                 variant="permanent"
                 classes={{
@@ -105,7 +115,9 @@ const Dashboard = ({history, isLoading}) => {
                 <Divider/>
                 <List>{mainListItems(setDisplayComponent)}</List>
                 <Divider/>
-                <List>{secondaryListItems(setDisplayComponent)}</List>
+                {user && user.role === userRole.ADMIN && (
+                    <List>{secondaryListItems(setDisplayComponent)}</List>
+                )}
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer}/>
@@ -117,7 +129,9 @@ const Dashboard = ({history, isLoading}) => {
                             <MockHome/>
                             : displayComponent === innerComponents.USERS_TABLE ?
                                 <UsersTable/>
-                                : <Home/>
+                                : displayComponent === innerComponents.EMPLOYEES_TABLE ?
+                                    <UsersTable employeesType/>
+                                    : <Home/>
                     }
                     <Box pt={4}>
                         <Copyright/>
@@ -129,5 +143,5 @@ const Dashboard = ({history, isLoading}) => {
 };
 
 export default connect(store => ({
-    isLoading: store.users.isLoading,
+    user: store.login.user,
 }))(Dashboard);

@@ -1,7 +1,7 @@
 import httpClient from '../utils/httpClient';
 import {isLoadingActionTypes} from './actionTypes';
 import {encrypt} from "../utils/rsa";
-import {login} from "./loginAction";
+import {login} from "./loginActions";
 import * as NotificationsActions from "./notificationsActions";
 
 export const beginLoading = () => ({type: isLoadingActionTypes.BEGIN_LOADING});

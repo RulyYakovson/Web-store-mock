@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Redirect, Route} from "react-router-dom";
 import {connect} from 'react-redux';
 import PrivateRoutes from "./PrivateRoutes";
-import {refresh} from "../actions/loginAction";
+import {refresh} from "../actions/loginActions";
 
 const RestrictedRoute = ({/*component: Component, */dispatch, user, ...rest}) => {
     // const [allow, setAllow] = useState(!!user);

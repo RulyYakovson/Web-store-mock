@@ -17,7 +17,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Copyright from '../Copyright';
 import {makeStyles} from "@material-ui/core/styles";
-import {login} from "../../actions/loginAction";
+import {login} from "../../actions/loginActions";
 import {changePass, resetPass} from "../../actions/resetPassAction";
 
 const useStyles = makeStyles((theme) => ({

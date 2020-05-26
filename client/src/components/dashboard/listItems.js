@@ -6,6 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
+import EmployeeIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -25,12 +26,6 @@ export const mainListItems = (setDisplayComponent) => (
             </ListItemIcon>
             <ListItemText primary="Orders"/>
         </ListItem>
-        <ListItem button onClick={() => setDisplayComponent(innerComponents.USERS_TABLE)}>
-            <ListItemIcon>
-                <PeopleIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Customers"/>
-        </ListItem>
         <ListItem button>
             <ListItemIcon>
                 <BarChartIcon/>
@@ -48,18 +43,18 @@ export const mainListItems = (setDisplayComponent) => (
 
 export const secondaryListItems = (setDisplayComponent) => (
     <div>
-        <ListSubheader inset>Saved reports</ListSubheader>
-        <ListItem button>
+        <ListSubheader inset>Management</ListSubheader>
+        <ListItem button onClick={() => setDisplayComponent(innerComponents.USERS_TABLE)}>
             <ListItemIcon>
-                <AssignmentIcon/>
+                <PeopleIcon/>
             </ListItemIcon>
-            <ListItemText primary="Current month"/>
+            <ListItemText primary="Customers"/>
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => setDisplayComponent(innerComponents.EMPLOYEES_TABLE)}>
             <ListItemIcon>
-                <AssignmentIcon/>
+                <EmployeeIcon/>
             </ListItemIcon>
-            <ListItemText primary="Last quarter"/>
+            <ListItemText primary="Employees"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>

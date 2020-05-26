@@ -16,6 +16,12 @@ export const fetchUsersActionTypes = {
     FETCH_USERS: 'SET_USERS_DATA'
 };
 
+export const fetchEmployeesActionTypes = {
+    EMPLOYEES_BEGIN_LOADING: 'EMPLOYEES_BEGIN_LOADING',
+    EMPLOYEES_END_LOADING: 'EMPLOYEES_END_LOADING',
+    FETCH_EMPLOYEES: 'SET_EMPLOYEES_DATA'
+};
+
 export const snackBarActionTypes = {
     SUCCESS: 'success',
     INFO: 'info',

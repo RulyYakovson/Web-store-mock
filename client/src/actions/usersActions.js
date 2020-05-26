@@ -13,6 +13,7 @@ export const fetchUsers = () => async dispatch => {
         dispatch({type: fetchUsersActionTypes.FETCH_USERS, users: res.data.users});
         console.info(res);
     } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to fetch the users.'))
         console.error(err);
     } finally {
         dispatch(endLoading());
