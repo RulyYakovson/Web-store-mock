@@ -18,6 +18,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Copyright from '../Copyright';
 import {makeStyles} from "@material-ui/core/styles";
 import {login} from "../../actions/loginActions";
+import {isPatternValid, VALIDATOR_TYPES} from "../../utils/validator";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,15 +55,23 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginPage = ({dispatch, history}) => {
     const classes = useStyles();
+    const mandatoryTitle = 'Mandatory field';
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [emailErrorMessage, setEmailErrorMessage] = useState(mandatoryTitle);
+    const disabledButton = !!emailErrorMessage || !!errorMessage;
 
     const onEmailChange = email => {
-        // TODO: validate
-        // TODO: set error message if needed
         setEmail(email);
+        if (isEmpty(email)) {
+            setEmailErrorMessage(mandatoryTitle);
+        } else if (!isPatternValid(email, VALIDATOR_TYPES.EMAIL)) {
+            setEmailErrorMessage(`"${email}" is not a valid email`);
+        } else {
+            setEmailErrorMessage(null);
+        }
     };
 
     const onPasswordChange = password => {
@@ -103,7 +112,8 @@ const LoginPage = ({dispatch, history}) => {
                             autoFocus
                             value={email}
                             onChange={event => onEmailChange(event.target.value)}
-                            error={!isEmpty(errorMessage)} // TODO
+                            title={emailErrorMessage}
+                            error={emailErrorMessage && emailErrorMessage !== mandatoryTitle}
                         />
                         <TextField
                             variant="outlined"
@@ -129,6 +139,7 @@ const LoginPage = ({dispatch, history}) => {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={disabledButton}
                             onClick={loginAction}
                         >
                             Sign In
