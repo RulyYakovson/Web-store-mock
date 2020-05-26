@@ -9,6 +9,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import EmployeeIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
+import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import {innerComponents} from "../../utils/constants";
 
@@ -20,17 +21,17 @@ export const mainListItems = (setDisplayComponent) => (
             </ListItemIcon>
             <ListItemText primary="Dashboard"/>
         </ListItem>
+        <ListItem button onClick={() => setDisplayComponent(innerComponents.PRODUCTS_VIEW)}>
+            <ListItemIcon>
+                <LocalGroceryStoreIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Reports"/>
+        </ListItem>
         <ListItem button onClick={() => setDisplayComponent(innerComponents.MOCK_HOME)}>
             <ListItemIcon>
                 <ShoppingCartIcon/>
             </ListItemIcon>
             <ListItemText primary="Orders"/>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <BarChartIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Reports"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>

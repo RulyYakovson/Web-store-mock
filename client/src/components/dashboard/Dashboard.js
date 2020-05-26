@@ -25,6 +25,7 @@ import UsersTable from "./usersTable/UsersTable";
 import CustomAppBar from "./appBar/CustomAppBar";
 import {fetchUsers} from "../../actions/usersActions";
 import ProductsTable from "./usersTable/ProductsTable";
+import ProductsCardsView from "./productsView/ProductsCardsView";
 
 const drawerWidth = 240;
 
@@ -134,7 +135,9 @@ const Dashboard = ({history, user, dispatch}) => {
                                     <UsersTable employeesType/>
                                     : displayComponent === innerComponents.PRODUCTS_TABLE ?
                                         <ProductsTable/>
-                                        : <Home/>
+                                        : displayComponent === innerComponents.PRODUCTS_VIEW ?
+                                            <ProductsCardsView/>
+                                            : <Home/>
                     }
                     <Box pt={4}>
                         <Copyright/>
