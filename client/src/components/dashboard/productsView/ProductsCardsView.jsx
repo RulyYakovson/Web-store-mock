@@ -1,24 +1,37 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {connect} from "react-redux";
 import {fetchProducts} from "../../../actions/productsActions";
 import ProductCard from "./ProductCard";
+import {Backdrop, CircularProgress} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
 
-const ProductsCardsView = ({products, dispatch}) => {
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}));
+
+const ProductsCardsView = ({products, dispatch, isLoading}) => {
+    const classes = useStyles();
 
     useEffect(() => {
         dispatch(fetchProducts());
     }, []);
 
-    return ( // TODO: Add Loader
+    return (
         <Container maxWidth="md" component="main">
             <Grid container spacing={5} alignItems="flex-end">
+                <Backdrop className={classes.backdrop} open={isLoading}>
+                    <CircularProgress color="inherit"/>
+                </Backdrop>
                 {
                     products && products.map(product =>
-                            <Grid key={product.name} item md={3} xs={6}>
-                                <ProductCard product={product}/>
-                            </Grid>
+                        <Grid key={product.name} item md={3} xs={6}>
+                            <ProductCard product={product}/>
+                        </Grid>
                     )
                 }
                 {

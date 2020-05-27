@@ -11,6 +11,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import StorageIcon from '@material-ui/icons/Storage';
 import {innerComponents} from "../../utils/constants";
 
 export const mainListItems = (setDisplayComponent) => (
@@ -25,7 +26,7 @@ export const mainListItems = (setDisplayComponent) => (
             <ListItemIcon>
                 <LocalGroceryStoreIcon/>
             </ListItemIcon>
-            <ListItemText primary="Reports"/>
+            <ListItemText primary="Store"/>
         </ListItem>
         <ListItem button onClick={() => setDisplayComponent(innerComponents.MOCK_HOME)}>
             <ListItemIcon>
@@ -59,7 +60,7 @@ export const secondaryListItems = (setDisplayComponent) => (
         </ListItem>
         <ListItem button onClick={() => setDisplayComponent(innerComponents.PRODUCTS_TABLE)}>
             <ListItemIcon>
-                <ShoppingCartIcon/>
+                <StorageIcon/>
             </ListItemIcon>
             <ListItemText primary="Products"/>
         </ListItem>
