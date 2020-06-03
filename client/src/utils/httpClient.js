@@ -13,11 +13,10 @@ HttpClient.setUp = (dispatch, history) => {
     const onRejected = error => {
         if (error.response.status === 401) {
             dispatch({type: loginActionTypes.AUTH_FALSE});
-            // dispatch(NotificationsActions.notifyError('xfhfdgndfnhfdnn')) // TODO:
+            dispatch(NotificationsActions.notifyWarning('', 'SESSION EXPIRED')) // TODO:
             localStorage.removeItem('user');
-            history.push('/session-expired'); // TODO: not working
+            window.location.href = '/session-expired'
             console.error(error);
-            // return <Redirect to={{pathname: '/login', state: {from: history.location}}}/>
         }
         return Promise.reject(error);
     };

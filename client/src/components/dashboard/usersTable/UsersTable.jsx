@@ -1,22 +1,57 @@
 import React, {useState, useEffect} from 'react';
-import MaterialTable from 'material-table';
 import {connect} from "react-redux";
+import MaterialTable from 'material-table';
+import Avatar from "@material-ui/core/Avatar";
+import {makeStyles} from "@material-ui/core/styles";
+import {DeleteForever, Edit} from '@material-ui/icons';
 import {addUser, deleteUser, fetchUsers, updateUser} from "../../../actions/usersActions";
 import {addEmployee, deleteEmployee, fetchEmployees, updateEmployee} from "../../../actions/employeesActions";
 
+const useStyles = makeStyles(theme => ({
+    avatar: {
+        margin: 'auto',
+        width: theme.spacing(5),
+        height: theme.spacing(5),
+        //cursor: "pointer",
+    },
+}));
+
 const UsersTable = ({employeesType, users, employees, dispatch, isLoading}) => {
+    const classes = useStyles();
+
+    const [selectedRow, setSelectedRow] = useState(null);
+
+    const avatarCellView = rowData => {
+        const isAdmin = employeesType && rowData.role === 'Admin';
+        let imageName = null;
+        switch (rowData.gender) {
+            case 'Male': {
+                imageName = isAdmin ? 'admin_male' : 'user_male';
+                break;
+            }
+            case 'Female': {
+                imageName = isAdmin ? 'admin_female' : 'user_female';
+                break;
+            }
+            default: break;
+        };
+
+        return (
+            <Avatar
+                variant="circle"
+                className={classes.avatar}
+                src={`images/${imageName}.png`}
+            />
+        );
+    };
 
     const columns = [
+        {editable: 'never', render: avatarCellView},
         {title: 'First name', field: 'firstName'},
         {title: 'Last name', field: 'lastName'},
         {title: 'Email', field: 'email', editable: 'onAdd'},
         {title: 'Phone', field: 'phone'},
-        // {title: 'Birth Year', field: 'birthYear', type: 'numeric'},
-        {
-            title: 'Gender',
-            field: 'gender',
-            lookup: {Male: 'Male', Female: 'Female', None: 'None'},
-        },
+        {title: 'Gender', field: 'gender', lookup: {Male: 'Male', Female: 'Female', None: 'None'}},
     ];
 
     const employeesColumns = [
@@ -47,6 +82,23 @@ const UsersTable = ({employeesType, users, employees, dispatch, isLoading}) => {
                 title={`${employeesType ? 'Employees' : 'Customers'} details`}
                 columns={employeesType ? employeesColumns : columns}
                 data={employeesType ? employees : users}
+                localization={{header: {actions: ''}}}
+                onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.id))}
+                icons={{
+                    Delete: () => <DeleteForever style={{color: "crimson"}}/>,
+                    Edit: () => <Edit style={{color: "darkslateblue"}}/>
+                }}
+                options={{
+                    rowStyle: rowData => ({
+                        backgroundColor: (selectedRow === rowData.id) ? '#EEE' : '#FFF'
+                    }),
+                    headerStyle: {
+                        backgroundColor: '#3f51b5',
+                        color: '#FFF'
+                    },
+                    addRowPosition: 'first',
+                    actionsColumnIndex: -1,
+                }}
                 editable={{
                     onRowAdd: (newData) =>
                         new Promise((resolve) => {

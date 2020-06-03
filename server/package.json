@@ -21,7 +21,6 @@
     "express-session": "^1.16.2",
     "gridfs-stream": "^1.1.1",
     "http-errors": "~1.6.3",
-    "image-downloader": "^3.5.0",
     "jade": "~1.11.0",
     "mongoose": "^5.7.13",
     "morgan": "~1.9.1",

@@ -9,6 +9,7 @@ const session = require('express-session');
 const mongo = require('mongoose');
 const passport = require('passport');
 const connectMongo = require('connect-mongo');
+const {cors} = require('./utils/helper');
 
 const { DB_URI, SESSION_SECRET } = require('./utils/constants');
 const router = require('./routes/router');
@@ -33,6 +34,7 @@ app.use(cookieParser(SESSION_SECRET));
 app.use(bodyParser.json())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors);
 
 const uri = DB_URI;
 const sessionConnect = mongo.createConnection();

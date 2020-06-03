@@ -1,23 +1,12 @@
 const express = require('express');
 const passport = require('passport');
 const nodemailer = require('nodemailer');
-const {cors} = require('../utils/helper');
 const {authUser} = require('./auth_user');
 const {getUserByEmail} = require('../repositories/repository_helper');
 const {setEmpToken, editEmployee} = require('../repositories/employee_repository');
 const {setToken, editCustomer} = require('../repositories/customers_repository');
 const router = express.Router();
 const expires = 10 * 60 * 1000; // min * sec * millis
-
-router.use(cors);
-
-// router.get('/', async (req, res) => {
-//     console.log('Received get index page request');
-//     res.status(200);
-//     await setTimeout(() => {
-//        res.render('index', { userRole: req.session && req.session.role });
-//     }, timeout);
-// });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
     const user = req.user;

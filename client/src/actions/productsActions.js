@@ -12,57 +12,71 @@ export const fetchProducts = () => async dispatch => {
         dispatch({type: fetchProductsActionTypes.FETCH_PRODUCTS, products: res.data.flowers});
         console.info(res);
     } catch (err) {
-        dispatch(NotificationsActions.notifyError('An error occurred while trying to fetch the products.'))
-        console.error(err);
+        if (err.response && err.response.status === 400) {
+            // Will try again
+            // const res = await httpClient.get('/flower/all');
+            // dispatch({type: fetchProductsActionTypes.FETCH_PRODUCTS, products: res.data.flowers});
+            // console.info(res);
+        } else {
+            dispatch(NotificationsActions.notifyError('An error occurred while trying to fetch the products.'))
+            console.error(err);
+        }
     } finally {
         dispatch(endLoading());
     }
 };
 
-// export const addEmployee = (employee) => async dispatch => {
-//     dispatch(beginLoading());
-//     try {
-//         const {email, firstName, lastName} = employee;
-//         const requestData = {
-//             ...employee,
-//             username: email,
-//             password: encrypt('1234'), // TODO: send email
-//             address: email
-//         };
-//         const res = await httpClient.post('/employee/add', requestData);
-//         dispatch(NotificationsActions.notifySuccess(`Employee ${firstName} ${lastName} added successfully.`));
-//         console.info(res);
-//         dispatch(fetchEmployees())
-//     } catch (err) {
-//         if (err.response && err.response.status === 400) {
-//             dispatch(NotificationsActions.notifyError('User with the given username or ID is already exist'));
-//         } else {
-//             dispatch(NotificationsActions.notifyError('An error occurred while trying to add the employee.'))
-//         }
-//         dispatch(endLoading())
-//         console.error(err);
-//     }
-// };
+export const addProduct = (product) => async dispatch => {
+    dispatch(beginLoading());
+    try {
+        const res = await httpClient.post('/flower/add', product);
+        dispatch(NotificationsActions.notifySuccess(`Product ${product.name} added successfully.`));
+        console.info(res);
+        dispatch(fetchProducts())
+    } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to add the product.'))
+        dispatch(endLoading())
+        console.error(err);
+    }
+};
 
-// export const updateProducts = (product) => async dispatch => {
-//     dispatch(beginLoading());
-//     const {email, firstName, lastName} = product;
-//     const requestData = {
-//         ...product,
-//         username: email,
-//         address: email
-//     };
-//     try {
-//         const res = await httpClient.post('/employee/update', requestData);
-//         dispatch(NotificationsActions.notifySuccess(`Employee ${firstName} ${lastName} updated successfully.`));
-//         console.info(res);
-//         dispatch(fetchEmployees())
-//     } catch (err) {
-//         dispatch(NotificationsActions.notifyError('An error occurred while trying to update the employee.'))
-//         dispatch(endLoading())
-//         console.error(err);
-//     }
-// };
+export const updateProduct = (product) => async dispatch => {
+    const requestData = {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        amount: product.amount,
+        price: product.price
+    };
+    dispatch(beginLoading());
+    try {
+        const res = await httpClient.post('/flower/update', requestData);
+        dispatch(NotificationsActions.notifySuccess(`Product ${product.name} updated successfully.`));
+        console.info(res);
+        dispatch(fetchProducts())
+    } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to update the product.'))
+        dispatch(endLoading())
+        console.error(err);
+    }
+};
+
+export const updateImage = (image, id) => async dispatch => {
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('id', id);
+    dispatch(beginLoading());
+    try {
+        const res = await httpClient.post('/flower/update/image', formData);
+        dispatch(NotificationsActions.notifySuccess(`Image uploaded successfully.`));
+        console.info(res);
+        dispatch(fetchProducts())
+    } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to upload the image.'))
+        dispatch(endLoading())
+        console.error(err);
+    }
+};
 
 export const deleteProduct = (productName) => async dispatch => {
     dispatch(beginLoading());

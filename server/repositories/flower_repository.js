@@ -12,21 +12,29 @@ module.exports.getAllFlowers = async () => {
                     name: flower.name,
                     price: flower.price,
                     description: flower.description,
-                    src: flower.src.data.toString('base64')
+                    amount: flower.amount,
+                    src: flower.src.data && flower.src.data.toString('base64')
                 }
             });
         }
     });
-    return { success: success, data: result };
+    return {success: success, data: result};
+};
+
+module.exports.updateFlower = async (flower) => {
+    const product = await flowerRepository.findOneAndUpdate({_id: flower.id}, flower, {new: true});
+
+    !!product ? console.log(`Product: '${product.name}' successfully updated !!`)
+        : console.log(`Error while trying to update product: ${product.name}, ${product.id}`);
 };
 
 module.exports.addFlower = async flower => {
-    const createdFlower = await flowerRepository.CREATE(flower);
-    console.log(`A new flower created: ${createdFlower}`);
+    const createdProduct = await flowerRepository.CREATE(flower);
+    console.log(`A new product : ${createdProduct.name} created successfully`);
 };
 
 module.exports.removeFlower = async name => {
-    const flower = await flowerRepository.findOneAndDelete({ name: name });
-    !!flower ? console.log(`Flower: ${flower} \nsuccessfully deleted !!`)
-        : console.log(`ERROR: Flower: ${name} not found !!`);
+    const flower = await flowerRepository.findOneAndDelete({name: name});
+    !!flower ? console.log(`Product: ${name} successfully deleted !!`)
+        : console.log(`ERROR: Product: ${name} not found !!`);
 };
