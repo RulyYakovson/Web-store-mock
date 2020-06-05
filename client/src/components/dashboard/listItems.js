@@ -4,7 +4,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import EmployeeIcon from '@material-ui/icons/PeopleOutlineOutlined';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -12,13 +11,21 @@ import LayersIcon from '@material-ui/icons/Layers';
 import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import StorageIcon from '@material-ui/icons/Storage';
+import InfoIcon from '@material-ui/icons/Info';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
 import {innerComponents} from "../../utils/constants";
 
 export const mainListItems = (setDisplayComponent) => (
     <div>
-        <ListItem button onClick={() => setDisplayComponent(innerComponents.HOME)}>
+        <ListItem button onClick={() => setDisplayComponent(innerComponents.ABOUT)}>
             <ListItemIcon>
-                <DashboardIcon/>
+                <InfoIcon/>
+            </ListItemIcon>
+            <ListItemText primary="About"/>
+        </ListItem>
+        <ListItem button onClick={() => setDisplayComponent(innerComponents.CONTACT_US)}>
+            <ListItemIcon>
+                <ContactMailIcon/>
             </ListItemIcon>
             <ListItemText primary="Dashboard"/>
         </ListItem>
@@ -27,12 +34,6 @@ export const mainListItems = (setDisplayComponent) => (
                 <LocalGroceryStoreIcon/>
             </ListItemIcon>
             <ListItemText primary="Store"/>
-        </ListItem>
-        <ListItem button onClick={() => setDisplayComponent(innerComponents.MOCK_HOME)}>
-            <ListItemIcon>
-                <ShoppingCartIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Orders"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>
@@ -46,6 +47,12 @@ export const mainListItems = (setDisplayComponent) => (
 export const secondaryListItems = (setDisplayComponent) => (
     <div>
         <ListSubheader inset>Management</ListSubheader>
+        <ListItem button onClick={() => setDisplayComponent(innerComponents.HOME)}>
+            <ListItemIcon>
+                <DashboardIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Dashboard"/>
+        </ListItem>
         <ListItem button onClick={() => setDisplayComponent(innerComponents.USERS_TABLE)}>
             <ListItemIcon>
                 <PeopleIcon/>

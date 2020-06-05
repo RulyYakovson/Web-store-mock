@@ -5,9 +5,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {login} from "../../../actions/loginActions";
 import AppBar from "@material-ui/core/AppBar";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CustomAppBar = ({open, setOpen, history, user}) => {
+const CustomAppBar = ({open, setOpen, history, user, dispatch}) => {
     const classes = useStyles();
 
     return (
@@ -71,12 +71,13 @@ const CustomAppBar = ({open, setOpen, history, user}) => {
                 </Typography>
                 <IconButton color="inherit">
                     <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon/>
+                        <ShoppingCartIcon/>
                     </Badge>
                 </IconButton>
                 <AppBarMenu
                     history={history}
                     user={user}
+                    dispatch={dispatch}
                 />
             </Toolbar>
         </AppBar>

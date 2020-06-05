@@ -10,13 +10,18 @@ function createData(time, amount) {
 
 const data = [
   createData('00:00', 0),
-  createData('03:00', 300),
+  createData('01:00', 300),
+  createData('02:00', 800),
+  createData('04:00', 1500),
   createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
+  createData('08:00', 800),
+  createData('10:00', 1500),
+  createData('12:00', 1000),
+  createData('14:00', 2400),
+  createData('16:00', 1500),
+  createData('18:00', 300),
+  createData('20:00', 2400),
+  createData('22:00', 800),
   createData('24:00', undefined),
 ];
 

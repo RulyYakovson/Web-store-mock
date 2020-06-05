@@ -4,28 +4,23 @@ import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import {mainListItems, secondaryListItems} from './listItems';
 import Copyright from '../Copyright';
-import MockHome from "../Home";
+import About from "../about/About";
 import Home from "./Home";
 import {innerComponents, userRole} from '../../utils/constants';
 import {connect} from "react-redux";
-import {login, refresh} from "../../actions/loginActions";
+import {refresh} from "../../actions/loginActions";
 import UsersTable from "./usersTable/UsersTable";
 import CustomAppBar from "./appBar/CustomAppBar";
-import {fetchUsers} from "../../actions/usersActions";
 import ProductsTable from "./usersTable/ProductsTable";
 import ProductsCardsView from "./productsView/ProductsCardsView";
+import Contact from "../contact/Contact";
 
 const drawerWidth = 240;
 
@@ -101,6 +96,7 @@ const Dashboard = ({history, user, dispatch}) => {
                 setOpen={setOpen}
                 history={history}
                 user={user}
+                dispatch={dispatch}
             />
             <Drawer
                 variant="permanent"
@@ -127,8 +123,8 @@ const Dashboard = ({history, user, dispatch}) => {
                     {
                         displayComponent === innerComponents.HOME ?
                             <Home/>
-                            : displayComponent === innerComponents.MOCK_HOME ?
-                            <MockHome/>
+                            : displayComponent === innerComponents.ABOUT ?
+                            <About/>
                             : displayComponent === innerComponents.USERS_TABLE ?
                                 <UsersTable/>
                                 : displayComponent === innerComponents.EMPLOYEES_TABLE ?
@@ -137,7 +133,9 @@ const Dashboard = ({history, user, dispatch}) => {
                                         <ProductsTable/>
                                         : displayComponent === innerComponents.PRODUCTS_VIEW ?
                                             <ProductsCardsView/>
-                                            : <Home/>
+                                            : displayComponent === innerComponents.CONTACT_US ?
+                                                <Contact/>
+                                                : <Home/>
                     }
                     <Box pt={4}>
                         <Copyright/>

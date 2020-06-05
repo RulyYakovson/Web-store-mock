@@ -1,13 +1,10 @@
 const express = require('express');
 const uuid = require('uuid4');
 const router = express.Router();
-const {cors} = require('../utils/helper');
 const repository = require('../repositories/customers_repository');
 const auth = require('./auth_user');
 const { decrypt } = require('../encryption/node-rsa');
 const timeout = 1000;
-
-router.use(cors);
 
 router.get('/all', auth.authEmployee, async (req, res) => {
     console.log('Received get all customers request');

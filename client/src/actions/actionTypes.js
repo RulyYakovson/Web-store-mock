@@ -28,6 +28,12 @@ export const fetchEmployeesActionTypes = {
     FETCH_EMPLOYEES: 'SET_EMPLOYEES_DATA'
 };
 
+export const fetchContactMessagesActionTypes = {
+    CONTACT_BEGIN_LOADING: 'CONTACT_BEGIN_LOADING',
+    CONTACT_END_LOADING: 'CONTACT_END_LOADING',
+    FETCH_CONTACT_MESSAGES: 'SET_CONTACT_MESSAGES'
+};
+
 export const snackBarActionTypes = {
     SUCCESS: 'success',
     INFO: 'info',

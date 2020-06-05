@@ -18,10 +18,14 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
         margin: "auto",
+        marginRight: theme.spacing(5),
         fontSize: "initial"
     },
     div: {
        display: "inline-flex"
+    },
+    iconButton: {
+        marginLeft: theme.spacing(2)
     }
 }));
 
@@ -47,6 +51,7 @@ const AppBarMenu = ({dispatch, user, history}) => {
     return (
         <div className={classes.div}>
             <IconButton
+                className={classes.iconButton}
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
@@ -55,7 +60,13 @@ const AppBarMenu = ({dispatch, user, history}) => {
             >
                 <AccountCircle/>
             </IconButton>
-            <Typography component="h6" variant="h6" color="inherit" noWrap className={classes.title}>
+            <Typography
+                className={classes.title}
+                component="h6"
+                variant="h6"
+                color="inherit"
+                noWrap
+            >
                 {user ? `${user.firstName} ${user.lastName}` : ''}
             </Typography>
             <Menu
@@ -92,6 +103,4 @@ const AppBarMenu = ({dispatch, user, history}) => {
     );
 };
 
-export default connect(store => ({
-    //user: store.login.user,
-}))(AppBarMenu);
+export default AppBarMenu

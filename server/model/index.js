@@ -5,6 +5,7 @@ const customer = require('./customer');
 const employee = require('./employee');
 const branch = require('./branch');
 const flower = require('./flower');
+const contactMessages = require('./contactMessage');
 
 const db = mongo.createConnection();
 const uri = DB_URI;
@@ -24,5 +25,6 @@ customer(db);
 employee(db);
 branch(db);
 flower(db);
+contactMessages(db);
 
 module.exports = model => db.model(model);
