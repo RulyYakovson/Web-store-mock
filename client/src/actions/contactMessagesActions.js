@@ -4,6 +4,8 @@ import * as NotificationsActions from "./notificationsActions";
 
 export const beginLoading = () => ({type: fetchContactMessagesActionTypes.CONTACT_BEGIN_LOADING});
 export const endLoading = () => ({type: fetchContactMessagesActionTypes.CONTACT_END_LOADING});
+export const beginRowLoading = () => ({type: fetchContactMessagesActionTypes.CONTACT_ROW_BEGIN_LOADING});
+export const endRowLoading = () => ({type: fetchContactMessagesActionTypes.CONTACT_ROW_END_LOADING});
 
 export const fetchContactMessages = () => async dispatch => {
     dispatch(beginLoading());
@@ -36,15 +38,16 @@ export const addContact = (email, name, message) => async dispatch => {
 };
 
 export const updateContactMessageStatus = (id, status) => async dispatch => {
-    dispatch(beginLoading());
+    dispatch(beginRowLoading());
     try {
         const res = await httpClient.post('/contacts/update/status', {id, status});
-        dispatch(NotificationsActions.notifySuccess(`Message status update to ${status}.`));
         console.info(res);
+        const fetchRes = await httpClient.get('/contacts/all');
+        dispatch({type: fetchContactMessagesActionTypes.FETCH_CONTACT_MESSAGES, messages: fetchRes.data.messages});
     } catch (err) {
         dispatch(NotificationsActions.notifyError('An error occurred while trying to update message status.'))
         console.error(err);
     } finally {
-        dispatch(endLoading())
+        dispatch(endRowLoading())
     }
 };

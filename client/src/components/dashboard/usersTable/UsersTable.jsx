@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
         margin: 'auto',
         width: theme.spacing(5),
         height: theme.spacing(5),
-        //cursor: "pointer",
     },
 }));
 

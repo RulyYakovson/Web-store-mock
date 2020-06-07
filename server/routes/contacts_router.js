@@ -23,7 +23,7 @@ router.get('/all', auth.authEmployee, async (req, res) => {
 
 router.post('/add', async (req, res) => {
     const {body} = req
-    console.info(` Received add contact message request\n${Object.values(body)}`);
+    console.info(`Received add contact message request\n${Object.values(body)}`);
     setTimeout(async () => {
         try {
             await repository.addContactMessage(body);
@@ -50,13 +50,15 @@ router.post('/update/status', auth.authEmployee, async (req, res) => {
     // }
 
     console.info(`Received update status request for message: ${id}`)
-    try {
-        await repository.updateContactMessageStatus(id, status);
-        res.status(200).send('OK');
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('ERROR');
-    }
+    setTimeout(async () => {
+        try {
+            await repository.updateContactMessageStatus(id, status);
+            res.status(200).send('OK');
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('ERROR');
+        }
+    }, timeout);
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-export const innerComponents = {
+export const INNER_COMPONENTS = {
     HOME: 'home',
     DASHBOARD: 'dashboard',
     ABOUT: 'about',
@@ -6,11 +6,18 @@ export const innerComponents = {
     EMPLOYEES_TABLE: 'employees_table',
     PRODUCTS_TABLE: 'products_table',
     PRODUCTS_VIEW: 'products_cards_view',
-    CONTACT_US: 'contact_us'
+    CONTACT_US: 'contact_us',
+    CONTACT_MESSAGES: 'contact_messages'
 };
 
-export const userRole = {
+export const USER_ROLE = {
     EMPLOYEE: 'Employee',
     ADMIN: 'Admin',
     CUSTOMER: 'customer'
+};
+
+export const MESSAGE_STATUS = {
+    PENDING: 'Pending',
+    IN_PROGRESS: 'In Progress',
+    FINISH: 'Finish'
 };

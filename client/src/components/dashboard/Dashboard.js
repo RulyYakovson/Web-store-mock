@@ -13,7 +13,7 @@ import {mainListItems, secondaryListItems} from './listItems';
 import Copyright from '../Copyright';
 import About from "../about/About";
 import Home from "./Home";
-import {innerComponents, userRole} from '../../utils/constants';
+import {INNER_COMPONENTS, USER_ROLE} from '../../utils/constants';
 import {connect} from "react-redux";
 import {refresh} from "../../actions/loginActions";
 import UsersTable from "./usersTable/UsersTable";
@@ -21,6 +21,7 @@ import CustomAppBar from "./appBar/CustomAppBar";
 import ProductsTable from "./usersTable/ProductsTable";
 import ProductsCardsView from "./productsView/ProductsCardsView";
 import Contact from "../contact/Contact";
+import ContactMessagesTable from "./usersTable/ContactMessagesTable";
 
 const drawerWidth = 240;
 
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = ({history, user, dispatch}) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [displayComponent, setDisplayComponent] = useState(innerComponents.HOME)
+    const [displayComponent, setDisplayComponent] = useState(INNER_COMPONENTS.HOME)
 
     useEffect(() => {
         dispatch(refresh());
@@ -113,7 +114,7 @@ const Dashboard = ({history, user, dispatch}) => {
                 <Divider/>
                 <List>{mainListItems(setDisplayComponent)}</List>
                 <Divider/>
-                {user && user.role === userRole.ADMIN && (
+                {user && user.role === USER_ROLE.ADMIN && (
                     <List>{secondaryListItems(setDisplayComponent)}</List>
                 )}
             </Drawer>
@@ -121,21 +122,23 @@ const Dashboard = ({history, user, dispatch}) => {
                 <div className={classes.appBarSpacer}/>
                 <Container maxWidth="lg" className={classes.container}>
                     {
-                        displayComponent === innerComponents.HOME ?
+                        displayComponent === INNER_COMPONENTS.HOME ?
                             <Home/>
-                            : displayComponent === innerComponents.ABOUT ?
+                            : displayComponent === INNER_COMPONENTS.ABOUT ?
                             <About/>
-                            : displayComponent === innerComponents.USERS_TABLE ?
+                            : displayComponent === INNER_COMPONENTS.USERS_TABLE ?
                                 <UsersTable/>
-                                : displayComponent === innerComponents.EMPLOYEES_TABLE ?
+                                : displayComponent === INNER_COMPONENTS.EMPLOYEES_TABLE ?
                                     <UsersTable employeesType/>
-                                    : displayComponent === innerComponents.PRODUCTS_TABLE ?
+                                    : displayComponent === INNER_COMPONENTS.PRODUCTS_TABLE ?
                                         <ProductsTable/>
-                                        : displayComponent === innerComponents.PRODUCTS_VIEW ?
+                                        : displayComponent === INNER_COMPONENTS.PRODUCTS_VIEW ?
                                             <ProductsCardsView/>
-                                            : displayComponent === innerComponents.CONTACT_US ?
+                                            : displayComponent === INNER_COMPONENTS.CONTACT_US ?
                                                 <Contact/>
-                                                : <Home/>
+                                                : displayComponent === INNER_COMPONENTS.CONTACT_MESSAGES ?
+                                                    <ContactMessagesTable/>
+                                                    : <Home/>
                     }
                     <Box pt={4}>
                         <Copyright/>
