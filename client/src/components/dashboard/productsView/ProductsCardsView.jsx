@@ -23,7 +23,7 @@ const ProductsCardsView = ({products, dispatch, isLoading}) => {
 
     return (
         <Container maxWidth="md" component="main">
-            <Grid container spacing={5} alignItems="flex-end">
+            <Grid container justify="flex-start" alignItems="flex-end" spacing={products && products.length > 0 ? 5 : 0} >
                 <Backdrop className={classes.backdrop} open={isLoading}>
                     <CircularProgress color="inherit"/>
                 </Backdrop>

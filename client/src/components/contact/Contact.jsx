@@ -9,11 +9,10 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import './contact.css';
 import {addContact} from "../../actions/contactMessagesActions";
 import {connect} from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import green from "@material-ui/core/colors/green";
+import './contact.css';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
