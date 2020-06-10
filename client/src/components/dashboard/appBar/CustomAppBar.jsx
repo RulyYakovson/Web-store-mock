@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CustomAppBar = ({open, setOpen, history, user, dispatch}) => {
+const CustomAppBar = ({productsNum, open, setOpen, history, user, dispatch}) => {
     const classes = useStyles();
 
     return (
@@ -70,7 +70,7 @@ const CustomAppBar = ({open, setOpen, history, user, dispatch}) => {
                     Dashboard
                 </Typography>
                 <IconButton color="inherit">
-                    <Badge badgeContent={4} color="secondary">
+                    <Badge badgeContent={productsNum} color="secondary" invisible={productsNum === 0}>
                         <ShoppingCartIcon/>
                     </Badge>
                 </IconButton>

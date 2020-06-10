@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProductsCardsView = ({products, dispatch, isLoading}) => {
+const ProductsCardsView = ({products, setProductsNum, dispatch, isLoading}) => {
     const classes = useStyles();
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const ProductsCardsView = ({products, dispatch, isLoading}) => {
                 {
                     products && products.map(product =>
                         <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
+                            <ProductCard product={product} setProductsNum={setProductsNum}/>
                         </Grid>
                     )
                 }

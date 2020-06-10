@@ -10,6 +10,7 @@ module.exports = function (db) {
             price: { type: Double, required: true },
             amount: Number,
             description: String,
+           // isNew: {type: Boolean, default: false},
             src: {
                 data: Buffer,
                 contentType: String
@@ -27,6 +28,7 @@ module.exports = function (db) {
                 price: flower.price,
                 src: flower.src,
                 amount: flower.amount,
+                isNew: flower.isNew,
                 description: flower.description
             }
         );

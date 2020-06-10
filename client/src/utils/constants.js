@@ -21,3 +21,5 @@ export const MESSAGE_STATUS = {
     IN_PROGRESS: 'In Progress',
     FINISH: 'Finish'
 };
+
+export const PRODUCTS_KEY = 'product-list';

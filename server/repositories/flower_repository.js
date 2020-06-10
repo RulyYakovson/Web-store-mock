@@ -13,6 +13,7 @@ module.exports.getAllFlowers = async () => {
                     price: flower.price,
                     description: flower.description,
                     amount: flower.amount,
+                    isNew: flower.isNew,
                     src: flower.src.data && flower.src.data.toString('base64')
                 }
             });

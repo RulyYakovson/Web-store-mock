@@ -13,7 +13,7 @@ import {mainListItems, secondaryListItems} from './listItems';
 import Copyright from '../Copyright';
 import About from "../about/About";
 import Home from "./Home";
-import {INNER_COMPONENTS, USER_ROLE} from '../../utils/constants';
+import {INNER_COMPONENTS, PRODUCTS_KEY, USER_ROLE} from '../../utils/constants';
 import {connect} from "react-redux";
 import {refresh} from "../../actions/loginActions";
 import UsersTable from "./usersTable/UsersTable";
@@ -83,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = ({history, user, dispatch}) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [productsNum, setProductsNum] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))).size);
     const [displayComponent, setDisplayComponent] = useState(INNER_COMPONENTS.HOME)
 
     useEffect(() => {
@@ -93,6 +94,7 @@ const Dashboard = ({history, user, dispatch}) => {
         <div className={classes.root}>
             <CssBaseline/>
             <CustomAppBar
+                productsNum={productsNum}
                 open={open}
                 setOpen={setOpen}
                 history={history}
@@ -133,7 +135,7 @@ const Dashboard = ({history, user, dispatch}) => {
                                     : displayComponent === INNER_COMPONENTS.PRODUCTS_TABLE ?
                                         <ProductsTable/>
                                         : displayComponent === INNER_COMPONENTS.PRODUCTS_VIEW ?
-                                            <ProductsCardsView/>
+                                            <ProductsCardsView setProductsNum={setProductsNum}/>
                                             : displayComponent === INNER_COMPONENTS.CONTACT_US ?
                                                 <Contact/>
                                                 : displayComponent === INNER_COMPONENTS.CONTACT_MESSAGES ?
