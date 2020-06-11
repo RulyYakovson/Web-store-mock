@@ -46,7 +46,9 @@ export const updateProduct = (product) => async dispatch => {
         name: product.name,
         description: product.description,
         amount: product.amount,
-        price: product.price
+        price: product.price,
+        isSale: product.isSale,
+        isNewProduct: product.isNewProduct
     };
     dispatch(beginLoading());
     try {

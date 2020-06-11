@@ -99,9 +99,8 @@ const ProductCard = ({product, setProductsNum}) => {
                     className={classes.media}
                     image={`data:image/png;base64, ${product.src}`}
                 />
-                {/*TODO: implement in server flower model (add isNew/isSale fields*/}
-                {product.amount === 12 && <StyledBadge badgeContent={'New'} color="primary" />}
-                {product.amount === 65 && <StyledBadge badgeContent={'Sale'} color="secondary" />}
+                {product.isNewProduct && <StyledBadge badgeContent={'New'} color="primary" />}
+                {product.isSale && <StyledBadge badgeContent={'Sale'} color="secondary" />}
                 <CardContent>
                     <Typography className={classes.name} gutterBottom variant="h5" component="h2">
                         {product.name}

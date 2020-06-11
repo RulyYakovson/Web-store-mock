@@ -56,12 +56,12 @@ router.delete('/remove/:name', auth.authEmployee, async (req, res) => {
 });
 
 router.post('/add', auth.authEmployee, async (req, res) => {
-    const {name, description, price, amount} = req.body;
+    const {name, description, price, amount, isNewProduct, isSale} = req.body;
     console.info(`Received add flower request, Name: ${name},
     Description: ${description}, Price: ${price}, Amount: ${amount}.`);
 
     try {
-        await repository.addFlower({name, description, price, amount});
+        await repository.addFlower({name, description, price, amount, isNewProduct, isSale});
         res.status(200).send('OK');
     } catch (err) {
         console.error(err.message);
@@ -70,12 +70,12 @@ router.post('/add', auth.authEmployee, async (req, res) => {
 });
 
 router.post('/update', auth.authEmployee, async (req, res) => {
-    const {name, description, price, amount, id} = req.body;
+    const {name, description, price, amount, id, isNewProduct, isSale} = req.body;
     console.info(`Received update flower request, Name: ${name},
     Description: ${description}, Price: ${price}, Amount: ${amount}.`);
 
     try {
-        await repository.updateFlower({id, name, description, price, amount});
+        await repository.updateFlower({id, name, description, price, amount, isNewProduct, isSale});
         res.status(200).send('OK');
     } catch (err) {
         console.error(err.message);

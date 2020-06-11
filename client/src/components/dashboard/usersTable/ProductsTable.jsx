@@ -10,9 +10,9 @@ const ProductsTable = ({products, dispatch, isLoading}) => {
     const [selectedRow, setSelectedRow] = useState(null);
 
     const priceCellView = rowData =>
-        <h4 style={{textAlign: "center"}}>
+        <h6 style={{textAlign: "center"}}>
             <span>{rowData.price}  &#8362;</span>
-        </h4>;
+        </h6>;
 
     const imageCellView = rowData =>
         rowData && (
@@ -23,7 +23,7 @@ const ProductsTable = ({products, dispatch, isLoading}) => {
                 style={{width: 80, height: 80, borderRadius: '50%'}}
             />);
 
-    const headerStyle = {textAlign: 'center'};
+    const headerStyle = {textAlign: 'center', paddingLeft: '15px'};
     const cellStyle = {paddingLeft: '30px'};
 
     const columns = [
@@ -32,6 +32,8 @@ const ProductsTable = ({products, dispatch, isLoading}) => {
         {title: 'Description', field: 'description'},
         {title: 'Price', field: 'price', render: priceCellView, headerStyle: headerStyle},
         {title: 'Amount', field: 'amount', cellStyle: cellStyle},
+        {title: 'New product', field: 'isNewProduct', lookup: {true: 'True', false: 'False'}},
+        {title: 'Sale', field: 'isSale', lookup: {true: 'True', false: 'False'}},
     ];
 
     useEffect(() => {

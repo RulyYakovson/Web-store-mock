@@ -32,7 +32,7 @@ const initCustomersDB = async () => {
         });
         await customerRepository.register(newCustomer, newCustomerDetails.password, (err, createdCustomer) => {
             if (err) {
-                console.log(`Error whil trying to init customers: ${err.message}`);
+                console.log(`Error while trying to init customers: ${err.message}`);
             } else {
                 console.log(`Insert customer: ${createdCustomer.username} into DB`);
             }
