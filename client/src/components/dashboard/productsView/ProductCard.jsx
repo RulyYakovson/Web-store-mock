@@ -10,8 +10,6 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TextField from "@material-ui/core/TextField";
 import {PRODUCTS_KEY} from "../../../utils/constants";
 import Badge from "@material-ui/core/Badge";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles({
     root: {
@@ -66,13 +64,17 @@ const ProductCard = ({product, setProductsNum}) => {
     const classes = useStyles();
     const decideTextFieldWidth = () => amount > 98 ? '60px' : amount > 8 ? '50px' : '40px';
 
+    // const [productsMap, setProductsMap] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))));
+    // const [amount, setAmount] = useState(productsMap.get(product.id) || 0);
     const [amount, setAmount] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))).get(product.id) || 0);
     const [textFieldWidth, setTextFieldWidth] = useState(decideTextFieldWidth());
 
     const updateLocalStorage = (amount) => {
         const productsMap = new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY)));
         amount > 0 ? productsMap.set(product.id, amount) : productsMap.delete(product.id);
+        //localStorage.removeItem(PRODUCTS_KEY);
         localStorage.setItem(PRODUCTS_KEY, JSON.stringify(Array.from(productsMap)));
+        //setProductsMap(newMap);
         setProductsNum(productsMap.size);
     };
 
@@ -117,7 +119,7 @@ const ProductCard = ({product, setProductsNum}) => {
                             className={classes.amountInput}
                             name="amount"
                             variant="outlined"
-                            id="amount"
+                            id={`amount-${product.id}`}
                             value={amount}
                             InputProps={
                                 {style: {height: '25px', width: textFieldWidth}}
@@ -133,4 +135,5 @@ const ProductCard = ({product, setProductsNum}) => {
         </Card>
     );
 };
+
 export default ProductCard;

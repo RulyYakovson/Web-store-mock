@@ -1,10 +1,18 @@
 import React from 'react';
-import {Route, Router} from 'react-router-dom';
+import {BrowserRouter, Route, Router, Switch} from 'react-router-dom';
 import Dashboard from '../components/dashboard/Dashboard';
+import Cash from '../components/cash/Cash';
 
-const PrivateRoutes = ({...rest}) => {
+const PrivateRoutes = ({history, ...rest}) => {
     return (
-        <Route {...rest} path='/home' component={Dashboard}/>
+        // <BrowserRouter history={history}>
+        <div>
+            <Switch>
+                <Route {...rest} path='/home' component={Dashboard}/>
+                <Route {...rest} path='/cash' component={Cash}/>
+            </Switch>
+        </div>
+        // </BrowserRouter>
     );
 };
 

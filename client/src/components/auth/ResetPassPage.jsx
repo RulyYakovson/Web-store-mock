@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {isEmpty} from 'lodash';
 import {
@@ -6,9 +6,6 @@ import {
     Button,
     CssBaseline,
     TextField,
-    FormControlLabel,
-    Checkbox,
-    Link,
     Paper,
     Box,
     Grid,
@@ -17,7 +14,6 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Copyright from '../Copyright';
 import {makeStyles} from "@material-ui/core/styles";
-import {login} from "../../actions/loginActions";
 import {changePass, resetPass} from "../../actions/resetPassAction";
 
 const useStyles = makeStyles((theme) => ({

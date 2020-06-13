@@ -1,38 +1,28 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route, Switch, BrowserRouter} from 'react-router-dom';
 import {Backdrop, CircularProgress} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import LoginPage from '../components/auth/LoginPage';
-import PrivateRoutes from './PrivateRoutes';
 import CreateAccount from "../components/auth/CreateAccount";
-import {refresh} from "../actions/loginActions";
 import SessionExpired from "../components/auth/SessionExpired";
 import ResetPassPage from "../components/auth/ResetPassPage";
 import {NotificationContainer} from "react-notifications";
 import '../../../client/node_modules/react-notifications/lib/notifications.css';
+import Cash from "../components/cash/Cash";
+import Dashboard from "../components/dashboard/Dashboard";
 
-const RestrictedRoute = ({...rest}) => {
-   // const [allow, setAllow] = useState(!!user);
-
-    // useEffect(() => {
-    //     setAllow(!!user);
-    // }, [user]);
-
-    // return (
-    //     localStorage.getItem('user') ? <Route {...rest} component={PrivateRoutes}/>
-    //     : <Route {...rest} render={props => (
-    //             <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-    //     )} />
-    // );
+const RestrictedRoute = ({Component, dispatch, ...rest}) => {
+    // const auth = store.getState().login;
+    // const allow = get(auth, 'user');     TODO.....
 
     return (
         <Route {...rest} render={props => (
-            localStorage.getItem('user') ? <PrivateRoutes {...props} />
+            localStorage.getItem('user') ? <Component {...props} />
                 : <Redirect to={{pathname: '/login', state: {from: props.location}}}/>
         )}/>
     );
-};
+}
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -41,16 +31,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSeverity, snackBarMessage}) => {
+const Routes = ({dispatch, history, isLoading}) => {
     const classes = useStyles();
-
-    // useEffect(() => {  TODO:
-    //     async function fetchUser() {
-    //         await dispatch(refresh());
-    //         history.push(history.location.pathname)
-    //     }
-    //     fetchUser();
-    // }, []);
 
     return (
         <BrowserRouter history={history}>
@@ -63,8 +45,10 @@ const Routes = ({dispatch, history, user, isLoading, showSnackBar, snackBarSever
                 <Route path='/create-account' component={CreateAccount}/>
                 <Route exact path='/session-expired' component={SessionExpired}/>
                 <Route exact path='/reset-password' component={ResetPassPage}/>
+
                 <Route exact path='/' render={() => <Redirect to='home'/>}/>
-                <RestrictedRoute path='/home' /*component={PrivateRoutes}*/ history={history} user={user}/>
+                <RestrictedRoute path='/home' dispatch={dispatch} Component={Dashboard}/>
+                <RestrictedRoute path='/cash' dispatch={dispatch} Component={Cash}/>
             </Switch>
         </BrowserRouter>
     );

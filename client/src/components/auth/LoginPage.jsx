@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {isEmpty} from 'lodash';
 import {
@@ -83,7 +84,8 @@ const LoginPage = ({dispatch, history}) => {
     const loginAction = async event => {
         event.preventDefault();
         await dispatch(login(email, password));
-        history.push('/home');
+        const url = get(history, "location.state.from.pathname",'/home');
+        history.push(url);
     };
 
     return (
@@ -129,7 +131,7 @@ const LoginPage = ({dispatch, history}) => {
                             onChange={event => onPasswordChange(event.target.value)}
                             error={!isEmpty(errorMessage)} // TODO
                         />
-                        <FormControlLabel // TODO: consider if to implement or cancel
+                        <FormControlLabel // TODO: consider if implement or cancel
                             control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />

@@ -34,55 +34,6 @@ const ProductsCardsView = ({products, setProductsNum, dispatch, isLoading}) => {
                         </Grid>
                     )
                 }
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
-                        </Grid>
-                    )
-                }
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
-                        </Grid>
-                    )
-                }
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
-                        </Grid>
-                    )
-                }
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
-                        </Grid>
-                    )
-                }
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
-                        </Grid>
-                    )
-                }
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
-                        </Grid>
-                    )
-                }
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product}/>
-                        </Grid>
-                    )
-                }
             </Grid>
         </Container>
     );
