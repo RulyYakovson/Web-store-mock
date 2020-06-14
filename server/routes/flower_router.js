@@ -14,7 +14,7 @@ router.get('/all', auth.authUser, async (req, res) => {
         let data = {};
         data.userRole = req.userRole;
         let result = await repository.getAllFlowers();
-        console.log(`Fetch flowers result: ${result.data}`);
+        console.log(`Fetch ${result.data && result.data.length} flowers`);
         if (result.success) {
             data.flowers = result && result.data;
             res.status(200);
@@ -40,7 +40,7 @@ router.delete('/remove/:name', auth.authEmployee, async (req, res) => {
         await repository.removeFlower(req.params.name);
         data.userRole = req.userRole;
         const result = await repository.getAllFlowers();
-        console.log(`Fetch flowers result: ${result.data}`);
+        console.log(`Fetch ${result.data && result.data.length} flowers`);
         if (result.success) {
             data.flowers = result && result.data;
             res.status(200);

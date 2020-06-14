@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
 import {connect} from "react-redux";
 import {fetchProducts} from "../../../actions/productsActions";
 import ProductCard from "./ProductCard";
@@ -22,20 +21,18 @@ const ProductsCardsView = ({products, setProductsNum, dispatch, isLoading}) => {
     }, []);
 
     return (
-        <Container maxWidth="md" component="main">
-            <Grid container justify="flex-start" alignItems="flex-end" spacing={products && products.length > 0 ? 5 : 0} >
-                <Backdrop className={classes.backdrop} open={isLoading}>
-                    <CircularProgress color="inherit"/>
-                </Backdrop>
-                {
-                    products && products.map(product =>
-                        <Grid key={product.name} item md={3} xs={6}>
-                            <ProductCard product={product} setProductsNum={setProductsNum}/>
-                        </Grid>
-                    )
-                }
-            </Grid>
-        </Container>
+        <Grid container justify="flex-start" alignItems="flex-end" spacing={5}>
+            <Backdrop className={classes.backdrop} open={isLoading}>
+                <CircularProgress color="inherit"/>
+            </Backdrop>
+            {
+                products && products.map(product =>
+                    <Grid key={product.name} item md={true} xs={8}>
+                        <ProductCard product={product} setProductsNum={setProductsNum}/>
+                    </Grid>
+                )
+            }
+        </Grid>
     );
 };
 

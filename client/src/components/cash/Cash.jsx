@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -13,12 +13,9 @@ import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import UserProductsListView from "./UserProductsListView";
-import {Grid, Link} from "@material-ui/core";
-import {NavLink} from "react-router-dom";
-import Badge from "@material-ui/core/Badge";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import IconButton from "@material-ui/core/IconButton";
-import {PRODUCTS_KEY} from "../../utils/constants";
+import {Grid} from "@material-ui/core";
+import {connect} from "react-redux";
+import {fetchProducts} from "../../actions/productsActions";
 
 const QontoConnector = withStyles({
     alternativeLabel: {
@@ -68,7 +65,7 @@ const useQontoStepIconStyles = makeStyles({
 
 function QontoStepIcon(props) {
     const classes = useQontoStepIconStyles();
-    const { active, completed } = props;
+    const {active, completed} = props;
 
     return (
         <div
@@ -76,7 +73,7 @@ function QontoStepIcon(props) {
                 [classes.active]: active,
             })}
         >
-            {completed ? <Check className={classes.completed} /> : <div className={classes.circle} />}
+            {completed ? <Check className={classes.completed}/> : <div className={classes.circle}/>}
         </div>
     );
 }
@@ -141,12 +138,12 @@ const useColorlibStepIconStyles = makeStyles({
 
 function ColorlibStepIcon(props) {
     const classes = useColorlibStepIconStyles();
-    const { active, completed } = props;
+    const {active, completed} = props;
 
     const icons = {
-        1: <SettingsIcon />,
-        2: <GroupAddIcon />,
-        3: <VideoLabelIcon />,
+        1: <SettingsIcon/>,
+        2: <GroupAddIcon/>,
+        3: <VideoLabelIcon/>,
     };
 
     return (
@@ -190,8 +187,8 @@ const useStyles = makeStyles((theme) => ({
     container: {
         padding: '10px 250px',
     },
-    buttons:{
-        padding: '12px 100px',
+    buttons: {
+        padding: '25px 120px',
     },
     nextButton: {
         marginRight: theme.spacing(1),
@@ -218,10 +215,16 @@ function getStepContent(step) {
     }
 }
 
-const Cash = ({}) => {
+const Cash = ({products, dispatch}) => {
     const classes = useStyles();
 
-    const [activeStep, setActiveStep] = React.useState(1);
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(() => {
+        dispatch(fetchProducts());
+    }, []);
+
+    const [activeStep, setActiveStep] = useState(1);
     const steps = getSteps();
 
     const handleNext = () => {
@@ -238,7 +241,7 @@ const Cash = ({}) => {
 
     return (
         <div className={classes.root}>
-            <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
+            <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector/>}>
                 {steps.map((label) => (
                     <Step key={label}>
                         <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
@@ -246,58 +249,63 @@ const Cash = ({}) => {
                 ))}
             </Stepper>
 
-            <Grid className={classes.buttons}
-                  container
-                  direction="row"
-                  justify="space-between"
-                  alignItems="center" >
-
-                <Grid item  >
-                    <Button /*onClick={backStep}*/ variant="contained" color="primary" className={classes.backButton}>
-                        Back
-                    </Button>
+            <div style={{background: 'linear-gradient(to bottom, #fdfdfd 41%, #ebebeb 100%)'}}>
+                <Grid className={classes.buttons} container direction="row" justify="space-between" alignItems="center">
+                    <Grid item>
+                        <Button /*onClick={backStep}*/ variant="contained" color="primary"
+                                                       className={classes.backButton}>
+                            &lt;&lt;&nbsp;Back
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Typography component="h5" variant="h5" color="primary">
+                            {totalPrice}  &#8362;
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Button /*onClick={buy}*/ variant="contained" color="primary" className={classes.nextButton}>
+                            Next&nbsp;&gt;&gt;
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid item  >
-                    <Button /*onClick={buy}*/ variant="contained" color="primary" className={classes.nextButton}>
-                        Next
-                    </Button>
-                </Grid>
-            </Grid>
 
-            <div className={classes.container}>
-                <UserProductsListView/>
-            </div>
-            <div>
-                {/*{activeStep === steps.length ? (*/}
-                {/*    <div>*/}
-                {/*        <Typography className={classes.instructions}>*/}
-                {/*            All steps completed - you&apos;re finished*/}
-                {/*        </Typography>*/}
-                {/*        <Button onClick={handleReset} className={classes.button}>*/}
-                {/*            Reset*/}
-                {/*        </Button>*/}
-                {/*    </div>*/}
-                {/*) : (*/}
-                {/*    <div>*/}
-                {/*        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>*/}
-                {/*        <div>*/}
-                {/*            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>*/}
-                {/*                Back*/}
-                {/*            </Button>*/}
-                {/*            <Button*/}
-                {/*                variant="contained"*/}
-                {/*                color="primary"*/}
-                {/*                onClick={handleNext}*/}
-                {/*                className={classes.button}*/}
-                {/*            >*/}
-                {/*                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
-                {/*            </Button>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*)}*/}
+                <div className={classes.container}>
+                    <UserProductsListView products={products} setTotalPrice={setTotalPrice}/>
+                </div>
+                <div>
+                    {/*{activeStep === steps.length ? (*/}
+                    {/*    <div>*/}
+                    {/*        <Typography className={classes.instructions}>*/}
+                    {/*            All steps completed - you&apos;re finished*/}
+                    {/*        </Typography>*/}
+                    {/*        <Button onClick={handleReset} className={classes.button}>*/}
+                    {/*            Reset*/}
+                    {/*        </Button>*/}
+                    {/*    </div>*/}
+                    {/*) : (*/}
+                    {/*    <div>*/}
+                    {/*        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>*/}
+                    {/*        <div>*/}
+                    {/*            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>*/}
+                    {/*                Back*/}
+                    {/*            </Button>*/}
+                    {/*            <Button*/}
+                    {/*                variant="contained"*/}
+                    {/*                color="primary"*/}
+                    {/*                onClick={handleNext}*/}
+                    {/*                className={classes.button}*/}
+                    {/*            >*/}
+                    {/*                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
+                    {/*            </Button>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
+                </div>
             </div>
         </div>
     );
 };
 
-export default Cash;
+export default connect(store => ({
+    products: store.products && store.products.products
+}))(Cash);

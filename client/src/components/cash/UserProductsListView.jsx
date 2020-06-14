@@ -8,9 +8,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import DeleteForever from '@material-ui/icons/DeleteForever';
-import {connect} from "react-redux";
 import {PRODUCTS_KEY} from "../../utils/constants";
-import {fetchProducts} from "../../actions/productsActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,12 +37,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const UserProductsListView = ({products, dispatch}) => {
+const UserProductsListView = ({products, setTotalPrice}) => {
     const classes = useStyles();
     const [productsMap, setProductsMap] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))));
 
     useEffect(() => {
-        dispatch(fetchProducts());
         setProductsMap(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))))
     }, []);
 
@@ -55,9 +52,12 @@ const UserProductsListView = ({products, dispatch}) => {
         setProductsMap(productsMap);
     };
 
+    let totalPrice = 0;
     const productsItems = []
     productsMap.forEach((amount, id) => {
         const product = products && products.find(p => p.id === id);
+        const price = product && product.price * amount;
+        totalPrice += price;
         productsItems.push(
             <div>
                 <ListItem alignItems="flex-start">
@@ -75,19 +75,11 @@ const UserProductsListView = ({products, dispatch}) => {
                                 {product && product.description}
                                 <br/>
                                 <div className={classes.inline}>
-                                    <Typography
-                                        component="p"
-                                        variant="body2"
-                                        color="textPrimary"
-                                    >
-                                        {`Amount: ${amount} units`}
+                                    <Typography component="p" variant="body2" color="primary">
+                                        {`${amount} units`}
                                     </Typography>
-                                    <Typography
-                                        component="p"
-                                        variant="body2"
-                                        color="textPrimary"
-                                    >
-                                        {`Total price: ${product && product.price * amount}`}  &#8362;
+                                    <Typography component="p" variant="h6" color="secondary">
+                                        {price}  &#8362;
                                     </Typography>
                                 </div>
                             </React.Fragment>
@@ -101,6 +93,7 @@ const UserProductsListView = ({products, dispatch}) => {
                 <Divider variant="inset" component="li"/>
             </div>)
     });
+    setTotalPrice(totalPrice);
 
     return (
         <List className={classes.root}>
@@ -109,6 +102,4 @@ const UserProductsListView = ({products, dispatch}) => {
     );
 };
 
-export default connect(store => ({
-    products: store.products && store.products.products
-}))(UserProductsListView);
+export default UserProductsListView;

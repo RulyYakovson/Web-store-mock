@@ -13,14 +13,11 @@ import Badge from "@material-ui/core/Badge";
 
 const useStyles = makeStyles({
     root: {
-        maxWidth: 345,
-        width: 220,
-        height: 344,
-        maxHeight: 344,
+        width: 250,
     },
     media: {
         height: 180,
-        maxHeight: 180,
+        maxHeight: 180
     },
     badge: {
         position: "inherit"
@@ -31,10 +28,17 @@ const useStyles = makeStyles({
     },
     name: {
         minHeight: 30,
-        maxHeight: 30,
+        maxHeight: 30
+    },
+    divBottom: {
+        display: 'flex',
+        padding: '0px 15px'
     },
     amountWrapper: {
-        textAlign: 'center',
+        paddingTop: 6
+    },
+    price: {
+      flex: 1
     },
     amountInput: {
         height: 30
@@ -50,8 +54,8 @@ const useStyles = makeStyles({
 });
 
 const StyledBadge = withStyles((theme) => ({
-    root :{
-      position: "absolute",
+    root: {
+        position: "absolute",
     },
     badge: {
         right: -3,
@@ -64,17 +68,13 @@ const ProductCard = ({product, setProductsNum}) => {
     const classes = useStyles();
     const decideTextFieldWidth = () => amount > 98 ? '60px' : amount > 8 ? '50px' : '40px';
 
-    // const [productsMap, setProductsMap] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))));
-    // const [amount, setAmount] = useState(productsMap.get(product.id) || 0);
     const [amount, setAmount] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))).get(product.id) || 0);
     const [textFieldWidth, setTextFieldWidth] = useState(decideTextFieldWidth());
 
     const updateLocalStorage = (amount) => {
         const productsMap = new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY)));
         amount > 0 ? productsMap.set(product.id, amount) : productsMap.delete(product.id);
-        //localStorage.removeItem(PRODUCTS_KEY);
         localStorage.setItem(PRODUCTS_KEY, JSON.stringify(Array.from(productsMap)));
-        //setProductsMap(newMap);
         setProductsNum(productsMap.size);
     };
 
@@ -101,8 +101,8 @@ const ProductCard = ({product, setProductsNum}) => {
                     className={classes.media}
                     image={`data:image/png;base64, ${product.src}`}
                 />
-                {product.isNewProduct && <StyledBadge badgeContent={'New'} color="primary" />}
-                {product.isSale && <StyledBadge badgeContent={'Sale'} color="secondary" />}
+                {product.isNewProduct && <StyledBadge badgeContent={'New'} color="primary"/>}
+                {product.isSale && <StyledBadge badgeContent={'Sale'} color="secondary"/>}
                 <CardContent>
                     <Typography className={classes.name} gutterBottom variant="h5" component="h2">
                         {product.name}
@@ -110,25 +110,30 @@ const ProductCard = ({product, setProductsNum}) => {
                     <Typography className={classes.content} variant="body2" color="textSecondary" component="p">
                         {product.description}
                     </Typography>
-                    <div className={classes.amountWrapper}>
-                        <RemoveCircleIcon
-                            className={classes.minusButton}
-                            onClick={handleRemoveProduct}
-                        />
-                        <TextField
-                            className={classes.amountInput}
-                            name="amount"
-                            variant="outlined"
-                            id={`amount-${product.id}`}
-                            value={amount}
-                            InputProps={
-                                {style: {height: '25px', width: textFieldWidth}}
-                            }
-                        />
-                        <AddCircleIcon
-                            className={classes.plusButton}
-                            onClick={handleAddProduct}
-                        />
+                    <div className={classes.divBottom}>
+                        <Typography className={classes.price} component="span" variant="h6" color="secondary">
+                            {`${product.price}`}  &#8362;
+                        </Typography>
+                        <div className={classes.amountWrapper}>
+                            <RemoveCircleIcon
+                                className={classes.minusButton}
+                                onClick={handleRemoveProduct}
+                            />
+                            <TextField
+                                className={classes.amountInput}
+                                name="amount"
+                                variant="outlined"
+                                id={`amount-${product.id}`}
+                                value={amount}
+                                InputProps={
+                                    {style: {height: '25px', width: textFieldWidth}}
+                                }
+                            />
+                            <AddCircleIcon
+                                className={classes.plusButton}
+                                onClick={handleAddProduct}
+                            />
+                        </div>
                     </div>
                 </CardContent>
             </CardActionArea>
