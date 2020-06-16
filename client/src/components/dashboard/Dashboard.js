@@ -99,7 +99,7 @@ const Dashboard = ({history, user, dispatch}) => {
                 return <About/>;
             case INNER_COMPONENTS.EMPLOYEES_TABLE:
                 return <UsersTable employeesType/>;
-                case INNER_COMPONENTS.USERS_TABLE:
+            case INNER_COMPONENTS.USERS_TABLE:
                 return <UsersTable/>;
             case INNER_COMPONENTS.PRODUCTS_TABLE:
                 return <ProductsTable/>;

@@ -47,7 +47,7 @@ const Finish = ({isLoading}) => {
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
-                {!isLoading && <span className={classes.span}>✔ Your order has been sent successfully</span>}
+                {!isLoading && <span className={classes.span}>✔&nbsp;Your order has been sent successfully</span>}
                 {!isLoading &&
                 <Fab aria-label="save" className={classes.finish}>
                     <CheckIcon className={classes.icon}/>

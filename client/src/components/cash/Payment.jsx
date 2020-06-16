@@ -1,21 +1,12 @@
 import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import PaymentIcon from '@material-ui/icons/Payment';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Copyright from '../Copyright';
-import PhoneInput from 'material-ui-phone-number';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import {isEmpty} from "lodash";
 import {connect} from "react-redux";
 import {createAccount} from "../../actions/loginActions";
@@ -29,7 +20,9 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: "#3f51b5",
+        width: 50,
+        height: 50
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -114,10 +107,10 @@ const Payment = ({dispatch, history}) => {
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <PaymentIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign upgfhrtjrthrt
+                    Payment
                 </Typography>
                 <form className={classes.form}>
                     <Grid container spacing={2}>

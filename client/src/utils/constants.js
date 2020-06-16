@@ -23,3 +23,9 @@ export const MESSAGE_STATUS = {
 };
 
 export const PRODUCTS_KEY = 'product-list';
+
+export const FLOORS = [];
+for (let i = 0; i < 11; ++i) {
+    FLOORS.push(i);
+};
+FLOORS.push('Above...')

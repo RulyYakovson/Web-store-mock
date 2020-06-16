@@ -20,6 +20,7 @@ import Delivery from "./Delivery";
 import Copyright from "../Copyright";
 import Box from "@material-ui/core/Box";
 import Finish from "./Finish";
+import {refresh} from "../../actions/loginActions";
 
 const finishStep = 2;
 
@@ -105,14 +106,15 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(1)
     },
     container: {
-        padding: '10px 250px'
+        padding: '10px 250px',
     },
     diveBase: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
         boxShadow: '-5px -5px 5px 5px rgb(158, 158, 158)',
         position: 'relative',
-        overflow: 'auto'
+        overflow: 'auto',
+        height: 462
     },
     buttons: {
         padding: '25px 120px'
@@ -129,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Cash = ({products, dispatch}) => {
+const Cash = ({products, user, dispatch}) => {
     const classes = useStyles();
     const steps = ['Shopping cart', 'Delivery', 'Payment', 'Finish']
 
@@ -138,6 +140,7 @@ const Cash = ({products, dispatch}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        dispatch(refresh());
         dispatch(fetchProducts());
     }, []);
 
@@ -161,9 +164,9 @@ const Cash = ({products, dispatch}) => {
             case 0:
                 return <UserProductsListView products={products} setTotalPrice={setTotalPrice}/>;
             case 1:
-                return <Payment/>;
+                return <Delivery user={user}/>;
             case 2:
-                return <Delivery/>;
+                return <Payment/>;
             case 3:
                 return <Finish isLoading={isLoading}/>;
             default:
@@ -218,35 +221,6 @@ const Cash = ({products, dispatch}) => {
                         {getDisplayPage(activeStep)}
                     </div>
                 </div>
-                <div>
-                    {/*{activeStep === steps.length ? (*/}
-                    {/*    <div>*/}
-                    {/*        <Typography className={classes.instructions}>*/}
-                    {/*            All steps completed - you&apos;re finished*/}
-                    {/*        </Typography>*/}
-                    {/*        <Button onClick={handleReset} className={classes.button}>*/}
-                    {/*            Reset*/}
-                    {/*        </Button>*/}
-                    {/*    </div>*/}
-                    {/*) : (*/}
-                    {/*    <div>*/}
-                    {/*        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>*/}
-                    {/*        <div>*/}
-                    {/*            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>*/}
-                    {/*                Back*/}
-                    {/*            </Button>*/}
-                    {/*            <Button*/}
-                    {/*                variant="contained"*/}
-                    {/*                color="primary"*/}
-                    {/*                onClick={handleNext}*/}
-                    {/*                className={classes.button}*/}
-                    {/*            >*/}
-                    {/*                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
-                    {/*            </Button>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
-                </div>
                 <Box pt={4} style={{paddingBottom: '16px'}}>
                     <Copyright/>
                 </Box>
@@ -256,5 +230,6 @@ const Cash = ({products, dispatch}) => {
 };
 
 export default connect(store => ({
-    products: store.products && store.products.products
+    products: store.products && store.products.products,
+    user: store.login.user,
 }))(Cash);
