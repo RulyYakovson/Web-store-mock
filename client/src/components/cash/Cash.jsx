@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Check from '@material-ui/icons/Check';
-import SettingsIcon from '@material-ui/icons/Settings';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
+import CheckIcon from '@material-ui/icons/Check';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import PaymentIcon from '@material-ui/icons/Payment';
+import SendIcon from '@material-ui/icons/Send';
 import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -16,80 +15,15 @@ import UserProductsListView from "./UserProductsListView";
 import {Grid} from "@material-ui/core";
 import {connect} from "react-redux";
 import {fetchProducts} from "../../actions/productsActions";
+import Payment from "./Payment";
+import Delivery from "./Delivery";
+import Copyright from "../Copyright";
+import Box from "@material-ui/core/Box";
+import Finish from "./Finish";
 
-const QontoConnector = withStyles({
-    alternativeLabel: {
-        top: 10,
-        left: 'calc(-50% + 16px)',
-        right: 'calc(50% + 16px)',
-    },
-    active: {
-        '& $line': {
-            borderColor: '#784af4',
-        },
-    },
-    completed: {
-        '& $line': {
-            borderColor: '#784af4',
-        },
-    },
-    line: {
-        borderColor: '#eaeaf0',
-        borderTopWidth: 3,
-        borderRadius: 1,
-    },
-})(StepConnector);
+const finishStep = 2;
 
-const useQontoStepIconStyles = makeStyles({
-    root: {
-        color: '#eaeaf0',
-        display: 'flex',
-        height: 22,
-        alignItems: 'center',
-    },
-    active: {
-        color: '#784af4',
-    },
-    circle: {
-        width: 8,
-        height: 8,
-        borderRadius: '50%',
-        backgroundColor: 'currentColor',
-    },
-    completed: {
-        color: '#784af4',
-        zIndex: 1,
-        fontSize: 18,
-    },
-});
-
-function QontoStepIcon(props) {
-    const classes = useQontoStepIconStyles();
-    const {active, completed} = props;
-
-    return (
-        <div
-            className={clsx(classes.root, {
-                [classes.active]: active,
-            })}
-        >
-            {completed ? <Check className={classes.completed}/> : <div className={classes.circle}/>}
-        </div>
-    );
-}
-
-QontoStepIcon.propTypes = {
-    /**
-     * Whether this step is active.
-     */
-    active: PropTypes.bool,
-    /**
-     * Mark the step as completed. Is passed to child components.
-     */
-    completed: PropTypes.bool,
-};
-
-const ColorlibConnector = withStyles({
+const ColorLibConnector = withStyles({
     alternativeLabel: {
         top: 22,
     },
@@ -113,7 +47,7 @@ const ColorlibConnector = withStyles({
     },
 })(StepConnector);
 
-const useColorlibStepIconStyles = makeStyles({
+const useColorLibStepIconStyles = makeStyles({
     root: {
         backgroundColor: '#ccc',
         zIndex: 1,
@@ -136,14 +70,15 @@ const useColorlibStepIconStyles = makeStyles({
     },
 });
 
-function ColorlibStepIcon(props) {
-    const classes = useColorlibStepIconStyles();
+const ColorLibStepIcon = (props) => {
+    const classes = useColorLibStepIconStyles();
     const {active, completed} = props;
 
     const icons = {
-        1: <SettingsIcon/>,
-        2: <GroupAddIcon/>,
-        3: <VideoLabelIcon/>,
+        1: <ShoppingCartIcon/>,
+        2: <SendIcon/>,
+        3: <PaymentIcon/>,
+        4: <CheckIcon/>
     };
 
     return (
@@ -158,93 +93,91 @@ function ColorlibStepIcon(props) {
     );
 }
 
-ColorlibStepIcon.propTypes = {
-    /**
-     * Whether this step is active.
-     */
-    active: PropTypes.bool,
-    /**
-     * Mark the step as completed. Is passed to child components.
-     */
-    completed: PropTypes.bool,
-    /**
-     * The label displayed in the step icon.
-     */
-    icon: PropTypes.node,
-};
-
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
+        width: '100%'
     },
     button: {
-        marginRight: theme.spacing(1),
+        marginRight: theme.spacing(1)
     },
     instructions: {
         marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
+        marginBottom: theme.spacing(1)
     },
     container: {
-        padding: '10px 250px',
+        padding: '10px 250px'
+    },
+    diveBase: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: '-5px -5px 5px 5px rgb(158, 158, 158)',
+        position: 'relative',
+        overflow: 'auto'
     },
     buttons: {
-        padding: '25px 120px',
+        padding: '25px 120px'
     },
     nextButton: {
-        marginRight: theme.spacing(1),
+        marginRight: theme.spacing(1)
+    },
+    finishButton: {
+        background: 'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+        marginRight: theme.spacing(1)
     },
     backButton: {
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(1)
     },
 }));
 
-function getSteps() {
-    return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-}
-
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return 'Select campaign settings...';
-        case 1:
-            return 'What is an ad group anyways?';
-        case 2:
-            return 'This is the bit I really care about!';
-        default:
-            return 'Unknown step';
-    }
-}
-
 const Cash = ({products, dispatch}) => {
     const classes = useStyles();
+    const steps = ['Shopping cart', 'Delivery', 'Payment', 'Finish']
 
     const [totalPrice, setTotalPrice] = useState(0);
+    const [activeStep, setActiveStep] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         dispatch(fetchProducts());
     }, []);
 
-    const [activeStep, setActiveStep] = useState(1);
-    const steps = getSteps();
-
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        activeStep === 2 && handleFinish();
     };
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
+    const handleFinish = () => {
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 3000)
+    };
+
+    const getDisplayPage = () => {
+        switch (activeStep) {
+            case 0:
+                return <UserProductsListView products={products} setTotalPrice={setTotalPrice}/>;
+            case 1:
+                return <Payment/>;
+            case 2:
+                return <Delivery/>;
+            case 3:
+                return <Finish isLoading={isLoading}/>;
+            default:
+                break;
+        }
+        ;
     };
 
     return (
         <div className={classes.root}>
-            <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector/>}>
+            <Stepper alternativeLabel activeStep={activeStep} connector={<ColorLibConnector/>}>
                 {steps.map((label) => (
                     <Step key={label}>
-                        <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                        <StepLabel StepIconComponent={ColorLibStepIcon}></StepLabel>
                     </Step>
                 ))}
             </Stepper>
@@ -252,25 +185,38 @@ const Cash = ({products, dispatch}) => {
             <div style={{background: 'linear-gradient(to bottom, #fdfdfd 41%, #ebebeb 100%)'}}>
                 <Grid className={classes.buttons} container direction="row" justify="space-between" alignItems="center">
                     <Grid item>
-                        <Button /*onClick={backStep}*/ variant="contained" color="primary"
-                                                       className={classes.backButton}>
+                        <Button
+                            className={classes.backButton}
+                            variant="contained"
+                            color="primary"
+                            hidden={activeStep < 1 || activeStep > finishStep}
+                            onClick={handleBack}
+                        >
                             &lt;&lt;&nbsp;Back
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Typography component="h5" variant="h5" color="primary">
-                            {totalPrice}  &#8362;
+                        <Typography component="h5" variant="h5" color="primary" hidden={activeStep > finishStep}>
+                            {totalPrice || 0}  &#8362;
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Button /*onClick={buy}*/ variant="contained" color="primary" className={classes.nextButton}>
-                            Next&nbsp;&gt;&gt;
+                        <Button
+                            className={activeStep === finishStep ? classes.finishButton : classes.nextButton}
+                            variant="contained"
+                            color={"primary"}
+                            hidden={activeStep > finishStep}
+                            onClick={handleNext}
+                        >
+                            {activeStep === finishStep ? 'Finish' : 'Next'}&nbsp;&gt;&gt;
                         </Button>
                     </Grid>
                 </Grid>
 
                 <div className={classes.container}>
-                    <UserProductsListView products={products} setTotalPrice={setTotalPrice}/>
+                    <div className={classes.diveBase}>
+                        {getDisplayPage(activeStep)}
+                    </div>
                 </div>
                 <div>
                     {/*{activeStep === steps.length ? (*/}
@@ -301,6 +247,9 @@ const Cash = ({products, dispatch}) => {
                     {/*    </div>*/}
                     {/*)}*/}
                 </div>
+                <Box pt={4} style={{paddingBottom: '16px'}}>
+                    <Copyright/>
+                </Box>
             </div>
         </div>
     );

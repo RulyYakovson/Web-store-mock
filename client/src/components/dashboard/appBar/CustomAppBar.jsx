@@ -66,9 +66,7 @@ const CustomAppBar = ({productsNum, open, setOpen, history, user, dispatch}) => 
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                    Dashboard
-                </Typography>
+                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}/>
                 <IconButton component={NavLink} to="/cash" title='Go to cash' color="inherit">
                     <Badge badgeContent={productsNum} color="secondary" invisible={productsNum === 0}>
                         <ShoppingCartIcon style={{color: 'white'}}/>

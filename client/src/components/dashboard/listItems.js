@@ -6,10 +6,8 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import EmployeeIcon from '@material-ui/icons/PeopleOutlineOutlined';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import StorageIcon from '@material-ui/icons/Storage';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
@@ -27,7 +25,7 @@ export const mainListItems = (setDisplayComponent) => (
             <ListItemIcon>
                 <ContactMailIcon/>
             </ListItemIcon>
-            <ListItemText primary="Dashboard"/>
+            <ListItemText primary="Contact us"/>
         </ListItem>
         <ListItem button onClick={() => setDisplayComponent(INNER_COMPONENTS.PRODUCTS_VIEW)}>
             <ListItemIcon>

@@ -84,11 +84,35 @@ const Dashboard = ({history, user, dispatch}) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [productsNum, setProductsNum] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))).size);
-    const [displayComponent, setDisplayComponent] = useState(INNER_COMPONENTS.HOME)
+    const [displayComponent, setDisplayComponent] =
+        useState(user && user.role === USER_ROLE.CUSTOMER ? INNER_COMPONENTS.ABOUT : INNER_COMPONENTS.HOME)
 
     useEffect(() => {
         dispatch(refresh());
     }, []);
+
+    const getDisplayComponent = () => {
+        switch (displayComponent) {
+            case INNER_COMPONENTS.HOME:
+                return <Home/>;
+            case INNER_COMPONENTS.ABOUT:
+                return <About/>;
+            case INNER_COMPONENTS.EMPLOYEES_TABLE:
+                return <UsersTable employeesType/>;
+                case INNER_COMPONENTS.USERS_TABLE:
+                return <UsersTable/>;
+            case INNER_COMPONENTS.PRODUCTS_TABLE:
+                return <ProductsTable/>;
+            case INNER_COMPONENTS.PRODUCTS_VIEW:
+                return <ProductsCardsView setProductsNum={setProductsNum}/>;
+            case INNER_COMPONENTS.CONTACT_US:
+                return <Contact/>
+            case INNER_COMPONENTS.CONTACT_MESSAGES:
+                return <ContactMessagesTable/>;
+            default:
+                return <About/>;
+        };
+    };
 
     return (
         <div className={classes.root}>
@@ -123,25 +147,7 @@ const Dashboard = ({history, user, dispatch}) => {
             <main className={classes.content}>
                 <div className={classes.appBarSpacer}/>
                 <Container maxWidth="lg" className={classes.container}>
-                    {
-                        displayComponent === INNER_COMPONENTS.HOME ?
-                            <Home/>
-                            : displayComponent === INNER_COMPONENTS.ABOUT ?
-                            <About/>
-                            : displayComponent === INNER_COMPONENTS.USERS_TABLE ?
-                                <UsersTable/>
-                                : displayComponent === INNER_COMPONENTS.EMPLOYEES_TABLE ?
-                                    <UsersTable employeesType/>
-                                    : displayComponent === INNER_COMPONENTS.PRODUCTS_TABLE ?
-                                        <ProductsTable/>
-                                        : displayComponent === INNER_COMPONENTS.PRODUCTS_VIEW ?
-                                            <ProductsCardsView setProductsNum={setProductsNum}/>
-                                            : displayComponent === INNER_COMPONENTS.CONTACT_US ?
-                                                <Contact/>
-                                                : displayComponent === INNER_COMPONENTS.CONTACT_MESSAGES ?
-                                                    <ContactMessagesTable/>
-                                                    : <Home/>
-                    }
+                    {getDisplayComponent()}
                     <Box pt={4}>
                         <Copyright/>
                     </Box>

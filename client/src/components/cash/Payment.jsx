@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 // TODO: VALIDATION !!!
 
-const Delivery = ({dispatch, history}) => {
+const Payment = ({dispatch, history}) => {
     const classes = useStyles();
 
     const [firstName, setFirstName] = useState('');
@@ -117,7 +117,7 @@ const Delivery = ({dispatch, history}) => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    Sign upgfhrtjrthrt
                 </Typography>
                 <form className={classes.form}>
                     <Grid container spacing={2}>
@@ -214,4 +214,4 @@ const Delivery = ({dispatch, history}) => {
     );
 };
 
-export default connect(store => ({}))(Delivery);
+export default connect(store => ({}))(Payment);

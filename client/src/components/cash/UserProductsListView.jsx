@@ -12,12 +12,7 @@ import {PRODUCTS_KEY} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: '-5px -5px 5px 5px rgb(158, 158, 158)',
-        position: 'relative',
-        overflow: 'auto',
-        maxHeight: 500,
+        maxHeight: 462,
     },
     inline: {
         display: 'table',
@@ -78,7 +73,7 @@ const UserProductsListView = ({products, setTotalPrice}) => {
                                     <Typography component="p" variant="body2" color="primary">
                                         {`${amount} units`}
                                     </Typography>
-                                    <Typography component="p" variant="h6" color="secondary">
+                                    <Typography component="p" variant="body2" color="secondary">
                                         {price}  &#8362;
                                     </Typography>
                                 </div>
