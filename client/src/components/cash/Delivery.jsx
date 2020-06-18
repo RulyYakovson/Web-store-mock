@@ -41,15 +41,11 @@ const useStyles = makeStyles((theme) => ({
 
 // TODO: VALIDATION !!!
 
-const Delivery = ({user}) => {
+const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName,
+                      setLastName, setPhone, setStreet, setCity, setFloor}) => {
+
     const classes = useStyles();
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [street, setStreet] = useState('');
-    const [city, setCity] = useState('');
-    const [phone, setPhone] = useState('');
-    const [floor, setFloor] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
 
     const onFirstNameChange = firstName => {
@@ -114,7 +110,7 @@ const Delivery = ({user}) => {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
-                                value={firstName || user.firstName}
+                                value={firstName}
                                 onChange={event => onFirstNameChange(event.target.value)}
                                 error={!isEmpty(errorMessage)} // TODO
                             />
@@ -128,7 +124,7 @@ const Delivery = ({user}) => {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
-                                value={lastName || user.lastName}
+                                value={lastName}
                                 onChange={event => onLastNameChange(event.target.value)}
                                 error={!isEmpty(errorMessage)} // TODO
                             />
@@ -170,7 +166,7 @@ const Delivery = ({user}) => {
                                 type="phone"
                                 id="phone"
                                 autoComplete="phone"
-                                value={phone || user.phone}
+                                value={phone}
                                 onChange={event => onPhoneChange(event.target.value)}
                                 error={!isEmpty(errorMessage)} // TODO
                             />

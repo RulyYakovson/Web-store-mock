@@ -7,23 +7,22 @@ const timeout = 1000;
 
 const storage = multer.memoryStorage();
 const uploadImgHandler = multer({storage: storage}).single('image');
+const MAX_RETRIES = 5;
 
 router.get('/all', auth.authUser, async (req, res) => {
     console.log('Received get flowers request');
     await setTimeout(async () => {
         let data = {};
         data.userRole = req.userRole;
-        let result = await repository.getAllFlowers();
-        console.log(`Fetch ${result.data && result.data.length} flowers`);
-        if (result.success) {
-            data.flowers = result && result.data;
-            res.status(200);
-        } else {
-            console.log('An error occurred while trying to fetch flowers - WILL TRY AGAIN !!');
-            result = await repository.getAllFlowers();
+        for (let i = 0; i < MAX_RETRIES; ++i) {
+            let result = await repository.getAllFlowers();
             if (result.success) {
+                console.log(`Fetch ${result.data.length} flowers`);
                 data.flowers = result && result.data;
                 res.status(200);
+                break;
+            } else if (i < MAX_RETRIES) {
+                console.log('An error occurred while trying to fetch flowers - WILL TRY AGAIN !!');
             } else {
                 console.log('An error occurred while trying to fetch flowers');
                 res.status(500);

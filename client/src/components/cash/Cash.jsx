@@ -21,8 +21,10 @@ import Copyright from "../Copyright";
 import Box from "@material-ui/core/Box";
 import Finish from "./Finish";
 import {refresh} from "../../actions/loginActions";
+import {sendPayment} from "../../actions/paymentAction";
+import {PRODUCTS_KEY} from "../../utils/constants";
 
-const finishStep = 2;
+const FINISH_STEP = 2;
 
 const ColorLibConnector = withStyles({
     alternativeLabel: {
@@ -131,13 +133,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Cash = ({products, user, dispatch}) => {
+const Cash = ({products, user, dispatch, isLoading, success, failed}) => {
     const classes = useStyles();
     const steps = ['Shopping cart', 'Delivery', 'Payment', 'Finish']
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [activeStep, setActiveStep] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    const [street, setStreet] = useState('');
+    const [city, setCity] = useState('');
+    const [floor, setFloor] = useState('');
+    const [firstName, setFirstName] = useState(user && user.firstName);
+    const [lastName, setLastName] = useState(user && user.lastName);
+    const [phone, setPhone] = useState(user && user.phone);
 
     useEffect(() => {
         dispatch(refresh());
@@ -146,17 +153,18 @@ const Cash = ({products, user, dispatch}) => {
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        activeStep === 2 && handleFinish();
+        activeStep === FINISH_STEP && handlePayment();
     };
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleFinish = () => {
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 3000)
+    const handlePayment = () => {
+        const userDetails = {...user, firstName, lastName, phone, street, city, floor};
+        const productsMap = localStorage.getItem(PRODUCTS_KEY);
+        const payment = {paymentMethod: 'cash', totalPrice, productsMap}
+        dispatch(sendPayment(userDetails, payment))
     };
 
     const getDisplayPage = () => {
@@ -164,11 +172,28 @@ const Cash = ({products, user, dispatch}) => {
             case 0:
                 return <UserProductsListView products={products} setTotalPrice={setTotalPrice}/>;
             case 1:
-                return <Delivery user={user}/>;
+                return <Delivery
+                    firstName={firstName}
+                    lastName={lastName}
+                    phone={phone}
+                    street={street}
+                    city={city}
+                    floor={floor}
+                    setFirstName={setFirstName}
+                    setLastName={setLastName}
+                    setPhone={setPhone}
+                    setStreet={setStreet}
+                    setCity={setCity}
+                    setFloor={setFloor}
+                />;
             case 2:
-                return <Payment/>;
+                return <Payment user={user}/>;
             case 3:
-                return <Finish isLoading={isLoading}/>;
+                return <Finish
+                    isLoading={isLoading}
+                    success={success}
+                    failed={failed}
+                />;
             default:
                 break;
         }
@@ -192,26 +217,26 @@ const Cash = ({products, user, dispatch}) => {
                             className={classes.backButton}
                             variant="contained"
                             color="primary"
-                            hidden={activeStep < 1 || activeStep > finishStep}
+                            hidden={activeStep < 1 || activeStep > FINISH_STEP}
                             onClick={handleBack}
                         >
                             &lt;&lt;&nbsp;Back
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Typography component="h5" variant="h5" color="primary" hidden={activeStep > finishStep}>
+                        <Typography component="h5" variant="h5" color="primary" hidden={activeStep > FINISH_STEP}>
                             {totalPrice || 0}  &#8362;
                         </Typography>
                     </Grid>
                     <Grid item>
                         <Button
-                            className={activeStep === finishStep ? classes.finishButton : classes.nextButton}
+                            className={activeStep === FINISH_STEP ? classes.finishButton : classes.nextButton}
                             variant="contained"
                             color={"primary"}
-                            hidden={activeStep > finishStep}
+                            hidden={activeStep > FINISH_STEP}
                             onClick={handleNext}
                         >
-                            {activeStep === finishStep ? 'Finish' : 'Next'}&nbsp;&gt;&gt;
+                            {activeStep === FINISH_STEP ? 'Finish' : 'Next'}&nbsp;&gt;&gt;
                         </Button>
                     </Grid>
                 </Grid>
@@ -232,4 +257,7 @@ const Cash = ({products, user, dispatch}) => {
 export default connect(store => ({
     products: store.products && store.products.products,
     user: store.login.user,
+    isLoading: store.orders.isLoading,
+    success: store.orders.success,
+    failed: store.orders.failed
 }))(Cash);

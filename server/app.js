@@ -18,6 +18,7 @@ const customerRouter = require('./routes/customer_router');
 const employeeRouter = require('./routes/employee_router');
 const flowerRouter = require('./routes/flower_router');
 const contactsRouter = require('./routes/contacts_router');
+const paymentRouter = require('./routes/payment_router');
 const passportStrategy = require('./encryption/passport');
 const employeeRepository = require('./model')('Employee');
 const customerRepository = require('./model')('Customer');
@@ -76,6 +77,7 @@ app.use('/employee', employeeRouter);
 app.use('/branch', branchRouter);
 app.use('/flower', flowerRouter);
 app.use('/contacts', contactsRouter);
+app.use('/payment', paymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

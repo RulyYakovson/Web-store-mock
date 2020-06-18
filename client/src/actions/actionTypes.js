@@ -36,9 +36,10 @@ export const fetchContactMessagesActionTypes = {
     FETCH_CONTACT_MESSAGES: 'SET_CONTACT_MESSAGES'
 };
 
-export const snackBarActionTypes = {
-    SUCCESS: 'success',
-    INFO: 'info',
-    WARNING: 'warning',
-    ERROR: 'error'
-}
+export const paymentActionTypes = {
+    PAYMENT_BEGIN_LOADING: 'PAYMENT_BEGIN_LOADING',
+    PAYMENT_END_LOADING: 'PAYMENT_END_LOADING',
+    FETCH_PAYMENTS: 'SET_PAYMENTS_DATA',
+    GET_PAYMENT_SUCCESS: 'GET_PAYMENT_SUCCESS',
+    GET_PAYMENT_FAILED: 'GET_PAYMENT_FAILED'
+};
