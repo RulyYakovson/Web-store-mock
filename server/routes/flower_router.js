@@ -45,7 +45,7 @@ router.delete('/remove/:name', auth.authEmployee, async (req, res) => {
             res.status(200);
         } else {
             console.log('An error occurred while trying to fetch flowers');
-            res.status(400);
+            res.status(500);
         }
     } catch (err) {
         res.status(500);

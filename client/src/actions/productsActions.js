@@ -12,15 +12,8 @@ export const fetchProducts = () => async dispatch => {
         dispatch({type: fetchProductsActionTypes.FETCH_PRODUCTS, products: res.data.flowers});
         console.info(res);
     } catch (err) {
-        if (err.response && err.response.status === 400) {
-            // Will try again
-            // const res = await httpClient.get('/flower/all');
-            // dispatch({type: fetchProductsActionTypes.FETCH_PRODUCTS, products: res.data.flowers});
-            // console.info(res);
-        } else {
-            dispatch(NotificationsActions.notifyError('An error occurred while trying to fetch the products.'))
-            console.error(err);
-        }
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to fetch the products.'))
+        console.error(err);
     } finally {
         dispatch(endLoading());
     }

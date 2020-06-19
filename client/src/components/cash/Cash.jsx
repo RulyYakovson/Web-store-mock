@@ -161,10 +161,10 @@ const Cash = ({products, user, dispatch, isLoading, success, failed}) => {
     };
 
     const handlePayment = () => {
-        const userDetails = {...user, firstName, lastName, phone, street, city, floor};
+        const shipment = {firstName, lastName, phone, street, city, floor};
         const productsMap = localStorage.getItem(PRODUCTS_KEY);
-        const payment = {paymentMethod: 'cash', totalPrice, productsMap}
-        dispatch(sendPayment(userDetails, payment))
+        const payment = {paymentMethod: 'Cash', total: totalPrice, productsMap}
+        dispatch(sendPayment(user, shipment, payment))
     };
 
     const getDisplayPage = () => {

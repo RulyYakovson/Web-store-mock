@@ -18,7 +18,7 @@ router.get('/all', auth.authEmployee, async (req, res) => {
             res.status(200);
         } else {
             console.log('An error occurred while trying to fetch customers');
-            res.status(400);
+            res.status(500);
         }
         res.json(data);
     }, timeout);
@@ -37,7 +37,7 @@ router.delete('/remove/:id', auth.authEmployee, async (req, res) => {
             res.status(200);
         } else {
             console.log('An error occurred while trying to fetch customers');
-            res.status(400);
+            res.status(500);
         }
     } catch (err) {
         res.status(500);

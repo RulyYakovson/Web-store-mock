@@ -9,7 +9,7 @@ const router = express.Router();
 const expires = 10 * 60 * 1000; // min * sec * millis
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-    const user = req.user;
+    const {user} = req;
     req.session.userId = user.id;
     req.session.username = user.username;
     req.session.firstName = user.firstName;
@@ -34,7 +34,7 @@ router.get('/logout', async (req, res) => {
     });
 });
 
-router.get('/user', authUser, async (req, res) => {
+router.get('/user', authUser, (req, res) => {
     console.log('Received get user details request');
     const data = {
         id: req.session.userId,

@@ -15,7 +15,7 @@ router.get('/all', auth.authEmployee, async (req, res) => {
             res.status(200);
         } else {
             console.log('An error occurred while trying to fetch contact messages');
-            res.status(400);
+            res.status(500);
         }
         res.json(data);
     }, timeout);
