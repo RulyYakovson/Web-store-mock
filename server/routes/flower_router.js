@@ -14,7 +14,7 @@ router.get('/all', auth.authUser, async (req, res) => {
     await setTimeout(async () => {
         let data = {};
         data.userRole = req.userRole;
-        for (let i = 0; i < MAX_RETRIES; ++i) {
+        for (let i = 0; i <= MAX_RETRIES; ++i) {
             let result = await repository.getAllFlowers();
             if (result.success) {
                 console.log(`Fetch ${result.data.length} flowers`);

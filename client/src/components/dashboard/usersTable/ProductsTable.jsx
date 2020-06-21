@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {DeleteForever, Edit} from '@material-ui/icons';
 import {addProduct, deleteProduct, fetchProducts, updateProduct} from "../../../actions/productsActions";
 import ImageDialog from "../../ImageDialog";
+import Title from "../Title";
 
 const ProductsTable = ({products, dispatch, isLoading}) => {
 
@@ -44,7 +45,7 @@ const ProductsTable = ({products, dispatch, isLoading}) => {
         <div>
             <MaterialTable
                 isLoading={isLoading}
-                title='Products details'
+                title={<Title>Recent Orders</Title>}
                 columns={columns}
                 data={products}
                 localization={{header: {actions: ''}}}

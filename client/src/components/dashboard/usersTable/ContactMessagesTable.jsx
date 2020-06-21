@@ -10,6 +10,7 @@ import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import PanToolIcon from '@material-ui/icons/PanTool';
 import {fetchContactMessages, updateContactMessageStatus} from "../../../actions/contactMessagesActions";
 import {MESSAGE_STATUS} from "../../../utils/constants";
+import Title from "../Title";
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -84,7 +85,7 @@ const ContactMessagesTable = ({messages, dispatch, isLoading, isRowLoading}) => 
     return (
         <div>
             <MaterialTable
-                title='Contact Messages'
+                title={<Title>Contact Messages</Title>}
                 isLoading={isLoading}
                 columns={columns}
                 data={messages}

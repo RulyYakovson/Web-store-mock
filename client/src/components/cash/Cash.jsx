@@ -163,7 +163,7 @@ const Cash = ({products, user, dispatch, isLoading, success, failed}) => {
     const handlePayment = () => {
         const shipment = {firstName, lastName, phone, street, city, floor};
         const productsMap = localStorage.getItem(PRODUCTS_KEY);
-        const payment = {paymentMethod: 'Cash', total: totalPrice, productsMap}
+        const payment = {paymentMethod: 'CASH', total: totalPrice, productsMap}
         dispatch(sendPayment(user, shipment, payment))
     };
 

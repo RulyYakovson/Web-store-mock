@@ -6,6 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {DeleteForever, Edit} from '@material-ui/icons';
 import {addUser, deleteUser, fetchUsers, updateUser} from "../../../actions/usersActions";
 import {addEmployee, deleteEmployee, fetchEmployees, updateEmployee} from "../../../actions/employeesActions";
+import Title from "../Title";
 
 const useStyles = makeStyles(theme => ({
     avatar: {
@@ -78,7 +79,7 @@ const UsersTable = ({employeesType, users, employees, dispatch, isLoading}) => {
         <div>
             <MaterialTable
                 isLoading={isLoading}
-                title={`${employeesType ? 'Employees' : 'Customers'} details`}
+                title={<Title>{`${employeesType ? 'Employees' : 'Customers'} details`}</Title>}
                 columns={employeesType ? employeesColumns : columns}
                 data={employeesType ? employees : users}
                 localization={{header: {actions: ''}}}

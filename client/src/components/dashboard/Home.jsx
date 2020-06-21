@@ -1,11 +1,12 @@
-import React from "react";
-import Paper from "@material-ui/core/Paper";
+import React, {useEffect} from "react";
+import clsx from "clsx";
 import Orders from "./Orders";
-import Deposits from "./Deposits";
 import Chart from "./Chart";
 import Grid from "@material-ui/core/Grid";
-import clsx from "clsx";
+import Paper from "@material-ui/core/Paper";
 import {makeStyles} from "@material-ui/core/styles";
+import {connect} from "react-redux";
+import {fetchOrders} from "../../actions/paymentAction";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -19,32 +20,37 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Home = () => {
+const Home = ({orders, isLoading, dispatch}) => {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+    useEffect(() => {
+        dispatch(fetchOrders());
+    }, []);
+
     return (
         <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12}>
                 <Paper className={fixedHeightPaper}>
-                    <Chart/>
+                    <Chart
+                        orders={orders}
+                        isLoading={isLoading}
+                    />
                 </Paper>
             </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-                <Paper className={fixedHeightPaper}>
-                    <Deposits/>
-                </Paper>
-            </Grid>
-            {/* Recent Orders */}
             <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                    <Orders/>
+                    <Orders
+                        orders={orders}
+                        isLoading={isLoading}
+                    />
                 </Paper>
             </Grid>
         </Grid>
     );
 };
 
-export default Home;
+export default connect(store => ({
+    orders: store.orders.orders,
+    isLoading: store.orders.isLoading
+}))(Home);

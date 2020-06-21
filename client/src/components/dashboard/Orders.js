@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,27 +6,31 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
-import {connect} from "react-redux";
-import {fetchOrders} from "../../actions/paymentAction";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
     orders: {
         height: theme.spacing(29),
     },
+    progress: {
+        color: '#3f51b5',
+        position: 'absolute',
+        top: '75%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
 }));
 
-const Orders = ({dispatch, orders, isLoading}) => {
+const Orders = ({orders, isLoading}) => {
     const classes = useStyles();
-
-    useEffect(() => {
-        dispatch(fetchOrders());
-    }, []);
 
     return (
         <React.Fragment>
             <Title>Recent Orders</Title>
+            {isLoading && <CircularProgress size={36} className={classes.progress}/>}
             <Table size="small" className={classes.orders}>
-                <TableHead>
+                <TableHead style={{fontFamily: "fantasy"}}>
                     <TableRow>
                         <TableCell>Date</TableCell>
                         <TableCell>Name</TableCell>
@@ -49,8 +53,6 @@ const Orders = ({dispatch, orders, isLoading}) => {
             </Table>
         </React.Fragment>
     );
-}
-export default connect(store => ({
-    orders: store.orders.orders,
-    isLoading: store.orders.isLoading
-}))(Orders);
+};
+
+export default Orders;
