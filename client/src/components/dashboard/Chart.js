@@ -1,4 +1,5 @@
 import React from 'react';
+import {isEmpty} from 'lodash';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer} from 'recharts';
 import Title from './Title';
@@ -15,6 +16,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: -12,
         marginLeft: -12,
     },
+    empty: {
+        alignSelf: "center",
+        top: '29%',
+        position: "absolute",
+        color: '#3f51b5'
+    }
 }));
 
 const Chart = ({orders, isLoading}) => {
@@ -29,7 +36,8 @@ const Chart = ({orders, isLoading}) => {
             const {created} = order;
             const date = new Date(created);
             if (date.toDateString() === today) {
-                const time = `${date.getHours()}:${date.getMinutes()}`
+                const minuets = date.getMinutes();
+                const time = `${date.getHours()}:${minuets < 10 ? '0' : ''}${minuets}`
                 data.unshift({time, total: order.total})
             }
         }
@@ -38,6 +46,7 @@ const Chart = ({orders, isLoading}) => {
     return (
         <React.Fragment>
             <Title>Today</Title>
+            {!isLoading && isEmpty(data) && <p className={classes.empty}>No sales today  &#9785;</p>}
             {isLoading && <CircularProgress size={36} className={classes.progress}/>}
             <ResponsiveContainer>
                 <LineChart
