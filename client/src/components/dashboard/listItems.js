@@ -6,7 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import EmployeeIcon from '@material-ui/icons/PeopleOutlineOutlined';
-import LayersIcon from '@material-ui/icons/Layers';
+import ForumIcon from '@material-ui/icons/Forum';
 import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
 import StorageIcon from '@material-ui/icons/Storage';
 import InfoIcon from '@material-ui/icons/Info';
@@ -33,11 +33,11 @@ export const mainListItems = (setDisplayComponent) => (
             </ListItemIcon>
             <ListItemText primary="Store"/>
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => setDisplayComponent(INNER_COMPONENTS.CHAT)}>
             <ListItemIcon>
-                <LayersIcon/>
+                <ForumIcon/>
             </ListItemIcon>
-            <ListItemText primary="Integrations"/>
+            <ListItemText primary="Chat"/>
         </ListItem>
     </div>
 );

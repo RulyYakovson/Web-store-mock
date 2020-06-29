@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import IconButton from "@material-ui/core/IconButton";
 import {AccountCircle, ExitToApp} from "@material-ui/icons";
 import Menu from "@material-ui/core/Menu";
@@ -6,9 +6,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import {connect} from "react-redux";
 import Typography from "@material-ui/core/Typography";
-import {logOut, refresh} from "../../../actions/loginActions";
+import {logOut} from "../../../actions/loginActions";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -32,13 +31,8 @@ const useStyles = makeStyles((theme) => ({
 const AppBarMenu = ({dispatch, user, history}) => {
     const classes = useStyles();
 
-    const [name, setName] = useState({first: user && user.firstName, last: user && user.lastName});
     const [anchorEl, setAnchorEl] = useState(null);
     const displayMenu = Boolean(anchorEl);
-
-    useEffect(() => {
-        setName({first: user && user.firstName, last: user && user.lastName})//dispatch(refresh());
-    }, [user]);
 
     const handleClose = () => {
         setAnchorEl(null);
