@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ChatRoomSelection = ({user, history}) => {
+const ChatRoomSelection = ({user}) => {
     const classes = useStyles();
 
     const getChatrooms = () => {
@@ -46,7 +46,7 @@ const ChatRoomSelection = ({user, history}) => {
     const onEnterChatroom = (chatroom) => {
         !!currentChatroom && onLeaveChatroom(currentChatroom.name);
 
-        return client.join(chatroom.name, (err, chatHistory) => {
+        return client.join(chatroom.name, user.id, (err, chatHistory) => {
             if (err) {
                 console.error(err);
                 // setErrorMessage(err.message);
@@ -59,7 +59,7 @@ const ChatRoomSelection = ({user, history}) => {
     };
 
     const onLeaveChatroom = (chatroomName) => {
-        client.leave(chatroomName, (err) => {
+        client.leave(chatroomName, user.id, (err) => {
             if (err) {
                 return console.error(err)
             }
@@ -89,9 +89,8 @@ const ChatRoomSelection = ({user, history}) => {
                         <Chatroom
                             chatroom={currentChatroom}
                             chatHistory={chatHistory}
-                            user={user}
                             onLeave={() => onLeaveChatroom(currentChatroom.name)}
-                            onSendMessage={(message, cb) => client.message(currentChatroom.name, message, cb)}
+                            onSendMessage={(message, cb) => client.message(currentChatroom.name, message, user.id, cb)}
                             registerHandler={client.registerHandler}
                             unregisterHandler={client.unregisterHandler}
                         />)}

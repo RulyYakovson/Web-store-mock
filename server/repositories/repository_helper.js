@@ -9,3 +9,9 @@ module.exports.getUserByEmail = async email => {
     !user && (user = await employeeRepository.findOne({ email: email }));
     return user;
 };
+
+module.exports.getUserById = async userId => {
+    let user = await customerRepository.findOne({ id: userId });
+    !user && (user = await employeeRepository.findOne({ id: userId }));
+    return user;
+};

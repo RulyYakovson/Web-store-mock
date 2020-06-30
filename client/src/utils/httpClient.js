@@ -11,7 +11,7 @@ const HttpClient = Axios.create({
 HttpClient.setUp = (dispatch, history) => {
     const onFulfilled = response => response;
     const onRejected = error => {
-        if (error.response.status === 401) {
+        if (error.response.status === 403) {
             dispatch({type: loginActionTypes.AUTH_FALSE});
             dispatch(NotificationsActions.notifyWarning('', 'SESSION EXPIRED')) // TODO:
             localStorage.removeItem('user');

@@ -1,3 +1,4 @@
+const {getUserById} = require('../repositories/repository_helper')
 const userTemplates = require('../../config/users')
 
 module.exports = function () {
@@ -34,8 +35,8 @@ module.exports = function () {
     return userTemplates.find(u => u.name === userName)
   }
 
-  function getUserByClientId(clientId) {
-    return 'israel' // (clients.get(clientId) || {}).user
+  function getUserByClientId(userId) {
+    return getUserById(userId)
   }
 
   return {

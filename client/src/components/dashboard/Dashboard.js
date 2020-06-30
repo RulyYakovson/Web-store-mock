@@ -22,7 +22,6 @@ import ProductsTable from "./usersTable/ProductsTable";
 import ProductsCardsView from "./productsView/ProductsCardsView";
 import Contact from "../contact/Contact";
 import ContactMessagesTable from "./usersTable/ContactMessagesTable";
-import Root from "../../chat/Root";
 import ChatRoomSelection from "./chats/ChatRoomSelection";
 
 const drawerWidth = 240;
@@ -112,7 +111,7 @@ const Dashboard = ({history, user, dispatch}) => {
             case INNER_COMPONENTS.CONTACT_MESSAGES:
                 return <ContactMessagesTable/>;
             case INNER_COMPONENTS.CHAT:
-                return <ChatRoomSelection history={history} user={user}/>
+                return <ChatRoomSelection user={user}/>
             default:
                 return <About/>;
         };

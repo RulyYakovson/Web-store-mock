@@ -182,7 +182,7 @@ export default class Chatroom extends React.Component {
                                                     key={i}
                                                     style={{color: '#fafafa'}}
                                                     leftAvatar={<Avatar src={user.image}/>}
-                                                    primaryText={`${user} ${event || ''}`}
+                                                    primaryText={`${user.firstName} ${event || ''}`}
                                                     secondaryText={
                                                         message &&
                                                         <OutputText>
