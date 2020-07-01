@@ -48,8 +48,7 @@ export default function () {
         getChatrooms,
         getAvailableUsers,
         registerHandler,
-        unregisterHandler,
-        socket
+        unregisterHandler
     }
 }
 

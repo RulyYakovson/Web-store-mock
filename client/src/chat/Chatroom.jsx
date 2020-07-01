@@ -132,9 +132,11 @@ export default class Chatroom extends React.Component {
     }
 
     onMessageReceived(entry) {
-        console.log('onMessageReceived:', entry)
-        debugger
-        this.updateChatHistory(entry)
+        const {chat} = entry;
+        const {chatroom: {name}} = this.props;
+        if (chat === name) {
+            this.updateChatHistory(entry)
+        }
     }
 
     updateChatHistory(entry) {

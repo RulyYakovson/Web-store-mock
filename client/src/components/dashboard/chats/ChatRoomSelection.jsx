@@ -4,7 +4,7 @@ import {Backdrop, CircularProgress} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import Chatroom from "../../../chat/Chatroom";
 import ChatRoomPreview from "./ChatRoomPreview";
-import socket from './socket';
+import client from '../../../utils/socketClient';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -15,6 +15,16 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatRoomSelection = ({user}) => {
     const classes = useStyles();
+
+    const [chatrooms, setChatrooms] = useState(null);
+    const [chatHistory, setChatHistory] = useState(null);
+    const [currentChatroom, setCurrentChatroom] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    useEffect(() => {
+        getChatrooms();
+    }, []);
 
     const getChatrooms = () => {
         setIsLoading(true);
@@ -27,21 +37,6 @@ const ChatRoomSelection = ({user}) => {
             setIsLoading(false);
         });
     };
-
-    const [client, setClient] = useState(socket());
-    const [chatrooms, setChatrooms] = useState(null);
-    const [chatHistory, setChatHistory] = useState(null);
-    const [currentChatroom, setCurrentChatroom] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    useEffect(() => {
-        debugger;
-        if (!client || client.socket.disconnected) {
-            setClient(socket());
-        }
-        getChatrooms();
-    }, []);
 
     const onEnterChatroom = (chatroom) => {
         !!currentChatroom && onLeaveChatroom(currentChatroom.name);

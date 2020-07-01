@@ -11,12 +11,8 @@ import {NotificationContainer} from "react-notifications";
 import '../../../client/node_modules/react-notifications/lib/notifications.css';
 import Cash from "../components/cash/Cash";
 import Dashboard from "../components/dashboard/Dashboard";
-import Root from '../chat/Root';
 
 const RestrictedRoute = ({Component, dispatch, ...rest}) => {
-    // const auth = store.getState().login;
-    // const allow = get(auth, 'user');     TODO.....
-
     return (
         <Route {...rest} render={props => (
             localStorage.getItem('user') ? <Component {...props} />
@@ -50,7 +46,6 @@ const Routes = ({dispatch, history, isLoading}) => {
                 <Route exact path='/' render={() => <Redirect to='home'/>}/>
                 <RestrictedRoute path='/home' dispatch={dispatch} Component={Dashboard}/>
                 <RestrictedRoute path='/cash' dispatch={dispatch} Component={Cash}/>
-                {/*<RestrictedRoute path='/chat' Component={Root}/>*/}
             </Switch>
         </BrowserRouter>
     );
