@@ -44,10 +44,9 @@ const ChatRoomSelection = ({user}) => {
         return client.join(chatroom.name, user.id, (err, chatHistory) => {
             if (err) {
                 console.error(err);
-                // setErrorMessage(err.message);
+                setErrorMessage('Error while trying to join chatroom');
                 return;
             }
-            debugger
             setChatHistory(chatHistory);
             setCurrentChatroom(chatroom);
         });

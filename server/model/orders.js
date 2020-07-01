@@ -30,7 +30,6 @@ module.exports = function (db) {
     ordersSchema.pre('save', function (next) {
         const date = new Date();
         this.lastUpdate = date;
-        console.log(this);
         if (!this.created) {
             this.created = date;
         }

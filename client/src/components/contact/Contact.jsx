@@ -87,7 +87,6 @@ const Contact = ({dispatch, isLoading}) => {
         event.preventDefault();
         const success = await dispatch(addContact(email, fullName, message));
         console.log(success);
-        debugger;
         if (success) {
             setMessage('');
             setEmail('');

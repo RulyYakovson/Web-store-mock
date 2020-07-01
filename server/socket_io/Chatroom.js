@@ -15,11 +15,13 @@ module.exports = function ({ name, image }) {
   }
 
   function addUser(client) {
+    console.log('add user', client.id)
     members.set(client.id, client)
   }
 
-  function removeUser(client) {
-    members.delete(client.id)
+  function removeUser(clientId) {
+    console.log('remove user', clientId)
+    members.delete(clientId)
   }
 
   function serialize() {
