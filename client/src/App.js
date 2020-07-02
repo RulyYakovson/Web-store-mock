@@ -1,9 +1,8 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {createBrowserHistory} from 'history';
-import store from './store';
+import store from './utils/store';
 import Routes from './routes/Routes';
-import './App.css';
 import HttpClient from "./utils/httpClient";
 
 const App = () => {

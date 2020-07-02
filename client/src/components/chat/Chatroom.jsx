@@ -7,7 +7,6 @@ import Avatar from 'material-ui/Avatar';
 import Divider from 'material-ui/Divider';
 import {List, ListItem} from 'material-ui/List';
 import CloseIcon from '@material-ui/icons/Close';
-
 import Overlay from './Overlay';
 
 const ChatWindow = styled.div`

@@ -12,17 +12,17 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {mainListItems, secondaryListItems} from './listItems';
 import Copyright from '../Copyright';
 import About from "../about/About";
-import Home from "./Home";
+import Dashboard from "../dashboard/Dashboard";
 import {INNER_COMPONENTS, PRODUCTS_KEY, USER_ROLE} from '../../utils/constants';
 import {connect} from "react-redux";
 import {refresh} from "../../actions/loginActions";
-import UsersTable from "./usersTable/UsersTable";
-import CustomAppBar from "./appBar/CustomAppBar";
-import ProductsTable from "./usersTable/ProductsTable";
-import ProductsCardsView from "./productsView/ProductsCardsView";
+import UsersTable from "../tables/UsersTable";
+import CustomAppBar from "../appBar/CustomAppBar";
+import ProductsTable from "../tables/products_table/ProductsTable";
+import ProductsCardsView from "../productsView/ProductsCardsView";
 import Contact from "../contact/Contact";
-import ContactMessagesTable from "./usersTable/ContactMessagesTable";
-import ChatRoomSelection from "./chats/ChatRoomSelection";
+import ContactMessagesTable from "../tables/ContactMessagesTable";
+import ChatRoomSelection from "../chat/ChatRoomSelection";
 
 const drawerWidth = 240;
 
@@ -81,8 +81,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Dashboard = ({history, user, dispatch}) => {
+const Main = ({history, user, dispatch}) => {
     const classes = useStyles();
+
     const [open, setOpen] = useState(false);
     const [productsNum, setProductsNum] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))).size);
     const [displayComponent, setDisplayComponent] =
@@ -95,7 +96,7 @@ const Dashboard = ({history, user, dispatch}) => {
     const getDisplayComponent = () => {
         switch (displayComponent) {
             case INNER_COMPONENTS.HOME:
-                return <Home/>;
+                return <Dashboard/>;
             case INNER_COMPONENTS.ABOUT:
                 return <About/>;
             case INNER_COMPONENTS.EMPLOYEES_TABLE:
@@ -162,4 +163,4 @@ const Dashboard = ({history, user, dispatch}) => {
 
 export default connect(store => ({
     user: store.login.user,
-}))(Dashboard);
+}))(Main);

@@ -2,7 +2,7 @@ import React from 'react';
 import {isEmpty} from 'lodash';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer} from 'recharts';
-import Title from './Title';
+import Title from '../Title';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const ELEMENTS_LIMIT = 20;

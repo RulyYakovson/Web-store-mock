@@ -4,8 +4,8 @@ import MaterialTable from 'material-table';
 import Avatar from "@material-ui/core/Avatar";
 import {makeStyles} from "@material-ui/core/styles";
 import {DeleteForever, Edit} from '@material-ui/icons';
-import {addUser, deleteUser, fetchUsers, updateUser} from "../../../actions/usersActions";
-import {addEmployee, deleteEmployee, fetchEmployees, updateEmployee} from "../../../actions/employeesActions";
+import {addUser, deleteUser, fetchUsers, updateUser} from "../../actions/usersActions";
+import {addEmployee, deleteEmployee, fetchEmployees, updateEmployee} from "../../actions/employeesActions";
 import Title from "../Title";
 
 const useStyles = makeStyles(theme => ({

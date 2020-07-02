@@ -7,7 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import {logOut} from "../../../actions/loginActions";
+import {logOut} from "../../actions/loginActions";
 
 const useStyles = makeStyles((theme) => ({
     button: {

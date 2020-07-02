@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TextField from "@material-ui/core/TextField";
-import {PRODUCTS_KEY} from "../../../utils/constants";
+import {PRODUCTS_KEY} from "../../utils/constants";
 import Badge from "@material-ui/core/Badge";
 
 const useStyles = makeStyles({

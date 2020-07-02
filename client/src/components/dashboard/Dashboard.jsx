@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Home = ({orders, isLoading, dispatch}) => {
+const Dashboard = ({orders, isLoading, dispatch}) => {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -53,4 +53,4 @@ const Home = ({orders, isLoading, dispatch}) => {
 export default connect(store => ({
     orders: store.orders.orders,
     isLoading: store.orders.isLoading
-}))(Home);
+}))(Dashboard);

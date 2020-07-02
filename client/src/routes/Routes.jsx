@@ -10,7 +10,7 @@ import ResetPassPage from "../components/auth/ResetPassPage";
 import {NotificationContainer} from "react-notifications";
 import '../../../client/node_modules/react-notifications/lib/notifications.css';
 import Cash from "../components/cash/Cash";
-import Dashboard from "../components/dashboard/Dashboard";
+import Dashboard from "../components/main/Main";
 
 const RestrictedRoute = ({Component, dispatch, ...rest}) => {
     return (

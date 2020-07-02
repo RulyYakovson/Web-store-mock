@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Backdrop, CircularProgress} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import Chatroom from "../../../chat/Chatroom";
+import Chatroom from "./Chatroom";
 import ChatRoomPreview from "./ChatRoomPreview";
-import client from '../../../utils/socketClient';
+import client from '../../utils/socket/socketClient';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {

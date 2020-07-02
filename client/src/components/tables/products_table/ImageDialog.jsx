@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {DropzoneDialog} from 'material-ui-dropzone';
 import {makeStyles} from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
-import {updateImage} from "../actions/productsActions";
+import {updateImage} from "../../../actions/productsActions";
 
 const useStyles = makeStyles(theme => ({
     root: {
