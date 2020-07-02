@@ -148,6 +148,24 @@ export default class Chatroom extends React.Component {
         }
     }
 
+    getAvatar(user) {
+        const isAdmin = user.role === 'Admin';
+        let imageName = null;
+        switch (user.gender) {
+            case 'Male': {
+                imageName = isAdmin ? 'admin_male' : 'user_male';
+                break;
+            }
+            case 'Female': {
+                imageName = isAdmin ? 'admin_female' : 'user_female';
+                break;
+            }
+            default: break;
+        };
+
+        return (<Avatar src={`images/${imageName}.png`}/>);
+    };
+
     render() {
         return (
             <div style={{height: '100%'}}>
@@ -177,7 +195,7 @@ export default class Chatroom extends React.Component {
                                                 <ListItem
                                                     key={i}
                                                     style={{color: '#fafafa'}}
-                                                    leftAvatar={<Avatar src={user.image}/>}
+                                                    leftAvatar={this.getAvatar(user)}
                                                     primaryText={`${user.firstName} ${event || ''}`}
                                                     secondaryText={
                                                         message &&
