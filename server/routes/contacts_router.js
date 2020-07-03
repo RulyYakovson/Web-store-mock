@@ -3,7 +3,7 @@ const router = express.Router();
 const repository = require('../repositories/contact_messsages_repository');
 const auth = require('./auth_user');
 const {MESSAGE_STATUS} = require('../utils/constants');
-const {TIM_EOUT} = require('../utils/constants');
+const {TIME_OUT} = require('../utils/constants');
 
 router.get('/all', auth.authEmployee, async (req, res) => {
     console.log('Received get all contact messages request');

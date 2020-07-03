@@ -14,6 +14,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {updateAccount} from "../actions/loginActions";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,10 +30,19 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(3)
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+        minHeight: '36px'
+    },
+    buttonProgress: {
+        color: '#3f51b5',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
     },
     formControl: {
         minWidth: 120,
@@ -41,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 // TODO: VALIDATION !!!
 
-const Profile = ({dispatch, user}) => {
+const Profile = ({dispatch, user, isLoading}) => {
     const classes = useStyles();
 
     const [firstName, setFirstName] = useState(user && user.firstName);
@@ -199,11 +210,12 @@ const Profile = ({dispatch, user}) => {
                         className={classes.submit}
                         onClick={createAccountAction}
                         disabled={
-                            firstName === user.firstName && lastName === user.lastName && email === user.username
-                            && phone === user.phone && gender === user.gender
+                            (firstName === user.firstName && lastName === user.lastName && email === user.username
+                            && phone === user.phone && gender === user.gender) || isLoading
                         }
                     >
-                        Update
+                        {!isLoading && 'Update'}
+                        {isLoading && <CircularProgress size={24} className={classes.buttonProgress}/>}
                     </Button>
                 </form>
             </div>
@@ -211,4 +223,6 @@ const Profile = ({dispatch, user}) => {
     );
 };
 
-export default Profile;
+export default connect(store => ({
+    isLoading: store.login.isUpdateLoading,
+}))(Profile);

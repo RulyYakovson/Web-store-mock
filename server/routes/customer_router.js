@@ -4,7 +4,7 @@ const router = express.Router();
 const repository = require('../repositories/customers_repository');
 const auth = require('./auth_user');
 const { decrypt } = require('../encryption/node-rsa');
-const {TIM_EOUT} = require('../utils/constants');
+const {TIME_OUT} = require('../utils/constants');
 
 router.get('/all', auth.authEmployee, async (req, res) => {
     console.log('Received get all customers request');

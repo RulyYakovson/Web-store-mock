@@ -5,6 +5,8 @@ import {encrypt} from "../utils/rsa";
 
 export const beginLoading = () => ({type: loginActionTypes.LOGIN_BEGIN_LOADING});
 export const endLoading = () => ({type: loginActionTypes.LOGIN_END_LOADING});
+export const updateBeginLoading = () => ({type: loginActionTypes.UPDATE_BEGIN_LOADING});
+export const updateEndLoading = () => ({type: loginActionTypes.UPDATE_END_LOADING});
 
 export const login = (email, password) => async dispatch => {
     dispatch(beginLoading());
@@ -93,7 +95,7 @@ export const createAccount = (user) => async dispatch => {
 };
 
 export const updateAccount = (user) => async dispatch => {
-    dispatch(beginLoading());
+    dispatch(updateBeginLoading());
     try {
         const res = await httpclient.post('/edit', user);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
@@ -104,6 +106,6 @@ export const updateAccount = (user) => async dispatch => {
         dispatch(NotificationsActions.notifyError('An error occurred while trying to update profile.'))
         console.error(err);
     } finally {
-        dispatch(endLoading());
+        dispatch(updateEndLoading());
     }
 };

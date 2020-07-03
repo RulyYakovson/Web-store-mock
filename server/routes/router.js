@@ -51,31 +51,31 @@ router.get('/user', authUser, (req, res) => {
 });
 
 router.post('/edit', authUser, async (req, res) => {
-    await setTimeout(() => {
+    await setTimeout(async () => {
 
+        try {
+            console.log('Received edit profile request');
+            if (!req.body.id) {
+                res.status(400).send('Missing user id');
+                return
+            }
+            let user = null;
+            if (req.session.role === 'customer') {
+                user = await editCustomer(req);
+            } else {
+                user = await editEmployee(req);
+            }
+            const {firstName, lastName, id, gender, phone, role, address, username, email} = user;
+            res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address, username, email}});
+        } catch (err) {
+            console.error(err.message);
+            if (err.message.includes('duplicate key error')) {
+                res.status(400).send('ERROR');
+            } else {
+                res.status(500).send('ERROR');
+            }
+        }
     }, TIME_OUT)
-    try {
-        console.log('Received edit profile request');
-        if (!req.body.id) {
-            res.status(400).send('Missing user id');
-            return
-        }
-        let user = null;
-        if (req.session.role === 'customer') {
-            user = await editCustomer(req);
-        } else {
-            user = await editEmployee(req);
-        }
-        const {firstName, lastName, id, gender, phone, role, address, username, email} = user;
-        res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address, username, email}});
-    } catch (err) {
-        console.error(err.message);
-        if (err.message.includes('duplicate key error')) {
-            res.status(400).send('ERROR');
-        } else {
-            res.status(500).send('ERROR');
-        }
-    }
 });
 
 router.post('/reset_pass', async (req, res) => {

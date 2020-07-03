@@ -115,7 +115,7 @@ const Main = ({history, user, dispatch}) => {
             case INNER_COMPONENTS.CHAT:
                 return <ChatRoomSelection user={user}/>
             case INNER_COMPONENTS.PROFILE:
-                return <Profile dispatch={dispatch} user={user}/>;
+                return <Profile user={user}/>;
             default:
                 return <About/>;
         };
