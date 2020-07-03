@@ -11,6 +11,7 @@ import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
 import StorageIcon from '@material-ui/icons/Storage';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
+import PersonSharpIcon from '@material-ui/icons/PersonSharp';
 import {INNER_COMPONENTS} from "../../utils/constants";
 
 export const mainListItems = (setDisplayComponent) => (
@@ -38,6 +39,12 @@ export const mainListItems = (setDisplayComponent) => (
                 <ForumIcon/>
             </ListItemIcon>
             <ListItemText primary="Chat"/>
+        </ListItem>
+        <ListItem button onClick={() => setDisplayComponent(INNER_COMPONENTS.PROFILE)}>
+            <ListItemIcon>
+                <PersonSharpIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Profile"/>
         </ListItem>
     </div>
 );

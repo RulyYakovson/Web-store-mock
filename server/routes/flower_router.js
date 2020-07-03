@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const repository = require('../repositories/flower_repository');
 const auth = require('./auth_user');
-const timeout = 1000;
+const {TIME_OUT} = require('../utils/constants');
 
 const storage = multer.memoryStorage();
 const uploadImgHandler = multer({storage: storage}).single('image');
@@ -29,7 +29,7 @@ router.get('/all', auth.authUser, async (req, res) => {
             }
         }
         res.json(data);
-    }, timeout);
+    }, TIME_OUT);
 });
 
 router.delete('/remove/:name', auth.authEmployee, async (req, res) => {

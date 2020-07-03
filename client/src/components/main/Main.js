@@ -23,6 +23,7 @@ import ProductsCardsView from "../productsView/ProductsCardsView";
 import Contact from "../contact/Contact";
 import ContactMessagesTable from "../tables/ContactMessagesTable";
 import ChatRoomSelection from "../chat/ChatRoomSelection";
+import Profile from "../Profile";
 
 const drawerWidth = 240;
 
@@ -108,11 +109,13 @@ const Main = ({history, user, dispatch}) => {
             case INNER_COMPONENTS.PRODUCTS_VIEW:
                 return <ProductsCardsView setProductsNum={setProductsNum}/>;
             case INNER_COMPONENTS.CONTACT_US:
-                return <Contact/>
+                return <Contact/>;
             case INNER_COMPONENTS.CONTACT_MESSAGES:
                 return <ContactMessagesTable/>;
             case INNER_COMPONENTS.CHAT:
                 return <ChatRoomSelection user={user}/>
+            case INNER_COMPONENTS.PROFILE:
+                return <Profile dispatch={dispatch} user={user}/>;
             default:
                 return <About/>;
         };

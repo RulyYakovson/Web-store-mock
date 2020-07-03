@@ -8,7 +8,8 @@ export const INNER_COMPONENTS = {
     PRODUCTS_VIEW: 'products_cards_view',
     CONTACT_US: 'contact_us',
     CONTACT_MESSAGES: 'contact_messages',
-    CHAT: 'chat'
+    CHAT: 'chat',
+    PROFILE: 'profile'
 };
 
 export const USER_ROLE = {

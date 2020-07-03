@@ -79,14 +79,29 @@ export const createAccount = (user) => async dispatch => {
             password: encrypt(password),
             address: email
         };
-        const res = await httpclient.post('/customer/add', requestData); // TODO: change path
-        // TODO: get the created user
+        const res = await httpclient.post('/customer/add', requestData);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
         dispatch(NotificationsActions.notifySuccess('New account created successfully !!'))
         localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO: login !!!
         console.info(res);
     } catch (err) {
         dispatch(NotificationsActions.notifyError('An error occurred while trying to create account.'))
+        console.error(err);
+    } finally {
+        dispatch(endLoading());
+    }
+};
+
+export const updateAccount = (user) => async dispatch => {
+    dispatch(beginLoading());
+    try {
+        const res = await httpclient.post('/edit', user);
+        dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
+        dispatch(NotificationsActions.notifySuccess('Profile updated successfully !!'))
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        console.info(res);
+    } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to update profile.'))
         console.error(err);
     } finally {
         dispatch(endLoading());

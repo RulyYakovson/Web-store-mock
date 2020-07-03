@@ -46,22 +46,22 @@ module.exports.updateEmployee = async employee => {
 
 module.exports.editEmployee = async req => {
     const employee = req.body;
-    const id = req.session.userId;
+    const id = employee.id;
     let user = null;
     const fieldsToUpdate = {
-        id: employee.id,
         username: employee.username,
         firstName: employee.firstName,
         lastName: employee.lastName,
         phone: employee.phone,
         gender: employee.gender,
-        email: employee.email
+        email: employee.username
     };
     user = await employeeRepository.findOneAndUpdate({ id: id }, fieldsToUpdate, { new: true });
 
     if (user) {
         console.log(`Employee: ${user} \nsuccessfully updeted !!`);
         updateSession(user, req.session);
+        return user;
     } else {
         const err = `Error while trying to update employee with ID: ${employee.id}`;
         console.log(err);

@@ -11,6 +11,7 @@ import {logOut} from "../../actions/loginActions";
 
 const useStyles = makeStyles((theme) => ({
     button: {
+        backgroundColor: 'crimson',
         margin: theme.spacing(1),
         textTransform: "capitalize"
     },
@@ -54,13 +55,7 @@ const AppBarMenu = ({dispatch, user, history}) => {
             >
                 <AccountCircle/>
             </IconButton>
-            <Typography
-                className={classes.title}
-                component="h6"
-                variant="h6"
-                color="inherit"
-                noWrap
-            >
+            <Typography className={classes.title} component="h6" variant="h6" color="inherit" noWrap>
                 {user ? `${user.firstName} ${user.lastName}` : ''}
             </Typography>
             <Menu
@@ -78,13 +73,9 @@ const AppBarMenu = ({dispatch, user, history}) => {
                 open={displayMenu}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <Divider/>
                 <MenuItem>
                     <Button
                         variant="contained"
-                        color="primary"
                         className={classes.button}
                         startIcon={<ExitToApp />}
                         onClick={handleLogOut}

@@ -4,7 +4,7 @@ const router = express.Router();
 const repository = require('../repositories/customers_repository');
 const auth = require('./auth_user');
 const { decrypt } = require('../encryption/node-rsa');
-const timeout = 1000;
+const {TIM_EOUT} = require('../utils/constants');
 
 router.get('/all', auth.authEmployee, async (req, res) => {
     console.log('Received get all customers request');
@@ -21,7 +21,7 @@ router.get('/all', auth.authEmployee, async (req, res) => {
             res.status(500);
         }
         res.json(data);
-    }, timeout);
+    }, TIME_OUT);
 });
 
 router.delete('/remove/:id', auth.authEmployee, async (req, res) => {

@@ -1,23 +1,19 @@
 import React, {useState} from 'react';
+import {isEmpty} from "lodash";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import PersonSharpIcon from '@material-ui/icons/PersonSharp';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Copyright from '../Copyright';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import {isEmpty} from "lodash";
-import {connect} from "react-redux";
-import {createAccount} from "../../actions/loginActions";
+import {updateAccount} from "../actions/loginActions";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: "#3f51b5"
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -45,16 +41,16 @@ const useStyles = makeStyles((theme) => ({
 
 // TODO: VALIDATION !!!
 
-const CreateAccount = ({dispatch, history}) => {
+const Profile = ({dispatch, user}) => {
     const classes = useStyles();
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState(user && user.firstName);
+    const [lastName, setLastName] = useState(user && user.lastName);
+    const [email, setEmail] = useState(user && user.username);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [phone, setPhone] = useState('');
-    const [gender, setGender] = useState('');
+    const [phone, setPhone] = useState(user && user.phone);
+    const [gender, setGender] = useState(user && user.gender);
     const [errorMessage, setErrorMessage] = useState(null);
 
     const onFirstNameChange = firstName => {
@@ -101,20 +97,19 @@ const CreateAccount = ({dispatch, history}) => {
 
     const createAccountAction = async event => {
         event.preventDefault();
-        const user = {firstName, lastName, password, email, gender, phone}
-        await dispatch(createAccount(user));
-        history.push('/home');
+        const modifiedUser = {firstName, lastName, gender, phone, username: email, id: user.id}
+        await dispatch(updateAccount(modifiedUser));
     };
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <PersonSharpIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    Profile
                 </Typography>
                 <form className={classes.form}>
                     <Grid container spacing={2}>
@@ -166,34 +161,6 @@ const CreateAccount = ({dispatch, history}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={event => onPasswordChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="confirm-password"
-                                label="Confirm password"
-                                type="password"
-                                id="confirm-password"
-                                value={confirmPassword}
-                                onChange={event => onConfirmPasswordChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
                                 name="phone"
                                 label="Phone"
                                 type="phone"
@@ -206,10 +173,10 @@ const CreateAccount = ({dispatch, history}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl variant="outlined" className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
+                                <InputLabel id="update-account-select-outlined-label">Gender</InputLabel>
                                 <Select
-                                    labelId="create-account-gender-label"
-                                    id="create-account-gender"
+                                    labelId="update-account-gender-label"
+                                    id="update-account-gender"
                                     value={gender}
                                     onChange={event => onGenderChange(event.target.value)}
                                     error={!isEmpty(errorMessage)} // TODO
@@ -231,23 +198,17 @@ const CreateAccount = ({dispatch, history}) => {
                         color="primary"
                         className={classes.submit}
                         onClick={createAccountAction}
+                        disabled={
+                            firstName === user.firstName && lastName === user.lastName && email === user.username
+                            && phone === user.phone && gender === user.gender
+                        }
                     >
-                        Sign Up
+                        Update
                     </Button>
-                    <Grid container justify="center">
-                        <Grid item>
-                            <Link href="/login" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </form>
             </div>
-            <Box mt={5}>
-                <Copyright />
-            </Box>
         </Container>
     );
 };
 
-export default connect(store => ({}))(CreateAccount);
+export default Profile;

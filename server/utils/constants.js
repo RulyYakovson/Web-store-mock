@@ -1,4 +1,5 @@
 module.exports = {
+    TIME_OUT: 1000,
     DB_URI: 'mongodb://localhost/final-project-db',
     SESSION_SECRET: 'final project secret',
     CORS_ORIGIN: 'http://localhost:3000',

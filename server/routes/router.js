@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const nodemailer = require('nodemailer');
 const {authUser} = require('./auth_user');
+const {TIME_OUT} = require('../utils/constants');
 const {getUserByEmail} = require('../repositories/repository_helper');
 const {setEmpToken, editEmployee} = require('../repositories/employee_repository');
 const {setToken, editCustomer} = require('../repositories/customers_repository');
@@ -50,14 +51,23 @@ router.get('/user', authUser, (req, res) => {
 });
 
 router.post('/edit', authUser, async (req, res) => {
+    await setTimeout(() => {
+
+    }, TIME_OUT)
     try {
         console.log('Received edit profile request');
-        if (req.session.role === 'customer') {
-            await editCustomer(req);
-        } else {
-            await editEmployee(req);
+        if (!req.body.id) {
+            res.status(400).send('Missing user id');
+            return
         }
-        res.status(200).send('OK');
+        let user = null;
+        if (req.session.role === 'customer') {
+            user = await editCustomer(req);
+        } else {
+            user = await editEmployee(req);
+        }
+        const {firstName, lastName, id, gender, phone, role, address, username, email} = user;
+        res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address, username, email}});
     } catch (err) {
         console.error(err.message);
         if (err.message.includes('duplicate key error')) {
@@ -75,7 +85,7 @@ router.post('/reset_pass', async (req, res) => {
         const user = await getUserByEmail(email);
         if (user) {
             const token = generateToken()
-            resetPassword(user, token, res);
+            await resetPassword(user, token, res);
             sendEmail(email, user.firstName, token, res);
         } else if (user === null) {
             console.log(`User with email: '${email}' not found`);
