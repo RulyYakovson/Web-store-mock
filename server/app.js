@@ -10,7 +10,7 @@ const passport = require('passport');
 const connectMongo = require('connect-mongo');
 const {cors} = require('./utils/helper');
 
-const { DB_URI, SESSION_SECRET } = require('./utils/constants');
+const { DB_URI, SESSION_SECRET, SESSION_MAX_AGE } = require('./utils/constants');
 const router = require('./routes/router');
 const branchRouter = require('./routes/branch_router');
 const customerRouter = require('./routes/customer_router');
@@ -58,7 +58,7 @@ app.use(
           saveUninitialized: false,
           rolling: true,
           store: new MongoStore({ mongooseConnection: sessionConnect }),
-          cookie: { maxAge: 900000, httpOnly: true, sameSite: true }
+          cookie: { maxAge: SESSION_MAX_AGE, httpOnly: true, sameSite: true }
         }
     )
 );

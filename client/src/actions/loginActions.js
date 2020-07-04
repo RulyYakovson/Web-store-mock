@@ -8,11 +8,12 @@ export const endLoading = () => ({type: loginActionTypes.LOGIN_END_LOADING});
 export const updateBeginLoading = () => ({type: loginActionTypes.UPDATE_BEGIN_LOADING});
 export const updateEndLoading = () => ({type: loginActionTypes.UPDATE_END_LOADING});
 
-export const login = (email, password) => async dispatch => {
+export const login = (email, password, rememberMe) => async dispatch => {
     dispatch(beginLoading());
     try {
         const requestData = {
             username: email,
+            rememberMe: rememberMe,
             password: encrypt(password)
         };
         const res = await httpclient.post('/login', requestData);

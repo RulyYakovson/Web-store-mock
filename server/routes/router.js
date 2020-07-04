@@ -2,12 +2,11 @@ const express = require('express');
 const passport = require('passport');
 const nodemailer = require('nodemailer');
 const {authUser} = require('./auth_user');
-const {TIME_OUT} = require('../utils/constants');
+const {TIME_OUT, REMEMBER_MAX_AGE, TOKEN_EXPIRATION} = require('../utils/constants');
 const {getUserByEmail} = require('../repositories/repository_helper');
 const {setEmpToken, editEmployee} = require('../repositories/employee_repository');
 const {setToken, editCustomer} = require('../repositories/customers_repository');
 const router = express.Router();
-const expires = 10 * 60 * 1000; // min * sec * millis
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
     const {user} = req;
@@ -20,6 +19,9 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     req.session.role = user.role;
     if (user.role === 'customer') {
         req.session.email = user.address;
+    }
+    if (req.body.rememberMe) {
+        req.session.cookie.maxAge = REMEMBER_MAX_AGE;
     }
     console.info(`Session for User: '${user.username}', Role: '${user.role}' added successfully`);
     const {firstName, lastName, id, gender, phone, role, address} = user;
@@ -99,7 +101,7 @@ router.post('/reset_pass', async (req, res) => {
 
 const resetPassword = async (user, token, res) => {
     user.token = token;
-    user.expiresOn = Date.now() + expires;
+    user.expiresOn = Date.now() + TOKEN_EXPIRATION;
     try {
         if (user.role === 'customer') {
             await setToken(user);
