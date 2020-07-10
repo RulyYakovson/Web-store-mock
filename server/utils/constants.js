@@ -1,4 +1,5 @@
 module.exports = {
+    MAIL_PASS: '',
     TIME_OUT: 1000,
     TOKEN_EXPIRATION: 1000 * 60 * 10, // millis * sec * min (10 minutes)
     SESSION_MAX_AGE: 1000 * 60 * 10, // millis * sec * min (10 minutes)

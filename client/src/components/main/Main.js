@@ -87,14 +87,18 @@ const Main = ({history, user, dispatch}) => {
 
     const [open, setOpen] = useState(false);
     const [productsNum, setProductsNum] = useState(new Map(JSON.parse(localStorage.getItem(PRODUCTS_KEY))).size);
-    const [displayComponent, setDisplayComponent] =
-        useState(user && user.role === USER_ROLE.CUSTOMER ? INNER_COMPONENTS.ABOUT : INNER_COMPONENTS.HOME)
+    const [displayComponent, setDisplayComponent] = useState(INNER_COMPONENTS.ABOUT)
 
     useEffect(() => {
         dispatch(refresh());
     }, []);
 
+    useEffect(() => {
+        setDisplayComponent(user && user.role === USER_ROLE.ADMIN ? INNER_COMPONENTS.HOME : INNER_COMPONENTS.ABOUT);
+    }, [user]);
+
     const getDisplayComponent = () => {
+        debugger
         switch (displayComponent) {
             case INNER_COMPONENTS.HOME:
                 return <Dashboard/>;

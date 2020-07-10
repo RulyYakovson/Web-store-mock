@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const nodemailer = require('nodemailer');
 const {authUser} = require('./auth_user');
-const {TIME_OUT, REMEMBER_MAX_AGE, TOKEN_EXPIRATION} = require('../utils/constants');
+const {TIME_OUT, REMEMBER_MAX_AGE, TOKEN_EXPIRATION, MAIL_PASS} = require('../utils/constants');
 const {getUserByEmail} = require('../repositories/repository_helper');
 const {setEmpToken, editEmployee} = require('../repositories/employee_repository');
 const {setToken, editCustomer} = require('../repositories/customers_repository');
@@ -119,7 +119,7 @@ const sendEmail = (email, name, token, res) => {
         service: 'gmail',
         auth: {
             user: 'ruliweiss@gmail.com',
-            pass: ''    //process.env.MAIL_PASS
+            pass: MAIL_PASS    //process.env.MAIL_PASS
         }
     });
     const mailOptions = {
