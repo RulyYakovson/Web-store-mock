@@ -7,7 +7,9 @@ export const INNER_COMPONENTS = {
     PRODUCTS_TABLE: 'products_table',
     PRODUCTS_VIEW: 'products_cards_view',
     CONTACT_US: 'contact_us',
-    CONTACT_MESSAGES: 'contact_messages'
+    CONTACT_MESSAGES: 'contact_messages',
+    CHAT: 'chat',
+    PROFILE: 'profile'
 };
 
 export const USER_ROLE = {

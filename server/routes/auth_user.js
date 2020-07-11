@@ -6,8 +6,8 @@ module.exports.authEmployee = (req, res, next) => {
     }
     else {
         console.log('Failed to authenticate employee !!!');
-        res.status(401);
-        res.json({ status: 401 });
+        res.status(403);
+        res.json({ status: 403 });
     }
 };
 
@@ -18,8 +18,8 @@ module.exports.authUser = (req, res, next) => {
         next();
     } else {
         console.log('Failed to authenticate user !!!');
-        res.status(401);
-        res.json({ status: 401 });
+        res.status(403);
+        res.json({ status: 403 });
     }
 };
 

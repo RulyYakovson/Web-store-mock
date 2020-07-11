@@ -3,7 +3,7 @@ const router = express.Router();
 const repository = require('../repositories/contact_messsages_repository');
 const auth = require('./auth_user');
 const {MESSAGE_STATUS} = require('../utils/constants');
-const timeout = 1000;
+const {TIME_OUT} = require('../utils/constants');
 
 router.get('/all', auth.authEmployee, async (req, res) => {
     console.log('Received get all contact messages request');
@@ -18,7 +18,7 @@ router.get('/all', auth.authEmployee, async (req, res) => {
             res.status(500);
         }
         res.json(data);
-    }, timeout);
+    }, TIME_OUT);
 });
 
 router.post('/add', async (req, res) => {
@@ -32,7 +32,7 @@ router.post('/add', async (req, res) => {
             console.error(err.message);
             res.status(500).send('ERROR');
         }
-    }, timeout)
+    }, TIME_OUT)
 });
 
 router.post('/update/status', auth.authEmployee, async (req, res) => {
@@ -58,7 +58,7 @@ router.post('/update/status', auth.authEmployee, async (req, res) => {
             console.error(err.message);
             res.status(500).send('ERROR');
         }
-    }, timeout);
+    }, TIME_OUT);
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 import CopyrightIcon from '@material-ui/icons/Copyright'
 
 const Copyright = () => {

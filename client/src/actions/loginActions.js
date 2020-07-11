@@ -5,12 +5,15 @@ import {encrypt} from "../utils/rsa";
 
 export const beginLoading = () => ({type: loginActionTypes.LOGIN_BEGIN_LOADING});
 export const endLoading = () => ({type: loginActionTypes.LOGIN_END_LOADING});
+export const updateBeginLoading = () => ({type: loginActionTypes.UPDATE_BEGIN_LOADING});
+export const updateEndLoading = () => ({type: loginActionTypes.UPDATE_END_LOADING});
 
-export const login = (email, password) => async dispatch => {
+export const login = (email, password, rememberMe) => async dispatch => {
     dispatch(beginLoading());
     try {
         const requestData = {
             username: email,
+            rememberMe: rememberMe,
             password: encrypt(password)
         };
         const res = await httpclient.post('/login', requestData);
@@ -79,8 +82,7 @@ export const createAccount = (user) => async dispatch => {
             password: encrypt(password),
             address: email
         };
-        const res = await httpclient.post('/customer/add', requestData); // TODO: change path
-        // TODO: get the created user
+        const res = await httpclient.post('/customer/add', requestData);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
         dispatch(NotificationsActions.notifySuccess('New account created successfully !!'))
         localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO: login !!!
@@ -90,5 +92,21 @@ export const createAccount = (user) => async dispatch => {
         console.error(err);
     } finally {
         dispatch(endLoading());
+    }
+};
+
+export const updateAccount = (user) => async dispatch => {
+    dispatch(updateBeginLoading());
+    try {
+        const res = await httpclient.post('/edit', user);
+        dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
+        dispatch(NotificationsActions.notifySuccess('Profile updated successfully !!'))
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        console.info(res);
+    } catch (err) {
+        dispatch(NotificationsActions.notifyError('An error occurred while trying to update profile.'))
+        console.error(err);
+    } finally {
+        dispatch(updateEndLoading());
     }
 };

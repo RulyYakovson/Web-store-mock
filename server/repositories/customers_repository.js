@@ -62,6 +62,7 @@ module.exports.editCustomer = async req => {
     if (user) {
         console.log(`User: ${user} \nsuccessfully updeted !!`);
         updateSession(user, req.session);
+        return user;
     } else {
         const err = `Error while trying to update user with ID: ${customer.id}`;
         console.log(err);

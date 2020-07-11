@@ -84,10 +84,6 @@ const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName
         setFloor(floor);
     };
 
-    const createAccountAction = async event => {
-
-    };
-
     return (
         <Container component="main">
             <CssBaseline/>

@@ -101,9 +101,7 @@ const CreateAccount = ({dispatch, history}) => {
 
     const createAccountAction = async event => {
         event.preventDefault();
-        const user = {
-            firstName, lastName, password, email, gender, phone
-        }
+        const user = {firstName, lastName, password, email, gender, phone}
         await dispatch(createAccount(user));
         history.push('/home');
     };

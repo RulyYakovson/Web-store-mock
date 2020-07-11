@@ -60,6 +60,7 @@ const LoginPage = ({dispatch, history}) => {
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const [rememberMe, setRememberMe] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [emailErrorMessage, setEmailErrorMessage] = useState(mandatoryTitle);
     const disabledButton = !!emailErrorMessage || !!errorMessage;
@@ -83,7 +84,7 @@ const LoginPage = ({dispatch, history}) => {
 
     const loginAction = async event => {
         event.preventDefault();
-        await dispatch(login(email, password));
+        await dispatch(login(email, password, rememberMe));
         const url = get(history, "location.state.from.pathname",'/home');
         history.push(url);
     };
@@ -131,8 +132,10 @@ const LoginPage = ({dispatch, history}) => {
                             onChange={event => onPasswordChange(event.target.value)}
                             error={!isEmpty(errorMessage)} // TODO
                         />
-                        <FormControlLabel // TODO: consider if implement or cancel
-                            control={<Checkbox value="remember" color="primary"/>}
+                        <FormControlLabel
+                            control={<Checkbox color="primary" value="remember"/>}
+                            checked={rememberMe}
+                            onChange={event => setRememberMe(event.target.checked)}
                             label="Remember me"
                         />
                         <Button

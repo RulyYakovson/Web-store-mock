@@ -2,11 +2,11 @@ const express = require('express');
 const passport = require('passport');
 const nodemailer = require('nodemailer');
 const {authUser} = require('./auth_user');
+const {TIME_OUT, REMEMBER_MAX_AGE, TOKEN_EXPIRATION, MAIL_PASS} = require('../utils/constants');
 const {getUserByEmail} = require('../repositories/repository_helper');
 const {setEmpToken, editEmployee} = require('../repositories/employee_repository');
 const {setToken, editCustomer} = require('../repositories/customers_repository');
 const router = express.Router();
-const expires = 10 * 60 * 1000; // min * sec * millis
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
     const {user} = req;
@@ -19,6 +19,9 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     req.session.role = user.role;
     if (user.role === 'customer') {
         req.session.email = user.address;
+    }
+    if (req.body.rememberMe) {
+        req.session.cookie.maxAge = REMEMBER_MAX_AGE;
     }
     console.info(`Session for User: '${user.username}', Role: '${user.role}' added successfully`);
     const {firstName, lastName, id, gender, phone, role, address} = user;
@@ -50,22 +53,31 @@ router.get('/user', authUser, (req, res) => {
 });
 
 router.post('/edit', authUser, async (req, res) => {
-    try {
-        console.log('Received edit profile request');
-        if (req.session.role === 'customer') {
-            await editCustomer(req);
-        } else {
-            await editEmployee(req);
+    await setTimeout(async () => {
+
+        try {
+            console.log('Received edit profile request');
+            if (!req.body.id) {
+                res.status(400).send('Missing user id');
+                return
+            }
+            let user = null;
+            if (req.session.role === 'customer') {
+                user = await editCustomer(req);
+            } else {
+                user = await editEmployee(req);
+            }
+            const {firstName, lastName, id, gender, phone, role, address, username, email} = user;
+            res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address, username, email}});
+        } catch (err) {
+            console.error(err.message);
+            if (err.message.includes('duplicate key error')) {
+                res.status(400).send('ERROR');
+            } else {
+                res.status(500).send('ERROR');
+            }
         }
-        res.status(200).send('OK');
-    } catch (err) {
-        console.error(err.message);
-        if (err.message.includes('duplicate key error')) {
-            res.status(400).send('ERROR');
-        } else {
-            res.status(500).send('ERROR');
-        }
-    }
+    }, TIME_OUT)
 });
 
 router.post('/reset_pass', async (req, res) => {
@@ -75,7 +87,7 @@ router.post('/reset_pass', async (req, res) => {
         const user = await getUserByEmail(email);
         if (user) {
             const token = generateToken()
-            resetPassword(user, token, res);
+            await resetPassword(user, token, res);
             sendEmail(email, user.firstName, token, res);
         } else if (user === null) {
             console.log(`User with email: '${email}' not found`);
@@ -89,7 +101,7 @@ router.post('/reset_pass', async (req, res) => {
 
 const resetPassword = async (user, token, res) => {
     user.token = token;
-    user.expiresOn = Date.now() + expires;
+    user.expiresOn = Date.now() + TOKEN_EXPIRATION;
     try {
         if (user.role === 'customer') {
             await setToken(user);
@@ -107,7 +119,7 @@ const sendEmail = (email, name, token, res) => {
         service: 'gmail',
         auth: {
             user: 'ruliweiss@gmail.com',
-            pass: 'ruliweiss123'
+            pass: MAIL_PASS    //process.env.MAIL_PASS
         }
     });
     const mailOptions = {
