@@ -15,7 +15,8 @@ module.exports.getAllFlowers = async () => {
                     amount: flower.amount,
                     isNewProduct: flower.isNewProduct,
                     isSale: flower.isSale,
-                    src: flower.src.data && flower.src.data.toString('base64')
+                    src: flower.src && flower.src.data && flower.src.data.toString('base64'),
+                    url: flower.url
                 }
             });
         }

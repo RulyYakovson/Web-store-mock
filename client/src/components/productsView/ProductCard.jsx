@@ -99,7 +99,7 @@ const ProductCard = ({product, setProductsNum}) => {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={`data:image/png;base64, ${product.src}`}
+                    image={product.url}
                 />
                 {product.isNewProduct && <StyledBadge badgeContent={'New'} color="primary"/>}
                 {product.isSale && <StyledBadge badgeContent={'Sale'} color="secondary"/>}

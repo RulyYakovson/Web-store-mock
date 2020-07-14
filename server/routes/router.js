@@ -119,7 +119,7 @@ const sendEmail = (email, name, token, res) => {
         service: 'gmail',
         auth: {
             user: 'ruliweiss@gmail.com',
-            pass: MAIL_PASS    //process.env.MAIL_PASS
+            pass: MAIL_PASS
         }
     });
     const mailOptions = {

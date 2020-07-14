@@ -42,7 +42,6 @@ module.exports= (server)=> {
     client.on('error', function (err) {
       console.log('received error from client:', client.id)
       console.log(err)
-      console.log(err)
     })
   })
 }

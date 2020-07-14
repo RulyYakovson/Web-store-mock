@@ -50,7 +50,7 @@ const ImageDialog = ({src, rowData, dispatch}) => {
                         onClick={handleOpen}
                         variant="circle"
                         className={classes.avatar}
-                        src={src ? `data:image/png;base64, ${src}` : null}
+                        src={src}
                     />
                 </div>
             </React.Fragment>

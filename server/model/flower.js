@@ -9,6 +9,7 @@ module.exports = function (db) {
             name: { type: String, required: true, unique: true },
             price: { type: Double, required: true },
             amount: Number,
+            url: String,
             description: String,
             isNewProduct: {type: Boolean, default: false},
             isSale: {type: Boolean, default: false},
@@ -31,7 +32,8 @@ module.exports = function (db) {
                 amount: flower.amount,
                 isNewProduct: flower.isNewProduct,
                 isSale: flower.isSale,
-                description: flower.description
+                description: flower.description,
+                url: flower.url
             }
         );
     };

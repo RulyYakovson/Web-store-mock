@@ -40,6 +40,7 @@ export const logOut = (history) => async dispatch => {
         // await removeUserLocal(history);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
         localStorage.removeItem('user');
+        localStorage.removeItem('product-list');
         dispatch(NotificationsActions.notifyWarning('You have logged out of your account.'))
         history.push('/login');
         console.info(res);
