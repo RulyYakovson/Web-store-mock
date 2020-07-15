@@ -58,8 +58,6 @@ const Profile = ({dispatch, user, isLoading}) => {
     const [firstName, setFirstName] = useState(user && user.firstName);
     const [lastName, setLastName] = useState(user && user.lastName);
     const [email, setEmail] = useState(user && user.username);
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [phone, setPhone] = useState(user && user.phone);
     const [gender, setGender] = useState(user && user.gender);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -83,18 +81,6 @@ const Profile = ({dispatch, user, isLoading}) => {
         // TODO: validate
         // TODO: set error message if needed
         setEmail(email);
-    };
-
-    const onPasswordChange = password => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPassword(password);
-    };
-
-    const onConfirmPasswordChange = confirmPassword => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setConfirmPassword(confirmPassword);
     };
 
     const onPhoneChange = phone => {
