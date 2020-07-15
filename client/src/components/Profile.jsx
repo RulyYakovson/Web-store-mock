@@ -16,6 +16,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {updateAccount} from "../actions/loginActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {connect} from "react-redux";
+import {MANDATORY_TITLE} from "../utils/constants";
+import {isPatternValid, VALIDATOR_TYPES} from "../utils/validator";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -50,49 +52,40 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// TODO: VALIDATION !!!
-
 const Profile = ({dispatch, user, isLoading}) => {
     const classes = useStyles();
 
     const [firstName, setFirstName] = useState(user && user.firstName);
     const [lastName, setLastName] = useState(user && user.lastName);
     const [email, setEmail] = useState(user && user.username);
+    const [emailErrorMessage, setEmailErrorMessage] = useState(null);
     const [phone, setPhone] = useState(user && user.phone);
+    const [phoneErrorMessage, setPhoneErrorMessage] = useState(null);
     const [gender, setGender] = useState(user && user.gender);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const buttonDisabled = user && (firstName === user.firstName && lastName === user.lastName && email === user.username
-            && phone === user.phone && gender === user.gender) || isLoading
-
-
-    const onFirstNameChange = firstName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setFirstName(firstName);
-    };
-
-    const onLastNameChange = lastName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setLastName(lastName);
-    };
+    const buttonDisabled = user && (firstName === user.firstName && lastName === user.lastName
+        && email === user.username && phone === user.phone && gender === user.gender)
+        || isLoading || isEmpty(firstName) || isEmpty(lastName) || !!phoneErrorMessage || !!emailErrorMessage;
 
     const onEmailChange = email => {
-        // TODO: validate
-        // TODO: set error message if needed
         setEmail(email);
+        if (isEmpty(email)) {
+            setEmailErrorMessage(MANDATORY_TITLE);
+        } else if (!isPatternValid(email, VALIDATOR_TYPES.EMAIL)) {
+            setEmailErrorMessage(`"${email}" is not a valid email`);
+        } else {
+            setEmailErrorMessage(null);
+        }
     };
 
     const onPhoneChange = phone => {
-        // TODO: validate
-        // TODO: set error message if needed
         setPhone(phone);
-    };
-
-    const onGenderChange = gender => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setGender(gender);
+        if (isEmpty(phone)) {
+            setPhoneErrorMessage(MANDATORY_TITLE);
+        } else if (!isPatternValid(phone, VALIDATOR_TYPES.PHONE)) {
+            setPhoneErrorMessage(`"${phone}" is not a valid phone`);
+        } else {
+            setPhoneErrorMessage(null);
+        }
     };
 
     const createAccountAction = async event => {
@@ -124,8 +117,8 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 label="First Name"
                                 autoFocus
                                 value={firstName}
-                                onChange={event => onFirstNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setFirstName(event.target.value)}
+                                title={isEmpty(firstName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -138,8 +131,8 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 name="lastName"
                                 autoComplete="lname"
                                 value={lastName}
-                                onChange={event => onLastNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setLastName(event.target.value)}
+                                title={isEmpty(lastName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -153,7 +146,8 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 autoComplete="email"
                                 value={email}
                                 onChange={event => onEmailChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={emailErrorMessage}
+                                error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -168,7 +162,8 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 autoComplete="phone"
                                 value={phone}
                                 onChange={event => onPhoneChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={phoneErrorMessage}
+                                error={phoneErrorMessage && phoneErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -178,8 +173,7 @@ const Profile = ({dispatch, user, isLoading}) => {
                                     labelId="update-account-gender-label"
                                     id="update-account-gender"
                                     value={gender}
-                                    onChange={event => onGenderChange(event.target.value)}
-                                    error={!isEmpty(errorMessage)} // TODO
+                                    onChange={event => setGender(event.target.value)}
                                     label="Gender"
                                 >
                                     <MenuItem value="">

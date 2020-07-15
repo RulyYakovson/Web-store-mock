@@ -8,16 +8,18 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../Copyright';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import {isEmpty} from "lodash";
 import {connect} from "react-redux";
+import {isEmpty} from "lodash";
+import {MANDATORY_TITLE} from '../../utils/constants';
 import {createAccount} from "../../actions/loginActions";
+import {isPatternValid, VALIDATOR_TYPES} from "../../utils/validator";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -51,52 +53,69 @@ const CreateAccount = ({dispatch, history}) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState(MANDATORY_TITLE);
     const [password, setPassword] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState(MANDATORY_TITLE);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState(MANDATORY_TITLE);
     const [phone, setPhone] = useState('');
-    const [gender, setGender] = useState('');
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    const onFirstNameChange = firstName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setFirstName(firstName);
-    };
-
-    const onLastNameChange = lastName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setLastName(lastName);
-    };
+    const [phoneErrorMessage, setPhoneErrorMessage] = useState(MANDATORY_TITLE);
+    const [gender, setGender] = useState('None');
+    const disabledButton = !!emailErrorMessage || !!passwordErrorMessage || !!confirmPasswordErrorMessage
+        || !!phoneErrorMessage || isEmpty(firstName) || isEmpty(lastName)
 
     const onEmailChange = email => {
-        // TODO: validate
-        // TODO: set error message if needed
         setEmail(email);
-    };
-
-    const onPasswordChange = password => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPassword(password);
-    };
-
-    const onConfirmPasswordChange = confirmPassword => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setConfirmPassword(confirmPassword);
+        if (isEmpty(email)) {
+            setEmailErrorMessage(MANDATORY_TITLE);
+        } else if (!isPatternValid(email, VALIDATOR_TYPES.EMAIL)) {
+            setEmailErrorMessage(`"${email}" is not a valid email`);
+        } else {
+            setEmailErrorMessage(null);
+        }
     };
 
     const onPhoneChange = phone => {
-        // TODO: validate
-        // TODO: set error message if needed
         setPhone(phone);
+        if (isEmpty(phone)) {
+            setPhoneErrorMessage(MANDATORY_TITLE);
+        } else if (!isPatternValid(phone, VALIDATOR_TYPES.PHONE)) {
+            setPhoneErrorMessage(`"${phone}" is not a valid phone`);
+        } else {
+            setPhoneErrorMessage(null);
+        }
     };
 
-    const onGenderChange = gender => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setGender(gender);
+    const onPasswordChange = password => {
+        setPassword(password);
+        handlePasswordsMatchMessage(password, confirmPassword);
+        if (isEmpty(password)) {
+            setPasswordErrorMessage(MANDATORY_TITLE);
+        } else if (!isPatternValid(password, VALIDATOR_TYPES.PASSWORD)) {
+            setPasswordErrorMessage('Password must be between 4 to 8 characters');
+        } else {
+            setPasswordErrorMessage(null);
+        }
+    };
+
+
+    const onConfirmPasswordChange = confirmPassword => {
+        debugger
+        setConfirmPassword(confirmPassword);
+        handlePasswordsMatchMessage(password, confirmPassword);
+        if (isEmpty(confirmPassword)) {
+            setConfirmPasswordErrorMessage(MANDATORY_TITLE);
+        }
+    };
+
+    const handlePasswordsMatchMessage = (pass, confirm) => {
+        if (isEmpty(pass) || isEmpty(confirm)) {
+            setConfirmPasswordErrorMessage(null);
+        } else if (pass !== confirm) {
+            setConfirmPasswordErrorMessage('Passwords do not match');
+        } else {
+            setConfirmPasswordErrorMessage(null);
+        }
     };
 
     const createAccountAction = async event => {
@@ -108,10 +127,10 @@ const CreateAccount = ({dispatch, history}) => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign up
@@ -129,8 +148,8 @@ const CreateAccount = ({dispatch, history}) => {
                                 label="First Name"
                                 autoFocus
                                 value={firstName}
-                                onChange={event => onFirstNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setFirstName(event.target.value)}
+                                title={isEmpty(firstName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -143,8 +162,8 @@ const CreateAccount = ({dispatch, history}) => {
                                 name="lastName"
                                 autoComplete="lname"
                                 value={lastName}
-                                onChange={event => onLastNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setLastName(event.target.value)}
+                                title={isEmpty(lastName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -158,7 +177,8 @@ const CreateAccount = ({dispatch, history}) => {
                                 autoComplete="email"
                                 value={email}
                                 onChange={event => onEmailChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={emailErrorMessage}
+                                error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -172,7 +192,8 @@ const CreateAccount = ({dispatch, history}) => {
                                 id="password"
                                 value={password}
                                 onChange={event => onPasswordChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={passwordErrorMessage}
+                                error={passwordErrorMessage && passwordErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -186,7 +207,8 @@ const CreateAccount = ({dispatch, history}) => {
                                 id="confirm-password"
                                 value={confirmPassword}
                                 onChange={event => onConfirmPasswordChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={confirmPasswordErrorMessage}
+                                error={confirmPasswordErrorMessage && confirmPasswordErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -201,7 +223,8 @@ const CreateAccount = ({dispatch, history}) => {
                                 autoComplete="phone"
                                 value={phone}
                                 onChange={event => onPhoneChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={phoneErrorMessage}
+                                error={phoneErrorMessage && phoneErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -211,8 +234,7 @@ const CreateAccount = ({dispatch, history}) => {
                                     labelId="create-account-gender-label"
                                     id="create-account-gender"
                                     value={gender}
-                                    onChange={event => onGenderChange(event.target.value)}
-                                    error={!isEmpty(errorMessage)} // TODO
+                                    onChange={event => setGender(event.target.value)}
                                     label="Gender"
                                 >
                                     <MenuItem value="">
@@ -231,6 +253,7 @@ const CreateAccount = ({dispatch, history}) => {
                         color="primary"
                         className={classes.submit}
                         onClick={createAccountAction}
+                        disabled={disabledButton}
                     >
                         Sign Up
                     </Button>
@@ -244,7 +267,7 @@ const CreateAccount = ({dispatch, history}) => {
                 </form>
             </div>
             <Box mt={5}>
-                <Copyright />
+                <Copyright/>
             </Box>
         </Container>
     );

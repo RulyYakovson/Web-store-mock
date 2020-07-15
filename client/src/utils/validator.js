@@ -12,7 +12,7 @@ export const isPatternValid = (exp, type) => {
         return !isEmpty(exp) && !isEmpty(exp.trim()) && regExp.test(exp);
     };
 
-    const defaultValidate = exp => {
+    const defaultValidate = () => {
         return !isEmpty(exp) && !isEmpty(exp.trim());
     };
 
@@ -21,11 +21,11 @@ export const isPatternValid = (exp, type) => {
             return validate(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
         }
         case VALIDATOR_TYPES.PHONE: {
-            return validate(/^[^a-zA-Z]*$/); // TODO: validate number length
+            return validate(/^[^a-zA-Z]*$/);
         }
-        // case VALIDATOR_TYPES.PASSWORD: { TODO: find regex for password
-        //     return validate()
-        // }
+        case VALIDATOR_TYPES.PASSWORD: {
+            return defaultValidate() && exp.length > 3 && exp.length < 9;
+        }
         default: {
             return defaultValidate();
         }
