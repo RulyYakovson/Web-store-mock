@@ -6,11 +6,17 @@ module.exports = {
     DB_URI: 'mongodb://localhost/final-project-db',
     SESSION_SECRET: 'final project secret',
     CORS_ORIGIN: 'http://localhost:3000',
+    USER_ROLE : {
+        EMPLOYEE: 'Employee',
+        ADMIN: 'Admin',
+        CUSTOMER: 'customer'
+    },
     MESSAGE_STATUS: {
         PENDING: 'Pending',
         IN_PROGRESS: 'In Progress',
         FINISH: 'Finish'
     },
+    MAIL_USER: 'ruliweiss@gmail.com',
     MAIL_PASS: '',
     CLOUDINARY: {
         CLOUD_NAME: '',

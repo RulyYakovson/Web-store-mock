@@ -87,8 +87,10 @@ const ResetPassPage = ({dispatch, history}) => {
     const handleResetAction = async event => {
         event.preventDefault();
         afterReset ?
-            dispatch(changePass(token, email, password))
+            await dispatch(changePass(token, email, password))
             : await dispatch(resetPass(email)) && setAfterReset(true);
+
+        afterReset && history.push('/home');
     };
 
     return (

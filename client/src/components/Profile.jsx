@@ -63,6 +63,9 @@ const Profile = ({dispatch, user, isLoading}) => {
     const [phone, setPhone] = useState(user && user.phone);
     const [gender, setGender] = useState(user && user.gender);
     const [errorMessage, setErrorMessage] = useState(null);
+    const buttonDisabled = user && (firstName === user.firstName && lastName === user.lastName && email === user.username
+            && phone === user.phone && gender === user.gender) || isLoading
+
 
     const onFirstNameChange = firstName => {
         // TODO: validate
@@ -209,10 +212,7 @@ const Profile = ({dispatch, user, isLoading}) => {
                         color="primary"
                         className={classes.submit}
                         onClick={createAccountAction}
-                        disabled={
-                            (firstName === user.firstName && lastName === user.lastName && email === user.username
-                            && phone === user.phone && gender === user.gender) || isLoading
-                        }
+                        disabled={buttonDisabled}
                     >
                         {!isLoading && 'Update'}
                         {isLoading && <CircularProgress size={24} className={classes.buttonProgress}/>}
