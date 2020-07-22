@@ -1,9 +1,10 @@
 import {isEmpty} from 'lodash';
 
 export const VALIDATOR_TYPES = {
-    EMAIL: 'EMAIL',
-    PHONE: 'PHONE',
-    PASSWORD: 'PASSWORD'
+    EMAIL: 'email',
+    PHONE: 'phone',
+    PASSWORD: 'password',
+    CONFIRM_PASSWORD: 'confirm_password'
 };
 
 export const isPatternValid = (exp, type) => {

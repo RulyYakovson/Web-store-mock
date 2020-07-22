@@ -17,7 +17,7 @@ import {updateAccount} from "../actions/loginActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {connect} from "react-redux";
 import {MANDATORY_TITLE} from "../utils/constants";
-import {isPatternValid, VALIDATOR_TYPES} from "../utils/validator";
+import {onEmailChange, onPhoneChange} from "../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -66,28 +66,6 @@ const Profile = ({dispatch, user, isLoading}) => {
         && email === user.username && phone === user.phone && gender === user.gender)
         || isLoading || isEmpty(firstName) || isEmpty(lastName) || !!phoneErrorMessage || !!emailErrorMessage;
 
-    const onEmailChange = email => {
-        setEmail(email);
-        if (isEmpty(email)) {
-            setEmailErrorMessage(MANDATORY_TITLE);
-        } else if (!isPatternValid(email, VALIDATOR_TYPES.EMAIL)) {
-            setEmailErrorMessage(`"${email}" is not a valid email`);
-        } else {
-            setEmailErrorMessage(null);
-        }
-    };
-
-    const onPhoneChange = phone => {
-        setPhone(phone);
-        if (isEmpty(phone)) {
-            setPhoneErrorMessage(MANDATORY_TITLE);
-        } else if (!isPatternValid(phone, VALIDATOR_TYPES.PHONE)) {
-            setPhoneErrorMessage(`"${phone}" is not a valid phone`);
-        } else {
-            setPhoneErrorMessage(null);
-        }
-    };
-
     const createAccountAction = async event => {
         event.preventDefault();
         const modifiedUser = {firstName, lastName, gender, phone, username: email, id: user.id}
@@ -113,7 +91,7 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="firstName-profile"
                                 label="First Name"
                                 autoFocus
                                 value={firstName}
@@ -126,7 +104,7 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="lastName-profile"
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
@@ -140,12 +118,12 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
+                                id="email-profile"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                onChange={event => onEmailChange(event.target.value)}
+                                onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
                                 title={emailErrorMessage}
                                 error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                             />
@@ -158,10 +136,10 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 name="phone"
                                 label="Phone"
                                 type="phone"
-                                id="phone"
+                                id="phone-profile"
                                 autoComplete="phone"
                                 value={phone}
-                                onChange={event => onPhoneChange(event.target.value)}
+                                onChange={event => onPhoneChange(event.target.value, setPhone, setPhoneErrorMessage)}
                                 title={phoneErrorMessage}
                                 error={phoneErrorMessage && phoneErrorMessage !== MANDATORY_TITLE}
                             />

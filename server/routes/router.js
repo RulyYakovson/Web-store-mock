@@ -122,6 +122,7 @@ const sendEmail = (email, name, token, res) => {
             pass: MAIL_PASS
         }
     });
+
     const mailOptions = {
         sender: "doNotReply@blabla", // ??????????
         to: email,
@@ -129,6 +130,7 @@ const sendEmail = (email, name, token, res) => {
         text: generateEmailText(name, token),
         html: generateEmailHtml(name, token)
     };
+
     transporter.sendMail(mailOptions, function (err, info) {
         if (err) {
             console.error(err.message);
@@ -139,6 +141,7 @@ const sendEmail = (email, name, token, res) => {
         }
     });
 };
+
 const generateToken = () => Math.random().toString(36).substring(2);
 
 const generateEmailHtml = (name, token) =>

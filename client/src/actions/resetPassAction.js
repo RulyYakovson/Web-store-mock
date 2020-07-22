@@ -1,11 +1,11 @@
 import httpClient from '../utils/httpClient';
-import {isLoadingActionTypes} from './actionTypes';
+import {resetPassActionTypes} from './actionTypes';
 import {encrypt} from "../utils/rsa";
 import {login} from "./loginActions";
 import * as NotificationsActions from "./notificationsActions";
 
-export const beginLoading = () => ({type: isLoadingActionTypes.BEGIN_LOADING});
-export const endLoading = () => ({type: isLoadingActionTypes.END_LOADING});
+export const beginLoading = () => ({type: resetPassActionTypes.RESET_PASS_BEGIN_LOADING});
+export const endLoading = () => ({type: resetPassActionTypes.RESET_PASS_END_LOADING});
 
 export const resetPass = (email) => async dispatch => {
     dispatch(beginLoading());

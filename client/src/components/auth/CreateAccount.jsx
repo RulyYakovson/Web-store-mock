@@ -19,7 +19,7 @@ import {connect} from "react-redux";
 import {isEmpty} from "lodash";
 import {MANDATORY_TITLE} from '../../utils/constants';
 import {createAccount} from "../../actions/loginActions";
-import {isPatternValid, VALIDATOR_TYPES} from "../../utils/validator";
+import {onConfirmPasswordChange, onEmailChange, onPasswordChange, onPhoneChange} from "../../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -45,8 +45,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// TODO: VALIDATION !!!
-
 const CreateAccount = ({dispatch, history}) => {
     const classes = useStyles();
 
@@ -63,60 +61,6 @@ const CreateAccount = ({dispatch, history}) => {
     const [gender, setGender] = useState('None');
     const disabledButton = !!emailErrorMessage || !!passwordErrorMessage || !!confirmPasswordErrorMessage
         || !!phoneErrorMessage || isEmpty(firstName) || isEmpty(lastName)
-
-    const onEmailChange = email => {
-        setEmail(email);
-        if (isEmpty(email)) {
-            setEmailErrorMessage(MANDATORY_TITLE);
-        } else if (!isPatternValid(email, VALIDATOR_TYPES.EMAIL)) {
-            setEmailErrorMessage(`"${email}" is not a valid email`);
-        } else {
-            setEmailErrorMessage(null);
-        }
-    };
-
-    const onPhoneChange = phone => {
-        setPhone(phone);
-        if (isEmpty(phone)) {
-            setPhoneErrorMessage(MANDATORY_TITLE);
-        } else if (!isPatternValid(phone, VALIDATOR_TYPES.PHONE)) {
-            setPhoneErrorMessage(`"${phone}" is not a valid phone`);
-        } else {
-            setPhoneErrorMessage(null);
-        }
-    };
-
-    const onPasswordChange = password => {
-        setPassword(password);
-        handlePasswordsMatchMessage(password, confirmPassword);
-        if (isEmpty(password)) {
-            setPasswordErrorMessage(MANDATORY_TITLE);
-        } else if (!isPatternValid(password, VALIDATOR_TYPES.PASSWORD)) {
-            setPasswordErrorMessage('Password must be between 4 to 8 characters');
-        } else {
-            setPasswordErrorMessage(null);
-        }
-    };
-
-
-    const onConfirmPasswordChange = confirmPassword => {
-        debugger
-        setConfirmPassword(confirmPassword);
-        handlePasswordsMatchMessage(password, confirmPassword);
-        if (isEmpty(confirmPassword)) {
-            setConfirmPasswordErrorMessage(MANDATORY_TITLE);
-        }
-    };
-
-    const handlePasswordsMatchMessage = (pass, confirm) => {
-        if (isEmpty(pass) || isEmpty(confirm)) {
-            setConfirmPasswordErrorMessage(null);
-        } else if (pass !== confirm) {
-            setConfirmPasswordErrorMessage('Passwords do not match');
-        } else {
-            setConfirmPasswordErrorMessage(null);
-        }
-    };
 
     const createAccountAction = async event => {
         event.preventDefault();
@@ -144,7 +88,7 @@ const CreateAccount = ({dispatch, history}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="firstName-account"
                                 label="First Name"
                                 autoFocus
                                 value={firstName}
@@ -157,7 +101,7 @@ const CreateAccount = ({dispatch, history}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="lastName-account"
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
@@ -171,12 +115,12 @@ const CreateAccount = ({dispatch, history}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
+                                id="email-account"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                onChange={event => onEmailChange(event.target.value)}
+                                onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
                                 title={emailErrorMessage}
                                 error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                             />
@@ -189,11 +133,13 @@ const CreateAccount = ({dispatch, history}) => {
                                 name="password"
                                 label="Password"
                                 type="password"
-                                id="password"
+                                id="password-account"
                                 value={password}
-                                onChange={event => onPasswordChange(event.target.value)}
                                 title={passwordErrorMessage}
                                 error={passwordErrorMessage && passwordErrorMessage !== MANDATORY_TITLE}
+                                onChange={event =>
+                                    onPasswordChange(event.target.value, confirmPassword, setPassword, setPasswordErrorMessage, setConfirmPasswordErrorMessage)
+                                }
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -204,11 +150,13 @@ const CreateAccount = ({dispatch, history}) => {
                                 name="confirm-password"
                                 label="Confirm password"
                                 type="password"
-                                id="confirm-password"
+                                id="confirm-password-account"
                                 value={confirmPassword}
-                                onChange={event => onConfirmPasswordChange(event.target.value)}
                                 title={confirmPasswordErrorMessage}
                                 error={confirmPasswordErrorMessage && confirmPasswordErrorMessage !== MANDATORY_TITLE}
+                                onChange={event =>
+                                    onConfirmPasswordChange(event.target.value, password, setConfirmPassword, setConfirmPasswordErrorMessage)
+                                }
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -219,17 +167,17 @@ const CreateAccount = ({dispatch, history}) => {
                                 name="phone"
                                 label="Phone"
                                 type="phone"
-                                id="phone"
+                                id="phone-account"
                                 autoComplete="phone"
                                 value={phone}
-                                onChange={event => onPhoneChange(event.target.value)}
+                                onChange={event => onPhoneChange(event.target.value, setPhone, setPhoneErrorMessage)}
                                 title={phoneErrorMessage}
                                 error={phoneErrorMessage && phoneErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl variant="outlined" className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
+                                <InputLabel id="create-account-select-outlined-label">Gender</InputLabel>
                                 <Select
                                     labelId="create-account-gender-label"
                                     id="create-account-gender"
@@ -237,9 +185,7 @@ const CreateAccount = ({dispatch, history}) => {
                                     onChange={event => setGender(event.target.value)}
                                     label="Gender"
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
+                                    <MenuItem value=""><em>None</em></MenuItem>
                                     <MenuItem value={'Male'}>Male</MenuItem>
                                     <MenuItem value={'Female'}>Female</MenuItem>
                                 </Select>

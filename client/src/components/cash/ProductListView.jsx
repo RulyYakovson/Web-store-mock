@@ -37,7 +37,7 @@ const ProductListView = ({product, price, amount, handleDeleteItem}) => {
                     <Avatar
                         className={classes.avatar}
                         alt="Remy Sharp"
-                        src={product.url}
+                        src={product && product.url}
                     />
                 </ListItemAvatar>
                 <ListItemText

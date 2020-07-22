@@ -15,7 +15,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {isEmpty} from "lodash";
 import {MANDATORY_TITLE} from '../../utils/constants';
 import './contact.css';
-import {isPatternValid, VALIDATOR_TYPES} from "../../utils/validator";
+import {onEmailChange} from "../../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -69,17 +69,6 @@ const Contact = ({dispatch, isLoading}) => {
     const [message, setMessage] = useState('');
     const buttonDisabled = !!emailErrorMessage || isEmpty(message) || isEmpty(fullName) || isLoading;
 
-    const onEmailChange = email => {
-        setEmail(email);
-        if (isEmpty(email)) {
-            setEmailErrorMessage(MANDATORY_TITLE);
-        } else if (!isPatternValid(email, VALIDATOR_TYPES.EMAIL)) {
-            setEmailErrorMessage(`"${email}" is not a valid email`);
-        } else {
-            setEmailErrorMessage(null);
-        }
-    };
-
     const sendMessageAction = async event => {
         event.preventDefault();
         const success = await dispatch(addContact(email, fullName, message));
@@ -108,14 +97,15 @@ const Contact = ({dispatch, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
+                                id="email-contacts"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                onChange={event => onEmailChange(event.target.value)}
+                                onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
                                 title={emailErrorMessage}
-                                error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}                            />
+                                error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
+                            />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField

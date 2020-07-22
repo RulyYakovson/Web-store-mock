@@ -1,6 +1,6 @@
-export const isLoadingActionTypes = {
-    BEGIN_LOADING: 'BEGIN_LOADING',
-    END_LOADING: 'END_LOADING'
+export const resetPassActionTypes = {
+    RESET_PASS_BEGIN_LOADING: 'RESET_PASS_BEGIN_LOADING',
+    RESET_PASS_END_LOADING: 'RESET_PASS_END_LOADING'
 };
 
 export const loginActionTypes = {
