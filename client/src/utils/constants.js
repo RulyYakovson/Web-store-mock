@@ -9,6 +9,7 @@ export const INNER_COMPONENTS = {
     CONTACT_US: 'contact_us',
     CONTACT_MESSAGES: 'contact_messages',
     CHAT: 'chat',
+    USER_HISTORY: 'user_history',
     PROFILE: 'profile'
 };
 

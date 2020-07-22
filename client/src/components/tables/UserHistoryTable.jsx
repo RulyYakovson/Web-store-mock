@@ -1,12 +1,11 @@
 import React, {useEffect} from "react";
-import clsx from "clsx";
-import Orders from "./Orders";
-import Chart from "./Chart";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {makeStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
-import {fetchOrders} from "../../actions/paymentAction";
+import Orders from "../dashboard/Orders";
+import {fetchUserOrders} from "../../actions/fetchUserOrdersAction";
+import userOrders from "../../reducers/userOrdersReducer";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -15,37 +14,24 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
-    fixedHeight: {
-        height: 240,
-    },
 }));
 
-const Dashboard = ({orders, isLoading, dispatch}) => {
+const UserHistoryTable = ({userId, orders, isLoading, dispatch}) => {
     const classes = useStyles();
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     useEffect(() => {
-        dispatch(fetchOrders());
+        dispatch(fetchUserOrders(userId));
     }, []);
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Paper className={fixedHeightPaper}>
-                    <Chart
-                        orders={orders}
-                        isLoading={isLoading}
-                    />
-                </Paper>
-            </Grid>
-            <Grid item xs={12}>
                 <Paper className={classes.paper}>
                     <Orders
                         orders={orders}
                         isLoading={isLoading}
-                        tableHeight='232px'
-                        tableSize='small'
-                        withName
+                        tableHeight='460px'
+                        tableSize='medium'
                     />
                 </Paper>
             </Grid>
@@ -54,6 +40,6 @@ const Dashboard = ({orders, isLoading, dispatch}) => {
 };
 
 export default connect(store => ({
-    orders: store.orders.orders,
-    isLoading: store.orders.isLoading
-}))(Dashboard);
+    orders: store.userOrders.orders,
+    isLoading: store.userOrders.isLoading
+}))(UserHistoryTable);

@@ -6,6 +6,7 @@ import products from './productsReducer';
 import messages from './contactMessagesReducer';
 import orders from './paymentReducer';
 import resetPass from './resetPassReducer';
+import userOrders from './userOrdersReducer';
 
 export default combineReducers({
     login,
@@ -14,5 +15,6 @@ export default combineReducers({
     products,
     messages,
     orders,
-    resetPass
+    resetPass,
+    userOrders
 });

@@ -60,7 +60,7 @@ const LoginPage = ({dispatch, history}) => {
     const [password, setPassword] = useState(null);
     const [rememberMe, setRememberMe] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState(MANDATORY_TITLE);
-    const disabledButton = !!emailErrorMessage || !isEmpty(password);
+    const disabledButton = !!emailErrorMessage || isEmpty(password);
 
     const loginAction = async event => {
         event.preventDefault();

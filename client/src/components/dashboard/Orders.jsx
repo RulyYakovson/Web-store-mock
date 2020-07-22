@@ -9,9 +9,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Title from '../Title';
 
 const useStyles = makeStyles((theme) => ({
-    orders: {
-        height: theme.spacing(29),
-    },
     progress: {
         color: '#3f51b5',
         position: 'absolute',
@@ -22,18 +19,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Orders = ({orders, isLoading}) => {
+const Orders = ({orders, isLoading, tableHeight, tableSize, withName = false}) => {
     const classes = useStyles();
 
     return (
         <React.Fragment>
             <Title>Recent Orders</Title>
             {isLoading && <CircularProgress size={36} className={classes.progress}/>}
-            <Table size="small" className={classes.orders}>
+            <Table size={tableSize} style={{maxHeight: tableHeight}}>
                 <TableHead style={{fontFamily: "fantasy"}}>
                     <TableRow>
                         <TableCell>Date</TableCell>
-                        <TableCell>Name</TableCell>
+                        {withName && <TableCell>Name</TableCell>}
                         <TableCell>Ship To</TableCell>
                         <TableCell>Payment Method</TableCell>
                         <TableCell align="right">Total</TableCell>
@@ -43,7 +40,7 @@ const Orders = ({orders, isLoading}) => {
                     {orders && orders.map((row) => (
                         <TableRow key={row._id}>
                             <TableCell>{row.created && new Date(row.created).toDateString()}</TableCell>
-                            <TableCell>{row.name}</TableCell>
+                            {withName && <TableCell>{row.name}</TableCell>}
                             <TableCell>{row.shipTo}</TableCell>
                             <TableCell>{row.paymentMethod}</TableCell>
                             <TableCell align="right">{row.total}</TableCell>

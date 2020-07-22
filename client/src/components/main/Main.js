@@ -9,7 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import {mainListItems, secondaryListItems} from './listItems';
+import {mainListItems, secondaryListItems} from './ListItems';
 import About from "../about/About";
 import Copyright from '../Copyright';
 import Dashboard from "../dashboard/Dashboard";
@@ -24,6 +24,7 @@ import Contact from "../contact/Contact";
 import ContactMessagesTable from "../tables/ContactMessagesTable";
 import ChatRoomSelection from "../chat/ChatRoomSelection";
 import Profile from "../Profile";
+import UserHistoryTable from "../tables/UserHistoryTable";
 
 const drawerWidth = 240;
 
@@ -120,6 +121,8 @@ const Main = ({history, user, dispatch}) => {
                 return <ChatRoomSelection user={user}/>
             case INNER_COMPONENTS.PROFILE:
                 return <Profile user={user}/>;
+            case INNER_COMPONENTS.USER_HISTORY:
+                return <UserHistoryTable userId={user && user.id}/>;
             default:
                 return <About/>;
         };
