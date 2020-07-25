@@ -12,20 +12,19 @@ const useStyles = makeStyles((theme) => ({
     progress: {
         color: '#3f51b5',
         position: 'absolute',
-        top: '52%',
         left: '50%',
         marginTop: -12,
         marginLeft: -12,
     },
 }));
 
-const Orders = ({orders, isLoading, tableHeight, tableSize, withName = false}) => {
+const Orders = ({orders, isLoading, tableHeight, tableSize, loaderTop, withName = false}) => {
     const classes = useStyles();
 
     return (
         <React.Fragment>
             <Title>Recent Orders</Title>
-            {isLoading && <CircularProgress size={36} className={classes.progress}/>}
+            {isLoading && <CircularProgress size={36} className={classes.progress} style={{top: loaderTop}}/>}
             <Table size={tableSize} style={{maxHeight: tableHeight}}>
                 <TableHead style={{fontFamily: "fantasy"}}>
                     <TableRow>

@@ -45,6 +45,7 @@ const Dashboard = ({orders, isLoading, dispatch}) => {
                         isLoading={isLoading}
                         tableHeight='232px'
                         tableSize='small'
+                        loaderTop='52%'
                         withName
                     />
                 </Paper>

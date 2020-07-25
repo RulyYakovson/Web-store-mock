@@ -31,6 +31,7 @@ const UserHistoryTable = ({userId, orders, isLoading, dispatch}) => {
                         isLoading={isLoading}
                         tableHeight='460px'
                         tableSize='medium'
+                        loaderTop='17%'
                     />
                 </Paper>
             </Grid>
