@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     progress: {
         color: '#3f51b5',
         position: 'absolute',
-        top: '75%',
+        top: '52%',
         left: '50%',
         marginTop: -12,
         marginLeft: -12,

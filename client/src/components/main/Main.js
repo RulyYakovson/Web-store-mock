@@ -99,7 +99,6 @@ const Main = ({history, user, dispatch}) => {
     }, [user]);
 
     const getDisplayComponent = () => {
-        debugger
         switch (displayComponent) {
             case INNER_COMPONENTS.HOME:
                 return <Dashboard/>;

@@ -5,7 +5,6 @@ import {makeStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import Orders from "../dashboard/Orders";
 import {fetchUserOrders} from "../../actions/fetchUserOrdersAction";
-import userOrders from "../../reducers/userOrdersReducer";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

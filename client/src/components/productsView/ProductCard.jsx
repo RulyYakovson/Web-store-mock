@@ -53,13 +53,22 @@ const useStyles = makeStyles({
     }
 });
 
-const StyledBadge = withStyles((theme) => ({
+const StyledBadgeSale = withStyles((theme) => ({
     root: {
         position: "absolute",
     },
     badge: {
-        right: -3,
-        position: "initial",
+        right: theme.spacing(-6),
+        border: `2px solid ${theme.palette.background.paper}`,
+    },
+}))(Badge);
+
+const StyledBadgeNew = withStyles((theme) => ({
+    root: {
+        position: "absolute",
+    },
+    badge: {
+        right: theme.spacing(-25),
         border: `2px solid ${theme.palette.background.paper}`,
     },
 }))(Badge);
@@ -101,8 +110,8 @@ const ProductCard = ({product, setProductsNum}) => {
                     className={classes.media}
                     image={product.url}
                 />
-                {product.isNewProduct && <StyledBadge badgeContent={'New'} color="primary"/>}
-                {product.isSale && <StyledBadge badgeContent={'Sale'} color="secondary"/>}
+                {product.isNewProduct && <StyledBadgeNew badgeContent={'New'} color="primary"/>}
+                {product.isSale && <StyledBadgeSale badgeContent={'Sale'} color="secondary"/>}
                 <CardContent>
                     <Typography className={classes.name} gutterBottom variant="h5" component="h2">
                         {product.name}
