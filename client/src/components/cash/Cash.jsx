@@ -22,7 +22,7 @@ import Box from "@material-ui/core/Box";
 import Finish from "./Finish";
 import {refresh} from "../../actions/loginActions";
 import {sendPayment} from "../../actions/paymentAction";
-import {PRODUCTS_KEY} from "../../utils/constants";
+import {PAYMENT_METHOD, PRODUCTS_KEY} from "../../utils/constants";
 
 const FINISH_STEP = 2;
 
@@ -145,6 +145,9 @@ const Cash = ({products, user, dispatch, isLoading, success, failed}) => {
     const [firstName, setFirstName] = useState(user && user.firstName);
     const [lastName, setLastName] = useState(user && user.lastName);
     const [phone, setPhone] = useState(user && user.phone);
+    const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOD.CASH);
+    const [creditCardNumber, setCreditCardNumber] = useState(null);
+    const [creditCardType, setCreditCardType] = useState(null);
 
     useEffect(() => {
         dispatch(refresh());
@@ -163,7 +166,10 @@ const Cash = ({products, user, dispatch, isLoading, success, failed}) => {
     const handlePayment = () => {
         const shipment = {firstName, lastName, phone, street, city, floor};
         const productsMap = localStorage.getItem(PRODUCTS_KEY);
-        const payment = {paymentMethod: 'CASH', total: totalPrice, productsMap}
+        const paymentType = paymentMethod === PAYMENT_METHOD.CREDIT ?
+            `${creditCardType}  •••• ${creditCardNumber.slice(creditCardNumber.length - 4)}`
+            : PAYMENT_METHOD.CASH;
+        const payment = {paymentMethod: paymentType, total: totalPrice, productsMap}
         dispatch(sendPayment(user, shipment, payment))
     };
 
@@ -187,7 +193,14 @@ const Cash = ({products, user, dispatch, isLoading, success, failed}) => {
                     setFloor={setFloor}
                 />;
             case 2:
-                return <Payment user={user}/>;
+                return <Payment
+                    paymentMethod={paymentMethod}
+                    setPaymentMethod={setPaymentMethod}
+                    creditCardNumber={creditCardNumber}
+                    setCreditCardNumber={setCreditCardNumber}
+                    creditCardType={creditCardType}
+                    setCreditCardType={setCreditCardType}
+                />;
             case 3:
                 return <Finish
                     isLoading={isLoading}

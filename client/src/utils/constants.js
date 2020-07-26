@@ -25,6 +25,11 @@ export const MESSAGE_STATUS = {
     FINISH: 'Finish'
 };
 
+export const PAYMENT_METHOD = {
+    CREDIT: 'Credit Card',
+    CASH: 'CASH'
+};
+
 export const PRODUCTS_KEY = 'product-list';
 export const MANDATORY_TITLE = 'Mandatory field';
 
