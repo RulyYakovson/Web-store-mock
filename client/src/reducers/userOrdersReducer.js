@@ -6,10 +6,13 @@ const defaultState = {order: null, isLoading: false};
 const ordersBeginLoading = state => ({...state, isLoading: true});
 const ordersEndLoading = state => ({...state, isLoading: false});
 
-const setUserOrders = (state, action) => ({
-    ...state,
-    orders: action.orders
-});
+const setUserOrders = (state, action) => {
+    const {orders} = action;
+    orders.sort(function(a,b) {
+        return new Date(b.created).getTime() - new Date(a.created).getTime()
+    });
+    return {...state, orders}
+};
 
 export default function userOrders(state = {...defaultState}, action = {...defaultAction}) {
     switch (action.type) {
