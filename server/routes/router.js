@@ -25,7 +25,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     }
     console.info(`Session for User: '${user.username}', Role: '${user.role}' added successfully`);
     const {firstName, lastName, id, gender, phone, role, address} = user;
-    res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address}}); // TODO:
+    res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address}});
 });
 
 router.get('/logout', async (req, res) => {

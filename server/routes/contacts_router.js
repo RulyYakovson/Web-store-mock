@@ -42,12 +42,6 @@ router.post('/update/status', auth.authEmployee, async (req, res) => {
         res.status(400).send('Message id is missing');
         return;
     }
-    // TODO:
-    // if (!MESSAGE_STATUS.includes(status)) {
-    //     console.info('ccccccccccc')
-    //     res.status(400).send('Invalid status to update');
-    //     return;
-    // }
 
     console.info(`Received update status request for message: ${id}`)
     setTimeout(async () => {

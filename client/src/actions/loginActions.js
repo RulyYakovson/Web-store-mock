@@ -37,7 +37,6 @@ export const logOut = (history) => async dispatch => {
     dispatch(beginLoading());
     try {
         const res = await httpclient.get('/logout');
-        // await removeUserLocal(history);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
         localStorage.removeItem('user');
         localStorage.removeItem('product-list');
@@ -51,12 +50,6 @@ export const logOut = (history) => async dispatch => {
         dispatch(endLoading());
     }
 };
-
-// export const removeUserLocal = (history) => async dispatch => {
-//     dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
-//     localStorage.removeItem('user');
-//     history.replace('/session-expired'); // TODO: not working...
-// }
 
 export const refresh = () => async dispatch => {
     dispatch(beginLoading());
