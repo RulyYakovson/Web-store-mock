@@ -14,6 +14,3 @@ cwIDAQAB
 export const encrypt = (textToEncrypt) => {
     return key.encrypt(textToEncrypt, 'base64');
 };
-export const decrypt = (textToDecrypt) => {
-    return key.decrypt(textToDecrypt, 'utf8');
-};
