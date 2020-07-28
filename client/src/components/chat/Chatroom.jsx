@@ -163,7 +163,7 @@ export default class Chatroom extends React.Component {
             default: break;
         };
 
-        return (<Avatar src={`images/${imageName}.png`}/>);
+        return (<Avatar src={imageName ? `images/${imageName}.png` : null}/>);
     };
 
     render() {

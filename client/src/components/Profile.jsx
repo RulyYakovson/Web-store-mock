@@ -16,6 +16,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {updateAccount} from "../actions/loginActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {connect} from "react-redux";
+import {MANDATORY_TITLE} from "../utils/constants";
+import {onEmailChange, onPhoneChange} from "../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -50,61 +52,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// TODO: VALIDATION !!!
-
 const Profile = ({dispatch, user, isLoading}) => {
     const classes = useStyles();
 
     const [firstName, setFirstName] = useState(user && user.firstName);
     const [lastName, setLastName] = useState(user && user.lastName);
     const [email, setEmail] = useState(user && user.username);
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState(null);
     const [phone, setPhone] = useState(user && user.phone);
+    const [phoneErrorMessage, setPhoneErrorMessage] = useState(null);
     const [gender, setGender] = useState(user && user.gender);
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    const onFirstNameChange = firstName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setFirstName(firstName);
-    };
-
-    const onLastNameChange = lastName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setLastName(lastName);
-    };
-
-    const onEmailChange = email => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setEmail(email);
-    };
-
-    const onPasswordChange = password => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPassword(password);
-    };
-
-    const onConfirmPasswordChange = confirmPassword => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setConfirmPassword(confirmPassword);
-    };
-
-    const onPhoneChange = phone => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPhone(phone);
-    };
-
-    const onGenderChange = gender => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setGender(gender);
-    };
+    const buttonDisabled = user && (firstName === user.firstName && lastName === user.lastName
+        && email === user.username && phone === user.phone && gender === user.gender)
+        || isLoading || isEmpty(firstName) || isEmpty(lastName) || !!phoneErrorMessage || !!emailErrorMessage;
 
     const createAccountAction = async event => {
         event.preventDefault();
@@ -131,12 +91,12 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="firstName-profile"
                                 label="First Name"
                                 autoFocus
                                 value={firstName}
-                                onChange={event => onFirstNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setFirstName(event.target.value)}
+                                title={isEmpty(firstName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -144,13 +104,13 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="lastName-profile"
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
                                 value={lastName}
-                                onChange={event => onLastNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setLastName(event.target.value)}
+                                title={isEmpty(lastName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -158,13 +118,14 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
+                                id="email-profile"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                onChange={event => onEmailChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
+                                title={emailErrorMessage}
+                                error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -175,11 +136,12 @@ const Profile = ({dispatch, user, isLoading}) => {
                                 name="phone"
                                 label="Phone"
                                 type="phone"
-                                id="phone"
+                                id="phone-profile"
                                 autoComplete="phone"
                                 value={phone}
-                                onChange={event => onPhoneChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => onPhoneChange(event.target.value, setPhone, setPhoneErrorMessage)}
+                                title={phoneErrorMessage}
+                                error={phoneErrorMessage && phoneErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -189,8 +151,7 @@ const Profile = ({dispatch, user, isLoading}) => {
                                     labelId="update-account-gender-label"
                                     id="update-account-gender"
                                     value={gender}
-                                    onChange={event => onGenderChange(event.target.value)}
-                                    error={!isEmpty(errorMessage)} // TODO
+                                    onChange={event => setGender(event.target.value)}
                                     label="Gender"
                                 >
                                     <MenuItem value="">
@@ -209,10 +170,7 @@ const Profile = ({dispatch, user, isLoading}) => {
                         color="primary"
                         className={classes.submit}
                         onClick={createAccountAction}
-                        disabled={
-                            (firstName === user.firstName && lastName === user.lastName && email === user.username
-                            && phone === user.phone && gender === user.gender) || isLoading
-                        }
+                        disabled={buttonDisabled}
                     >
                         {!isLoading && 'Update'}
                         {isLoading && <CircularProgress size={24} className={classes.buttonProgress}/>}

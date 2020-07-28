@@ -24,7 +24,7 @@ module.exports.authUser = (req, res, next) => {
 };
 
 const isSessionExist = req =>
-    (req.session && req.session.userId && req.session.role);
+    (req.session && req.session.userId);
 
 const isEmp = role =>
     (role === 'Admin' || role === 'Employee');

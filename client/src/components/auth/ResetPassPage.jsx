@@ -15,6 +15,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Copyright from '../Copyright';
 import {makeStyles} from "@material-ui/core/styles";
 import {changePass, resetPass} from "../../actions/resetPassAction";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {MANDATORY_TITLE} from "../../utils/constants";
+import {onConfirmPasswordChange, onEmailChange, onPasswordChange} from "../../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,51 +47,40 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-        textTransform: "capitalize"
+        textTransform: "capitalize",
+        minHeight: '36px'
+    },
+    buttonProgress: {
+        color: '#3f51b5',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
     },
 }));
 
-// TODO: VALIDATION !!!
-
-const ResetPassPage = ({dispatch, history}) => {
+const ResetPassPage = ({dispatch, history, isLoading}) => {
     const classes = useStyles();
 
     const [email, setEmail] = useState(null);
+    const [emailErrorMessage, setEmailErrorMessage] = useState(MANDATORY_TITLE);
     const [password, setPassword] = useState(null);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState(MANDATORY_TITLE);
     const [token, setToken] = useState(null);
     const [afterReset, setAfterReset] = useState(false);
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    const onEmailChange = email => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setEmail(email);
-    };
-
-    const onPasswordChange = password => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPassword(password);
-    };
-
-    const onConfirmPasswordChange = confirmPassword => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setConfirmPassword(confirmPassword);
-    };
-
-    const onTokenChange = token => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setToken(token);
-    };
+    const [confirmPassword, setConfirmPassword] = useState(null);
+    const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState(MANDATORY_TITLE);
+    const buttonDisabled = isLoading || (!afterReset && !!emailErrorMessage) ||
+        (afterReset && (isEmpty(token) || !!passwordErrorMessage || !!confirmPasswordErrorMessage))
 
     const handleResetAction = async event => {
         event.preventDefault();
         afterReset ?
-            dispatch(changePass(token, email, password))
+            await dispatch(changePass(token, email, password))
             : await dispatch(resetPass(email)) && setAfterReset(true);
+
+        afterReset && history.push('/home');
     };
 
     return (
@@ -106,18 +98,17 @@ const ResetPassPage = ({dispatch, history}) => {
                     <form className={classes.form}>
                         {!afterReset ? <TextField
                             variant="outlined"
-                            margin="normal"
                             required
                             fullWidth
-                            id="email"
+                            id="email-reset-pass"
                             type="email"
                             label="Email Address"
                             name="email"
-                            autoComplete="email"
                             autoFocus
                             value={email}
-                            onChange={event => onEmailChange(event.target.value)}
-                            error={!isEmpty(errorMessage)} // TODO
+                            onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
+                            title={emailErrorMessage}
+                            error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                         /> : (
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -130,8 +121,8 @@ const ResetPassPage = ({dispatch, history}) => {
                                         type="text"
                                         id="token"
                                         value={token}
-                                        onChange={event => onTokenChange(event.target.value)}
-                                        error={!isEmpty(errorMessage)} // TODO
+                                        onChange={event => setToken(event.target.value)}
+                                        title={isEmpty(token) && MANDATORY_TITLE}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -142,10 +133,13 @@ const ResetPassPage = ({dispatch, history}) => {
                                         name="password"
                                         label="Password"
                                         type="password"
-                                        id="password"
+                                        id="password-reset-pass"
                                         value={password}
-                                        onChange={event => onPasswordChange(event.target.value)}
-                                        error={!isEmpty(errorMessage)} // TODO
+                                        title={passwordErrorMessage}
+                                        error={passwordErrorMessage && passwordErrorMessage !== MANDATORY_TITLE}
+                                        onChange={event =>
+                                            onPasswordChange(event.target.value, confirmPassword, setPassword, setPasswordErrorMessage, setConfirmPasswordErrorMessage)
+                                        }
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -156,10 +150,13 @@ const ResetPassPage = ({dispatch, history}) => {
                                         name="confirm-password"
                                         label="Confirm password"
                                         type="password"
-                                        id="confirm-password"
+                                        id="confirm-password-reset-pass"
                                         value={confirmPassword}
-                                        onChange={event => onConfirmPasswordChange(event.target.value)}
-                                        error={!isEmpty(errorMessage)} // TODO
+                                        onChange={event =>
+                                            onConfirmPasswordChange(event.target.value, password, setConfirmPassword, setConfirmPasswordErrorMessage)
+                                        }
+                                        title={confirmPasswordErrorMessage}
+                                        error={confirmPasswordErrorMessage && confirmPasswordErrorMessage !== MANDATORY_TITLE}
                                     />
                                 </Grid>
                             </Grid>
@@ -171,8 +168,10 @@ const ResetPassPage = ({dispatch, history}) => {
                             color={afterReset ? "primary" : "secondary"}
                             className={classes.submit}
                             onClick={handleResetAction}
+                            disabled={buttonDisabled}
                         >
-                            {afterReset ? 'Change Password' : 'RESET'}
+                            {!isLoading && (afterReset ? 'Change Password' : 'RESET')}
+                            {isLoading && <CircularProgress size={24} className={classes.buttonProgress}/>}
                         </Button>
                         <Box mt={5}>
                             <Copyright/>
@@ -184,4 +183,6 @@ const ResetPassPage = ({dispatch, history}) => {
     );
 };
 
-export default connect(store => ({}))(ResetPassPage);
+export default connect(store => ({
+    isLoading: store.resetPass.isResetPassLoading,
+}))(ResetPassPage);

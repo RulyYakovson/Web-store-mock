@@ -20,7 +20,7 @@ const ProductsTable = ({products, dispatch, isLoading}) => {
             <ImageDialog
                 dispatch={dispatch}
                 rowData={rowData}
-                src={rowData && rowData.src}
+                src={rowData && rowData.url}
                 style={{width: 80, height: 80, borderRadius: '50%'}}
             />);
 

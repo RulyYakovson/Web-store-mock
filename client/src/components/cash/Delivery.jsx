@@ -12,7 +12,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import {FLOORS} from "../../utils/constants";
+import {FLOORS, MANDATORY_TITLE} from "../../utils/constants";
+import {onPhoneChange} from "../../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,50 +40,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-// TODO: VALIDATION !!!
-
 const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName,
                       setLastName, setPhone, setStreet, setCity, setFloor}) => {
 
     const classes = useStyles();
-
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    const onFirstNameChange = firstName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setFirstName(firstName);
-    };
-
-    const onLastNameChange = lastName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setLastName(lastName);
-    };
-
-    const onStreetChange = street => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setStreet(street);
-    };
-
-    const onCityChange = city => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setCity(city);
-    };
-
-    const onPhoneChange = phone => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPhone(phone);
-    };
-
-    const onFloorChange = floor => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setFloor(floor);
-    };
+    const [phoneErrorMessage, setPhoneErrorMessage] = useState(MANDATORY_TITLE);
 
     return (
         <Container component="main">
@@ -103,12 +65,12 @@ const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="firstName-delivery"
                                 label="First Name"
                                 autoFocus
                                 value={firstName}
-                                onChange={event => onFirstNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setFirstName(event.target.value)}
+                                title={isEmpty(firstName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -116,13 +78,13 @@ const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="lastName-delivery"
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
                                 value={lastName}
-                                onChange={event => onLastNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setLastName(event.target.value)}
+                                title={isEmpty(lastName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -135,8 +97,8 @@ const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName
                                 name="street"
                                 autoComplete="street"
                                 value={street}
-                                onChange={event => onStreetChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setStreet(event.target.value)}
+                                title={isEmpty(street) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -148,8 +110,8 @@ const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName
                                 label="City"
                                 id="city"
                                 value={city}
-                                onChange={event => onCityChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setCity(event.target.value)}
+                                title={isEmpty(city) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -160,11 +122,12 @@ const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName
                                 name="phone"
                                 label="Phone"
                                 type="phone"
-                                id="phone"
+                                id="phone-delivery"
                                 autoComplete="phone"
                                 value={phone}
-                                onChange={event => onPhoneChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => onPhoneChange(event.target.value, setPhone, setPhoneErrorMessage)}
+                                title={phoneErrorMessage}
+                                error={phoneErrorMessage && phoneErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -174,8 +137,7 @@ const Delivery = ({firstName, lastName, phone, street, city, floor, setFirstName
                                     labelId="select-floor-label"
                                     id="floor-select"
                                     value={floor}
-                                    onChange={event => onFloorChange(event.target.value)}
-                                    error={!isEmpty(errorMessage)} // TODO
+                                    onChange={event => setFloor(event.target.value)}
                                     label="Floor"
                                     autoWidth
                                 >

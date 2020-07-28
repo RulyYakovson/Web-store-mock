@@ -18,7 +18,7 @@ export const login = (email, password, rememberMe) => async dispatch => {
         };
         const res = await httpclient.post('/login', requestData);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
-        localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO:
+        localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO: need to verify if it can be remove
         dispatch(NotificationsActions.notifySuccess('Logged in successfully !!'))
         console.info(res);
     } catch (err) {
@@ -37,9 +37,9 @@ export const logOut = (history) => async dispatch => {
     dispatch(beginLoading());
     try {
         const res = await httpclient.get('/logout');
-        // await removeUserLocal(history);
         dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
         localStorage.removeItem('user');
+        localStorage.removeItem('product-list');
         dispatch(NotificationsActions.notifyWarning('You have logged out of your account.'))
         history.push('/login');
         console.info(res);
@@ -50,12 +50,6 @@ export const logOut = (history) => async dispatch => {
         dispatch(endLoading());
     }
 };
-
-// export const removeUserLocal = (history) => async dispatch => {
-//     dispatch({type: loginActionTypes.AUTH_FINISH, user: null});
-//     localStorage.removeItem('user');
-//     history.replace('/session-expired'); // TODO: not working...
-// }
 
 export const refresh = () => async dispatch => {
     dispatch(beginLoading());
@@ -83,9 +77,9 @@ export const createAccount = (user) => async dispatch => {
             address: email
         };
         const res = await httpclient.post('/customer/add', requestData);
-        dispatch({type: loginActionTypes.AUTH_FINISH, user: res.data.user});
+        await dispatch(login(email, password));
         dispatch(NotificationsActions.notifySuccess('New account created successfully !!'))
-        localStorage.setItem('user', JSON.stringify(res.data.user)); // TODO: login !!!
+        localStorage.setItem('user', JSON.stringify(res.data.user));
         console.info(res);
     } catch (err) {
         dispatch(NotificationsActions.notifyError('An error occurred while trying to create account.'))

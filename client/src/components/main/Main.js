@@ -9,9 +9,9 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import {mainListItems, secondaryListItems} from './listItems';
-import Copyright from '../Copyright';
+import {mainListItems, secondaryListItems} from './ListItems';
 import About from "../about/About";
+import Copyright from '../Copyright';
 import Dashboard from "../dashboard/Dashboard";
 import {INNER_COMPONENTS, PRODUCTS_KEY, USER_ROLE} from '../../utils/constants';
 import {connect} from "react-redux";
@@ -24,6 +24,7 @@ import Contact from "../contact/Contact";
 import ContactMessagesTable from "../tables/ContactMessagesTable";
 import ChatRoomSelection from "../chat/ChatRoomSelection";
 import Profile from "../Profile";
+import UserHistoryTable from "../tables/UserHistoryTable";
 
 const drawerWidth = 240;
 
@@ -98,7 +99,6 @@ const Main = ({history, user, dispatch}) => {
     }, [user]);
 
     const getDisplayComponent = () => {
-        debugger
         switch (displayComponent) {
             case INNER_COMPONENTS.HOME:
                 return <Dashboard/>;
@@ -120,6 +120,8 @@ const Main = ({history, user, dispatch}) => {
                 return <ChatRoomSelection user={user}/>
             case INNER_COMPONENTS.PROFILE:
                 return <Profile user={user}/>;
+            case INNER_COMPONENTS.USER_HISTORY:
+                return <UserHistoryTable userId={user && user.id}/>;
             default:
                 return <About/>;
         };

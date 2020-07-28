@@ -43,6 +43,10 @@ const Dashboard = ({orders, isLoading, dispatch}) => {
                     <Orders
                         orders={orders}
                         isLoading={isLoading}
+                        tableHeight='232px'
+                        tableSize='small'
+                        loaderTop='52%'
+                        withName
                     />
                 </Paper>
             </Grid>

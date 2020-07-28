@@ -17,9 +17,10 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Copyright from '../Copyright';
+import {MANDATORY_TITLE} from '../../utils/constants';
 import {makeStyles} from "@material-ui/core/styles";
 import {login} from "../../actions/loginActions";
-import {isPatternValid, VALIDATOR_TYPES} from "../../utils/validator";
+import {onEmailChange} from "../../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,35 +53,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// TODO: VALIDATION !!!
-
 const LoginPage = ({dispatch, history}) => {
     const classes = useStyles();
-    const mandatoryTitle = 'Mandatory field';
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [rememberMe, setRememberMe] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [emailErrorMessage, setEmailErrorMessage] = useState(mandatoryTitle);
-    const disabledButton = !!emailErrorMessage || !!errorMessage;
-
-    const onEmailChange = email => {
-        setEmail(email);
-        if (isEmpty(email)) {
-            setEmailErrorMessage(mandatoryTitle);
-        } else if (!isPatternValid(email, VALIDATOR_TYPES.EMAIL)) {
-            setEmailErrorMessage(`"${email}" is not a valid email`);
-        } else {
-            setEmailErrorMessage(null);
-        }
-    };
-
-    const onPasswordChange = password => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPassword(password);
-    };
+    const [emailErrorMessage, setEmailErrorMessage] = useState(MANDATORY_TITLE);
+    const disabledButton = !!emailErrorMessage || isEmpty(password);
 
     const loginAction = async event => {
         event.preventDefault();
@@ -107,16 +87,16 @@ const LoginPage = ({dispatch, history}) => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
+                            id="email-login"
                             type="email"
                             label="Email Address"
                             name="email"
                             autoComplete="email"
                             autoFocus
                             value={email}
-                            onChange={event => onEmailChange(event.target.value)}
+                            onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
                             title={emailErrorMessage}
-                            error={emailErrorMessage && emailErrorMessage !== mandatoryTitle}
+                            error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                         />
                         <TextField
                             variant="outlined"
@@ -126,11 +106,11 @@ const LoginPage = ({dispatch, history}) => {
                             name="password"
                             label="Password"
                             type="password"
-                            id="password"
+                            id="password-login"
                             autoComplete="current-password"
                             value={password}
-                            onChange={event => onPasswordChange(event.target.value)}
-                            error={!isEmpty(errorMessage)} // TODO
+                            onChange={event => setPassword(event.target.value)}
+                            title={isEmpty(password) && MANDATORY_TITLE}
                         />
                         <FormControlLabel
                             control={<Checkbox color="primary" value="remember"/>}

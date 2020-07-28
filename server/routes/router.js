@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const nodemailer = require('nodemailer');
 const {authUser} = require('./auth_user');
-const {TIME_OUT, REMEMBER_MAX_AGE, TOKEN_EXPIRATION, MAIL_PASS} = require('../utils/constants');
+const {TIME_OUT, REMEMBER_MAX_AGE, TOKEN_EXPIRATION, MAIL_PASS, MAIL_USER, USER_ROLE} = require('../utils/constants');
 const {getUserByEmail} = require('../repositories/repository_helper');
 const {setEmpToken, editEmployee} = require('../repositories/employee_repository');
 const {setToken, editCustomer} = require('../repositories/customers_repository');
@@ -25,7 +25,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     }
     console.info(`Session for User: '${user.username}', Role: '${user.role}' added successfully`);
     const {firstName, lastName, id, gender, phone, role, address} = user;
-    res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address}}); // TODO:
+    res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address}});
 });
 
 router.get('/logout', async (req, res) => {
@@ -54,7 +54,6 @@ router.get('/user', authUser, (req, res) => {
 
 router.post('/edit', authUser, async (req, res) => {
     await setTimeout(async () => {
-
         try {
             console.log('Received edit profile request');
             if (!req.body.id) {
@@ -62,12 +61,13 @@ router.post('/edit', authUser, async (req, res) => {
                 return
             }
             let user = null;
-            if (req.session.role === 'customer') {
-                user = await editCustomer(req);
-            } else {
+            const {role} = req.session;
+            if (role === USER_ROLE.ADMIN || role === USER_ROLE.EMPLOYEE) {
                 user = await editEmployee(req);
+            } else {
+                user = await editCustomer(req);
             }
-            const {firstName, lastName, id, gender, phone, role, address, username, email} = user;
+            const {firstName, lastName, id, gender, phone, address, username, email} = user;
             res.status(200).json({user: {firstName, lastName, id, gender, phone, role, address, username, email}});
         } catch (err) {
             console.error(err.message);
@@ -118,10 +118,11 @@ const sendEmail = (email, name, token, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'ruliweiss@gmail.com',
-            pass: MAIL_PASS    //process.env.MAIL_PASS
+            user: MAIL_USER,
+            pass: MAIL_PASS
         }
     });
+
     const mailOptions = {
         sender: "doNotReply@blabla", // ??????????
         to: email,
@@ -129,6 +130,7 @@ const sendEmail = (email, name, token, res) => {
         text: generateEmailText(name, token),
         html: generateEmailHtml(name, token)
     };
+
     transporter.sendMail(mailOptions, function (err, info) {
         if (err) {
             console.error(err.message);
@@ -139,6 +141,7 @@ const sendEmail = (email, name, token, res) => {
         }
     });
 };
+
 const generateToken = () => Math.random().toString(36).substring(2);
 
 const generateEmailHtml = (name, token) =>

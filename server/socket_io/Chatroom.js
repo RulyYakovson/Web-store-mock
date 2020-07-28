@@ -20,7 +20,7 @@ module.exports = function ({ name, image }) {
   }
 
   function removeUser(clientId) {
-    console.log('remove user', clientId)
+    console.log('remove user', clientId.id)
     members.delete(clientId)
   }
 

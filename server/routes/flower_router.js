@@ -1,13 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const Datauri = require('datauri/parser');
 const repository = require('../repositories/flower_repository');
 const auth = require('./auth_user');
-const {TIME_OUT} = require('../utils/constants');
+const {TIME_OUT, CLOUDINARY: {CLOUD_NAME, API_KEY, API_SECRET}} = require('../utils/constants');
 
+const dataUri = new Datauri();
 const storage = multer.memoryStorage();
 const uploadImgHandler = multer({storage: storage}).single('image');
 const MAX_RETRIES = 5;
+
+cloudinary.config({
+    cloud_name: CLOUD_NAME,
+    api_key: API_KEY,
+    api_secret: API_SECRET
+});
 
 router.get('/all', auth.authUser, async (req, res) => {
     console.log('Received get flowers request');
@@ -90,13 +99,20 @@ router.post('/update/image', auth.authEmployee, uploadImgHandler, async (req, re
             res.status(400).send('Missing image to update');
         }
         const {buffer, mimetype} = file;
-        const encodeFile = buffer.toString('base64');
-        const src = {
-            contentType: mimetype,
-            data: new Buffer.from(encodeFile, 'base64')
-        };
 
-        await repository.updateFlower({src, id});
+        const content = dataUri.format('.png', buffer).content;
+        const response = await cloudinary.uploader.upload(content, function(error, result) {
+            console.log(result, error)
+        });
+        const {url} = response;
+
+        // const encodeFile = buffer.toString('base64');
+        // const src = {
+        //     contentType: mimetype,
+        //     data: new Buffer.from(encodeFile, 'base64')
+        // };
+
+        await repository.updateFlower({/*src,*/ id, url});
         res.status(200).send('OK');
     } catch (err) {
         console.error(err.message);

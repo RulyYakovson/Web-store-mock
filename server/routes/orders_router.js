@@ -43,4 +43,25 @@ router.post('/', auth.authUser, async (req, res) => {
     }, timeout)
 });
 
+router.get('/user/:id', auth.authUser, async (req, res) => {
+    const userId = req.params.id
+    if (!userId) {
+        res.status(404).send('User id is missing')
+        return;
+    }
+    console.log(`Received get user orders request - user id: ${userId}`);
+    setTimeout(async () => {
+        let data = {};
+        const result = await repository.getAllOrders();
+        if (result.success) {
+            data.orders = result && result.data.filter(o => o.userId === userId);
+            res.status(200);
+        } else {
+            console.log('An error occurred while trying to fetch orders');
+            res.status(500);
+        }
+        res.json(data);
+    }, timeout);
+});
+
 module.exports = router;

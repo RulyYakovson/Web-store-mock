@@ -12,7 +12,10 @@ import Container from '@material-ui/core/Container';
 import {addContact} from "../../actions/contactMessagesActions";
 import {connect} from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {isEmpty} from "lodash";
+import {MANDATORY_TITLE} from '../../utils/constants';
 import './contact.css';
+import {onEmailChange} from "../../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -62,26 +65,9 @@ const Contact = ({dispatch, isLoading}) => {
 
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState(MANDATORY_TITLE);
     const [message, setMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    const onFullNameChange = fullName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setFullName(fullName);
-    };
-
-    const onEmailChange = email => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setEmail(email);
-    };
-
-    const onMessageChange = message => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setMessage(message);
-    };
+    const buttonDisabled = !!emailErrorMessage || isEmpty(message) || isEmpty(fullName) || isLoading;
 
     const sendMessageAction = async event => {
         event.preventDefault();
@@ -111,13 +97,14 @@ const Contact = ({dispatch, isLoading}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
+                                id="email-contacts"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                onChange={event => onEmailChange(event.target.value)}
-                                // error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
+                                title={emailErrorMessage}
+                                error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -130,8 +117,8 @@ const Contact = ({dispatch, isLoading}) => {
                                 id="name"
                                 label="Full Name"
                                 value={fullName}
-                                onChange={event => onFullNameChange(event.target.value)}
-                                // error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setFullName(event.target.value)}
+                                title={isEmpty(fullName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -143,7 +130,8 @@ const Contact = ({dispatch, isLoading}) => {
                                 maxLength={500}
                                 placeholder="Send us your message"
                                 value={message}
-                                onChange={event => onMessageChange(event.target.value)}
+                                onChange={event => setMessage(event.target.value)}
+                                title={isEmpty(message) && MANDATORY_TITLE}
                             />
                         </Grid>
                     </Grid>
@@ -152,7 +140,7 @@ const Contact = ({dispatch, isLoading}) => {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        disabled={isLoading}
+                        disabled={buttonDisabled}
                         className={classes.button}
                         onClick={sendMessageAction}
                     >

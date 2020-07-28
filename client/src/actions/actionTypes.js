@@ -1,6 +1,6 @@
-export const isLoadingActionTypes = {
-    BEGIN_LOADING: 'BEGIN_LOADING',
-    END_LOADING: 'END_LOADING'
+export const resetPassActionTypes = {
+    RESET_PASS_BEGIN_LOADING: 'RESET_PASS_BEGIN_LOADING',
+    RESET_PASS_END_LOADING: 'RESET_PASS_END_LOADING'
 };
 
 export const loginActionTypes = {
@@ -44,4 +44,10 @@ export const paymentActionTypes = {
     FETCH_PAYMENTS: 'SET_PAYMENTS_DATA',
     GET_PAYMENT_SUCCESS: 'GET_PAYMENT_SUCCESS',
     GET_PAYMENT_FAILED: 'GET_PAYMENT_FAILED'
+};
+
+export const fetchUserOrdersActionTypes = {
+    USER_ORDERS_BEGIN_LOADING: 'USER_ORDERS_BEGIN_LOADING',
+    USER_ORDERS_END_LOADING: 'USER_ORDERS_END_LOADING',
+    FETCH_USER_ORDERS: 'SET_USER_ORDERS_DATA'
 };

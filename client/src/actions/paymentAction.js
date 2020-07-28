@@ -9,6 +9,7 @@ export const sendPayment = (user, shipment, payment) => async dispatch => {
     dispatch(beginLoading());
     try {
         const res = await httpClient.post('/orders', {user, shipment, payment});
+        localStorage.removeItem('product-list');
         dispatch({type: paymentActionTypes.GET_PAYMENT_SUCCESS});
         console.info(res);
     } catch (err) {

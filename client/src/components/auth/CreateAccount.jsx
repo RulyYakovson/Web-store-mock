@@ -8,16 +8,18 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../Copyright';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import {isEmpty} from "lodash";
 import {connect} from "react-redux";
+import {isEmpty} from "lodash";
+import {MANDATORY_TITLE} from '../../utils/constants';
 import {createAccount} from "../../actions/loginActions";
+import {onConfirmPasswordChange, onEmailChange, onPasswordChange, onPhoneChange} from "../../utils/onChangeHandler";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,61 +45,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// TODO: VALIDATION !!!
-
 const CreateAccount = ({dispatch, history}) => {
     const classes = useStyles();
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState(MANDATORY_TITLE);
     const [password, setPassword] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState(MANDATORY_TITLE);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState(MANDATORY_TITLE);
     const [phone, setPhone] = useState('');
-    const [gender, setGender] = useState('');
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    const onFirstNameChange = firstName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setFirstName(firstName);
-    };
-
-    const onLastNameChange = lastName => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setLastName(lastName);
-    };
-
-    const onEmailChange = email => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setEmail(email);
-    };
-
-    const onPasswordChange = password => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPassword(password);
-    };
-
-    const onConfirmPasswordChange = confirmPassword => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setConfirmPassword(confirmPassword);
-    };
-
-    const onPhoneChange = phone => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setPhone(phone);
-    };
-
-    const onGenderChange = gender => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setGender(gender);
-    };
+    const [phoneErrorMessage, setPhoneErrorMessage] = useState(MANDATORY_TITLE);
+    const [gender, setGender] = useState('None');
+    const disabledButton = !!emailErrorMessage || !!passwordErrorMessage || !!confirmPasswordErrorMessage
+        || !!phoneErrorMessage || isEmpty(firstName) || isEmpty(lastName)
 
     const createAccountAction = async event => {
         event.preventDefault();
@@ -108,10 +71,10 @@ const CreateAccount = ({dispatch, history}) => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign up
@@ -125,12 +88,12 @@ const CreateAccount = ({dispatch, history}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="firstName-account"
                                 label="First Name"
                                 autoFocus
                                 value={firstName}
-                                onChange={event => onFirstNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setFirstName(event.target.value)}
+                                title={isEmpty(firstName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -138,13 +101,13 @@ const CreateAccount = ({dispatch, history}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="lastName-account"
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
                                 value={lastName}
-                                onChange={event => onLastNameChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => setLastName(event.target.value)}
+                                title={isEmpty(lastName) && MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -152,13 +115,14 @@ const CreateAccount = ({dispatch, history}) => {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
+                                id="email-account"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                onChange={event => onEmailChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => onEmailChange(event.target.value, setEmail, setEmailErrorMessage)}
+                                title={emailErrorMessage}
+                                error={emailErrorMessage && emailErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -169,10 +133,13 @@ const CreateAccount = ({dispatch, history}) => {
                                 name="password"
                                 label="Password"
                                 type="password"
-                                id="password"
+                                id="password-account"
                                 value={password}
-                                onChange={event => onPasswordChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={passwordErrorMessage}
+                                error={passwordErrorMessage && passwordErrorMessage !== MANDATORY_TITLE}
+                                onChange={event =>
+                                    onPasswordChange(event.target.value, confirmPassword, setPassword, setPasswordErrorMessage, setConfirmPasswordErrorMessage)
+                                }
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -183,10 +150,13 @@ const CreateAccount = ({dispatch, history}) => {
                                 name="confirm-password"
                                 label="Confirm password"
                                 type="password"
-                                id="confirm-password"
+                                id="confirm-password-account"
                                 value={confirmPassword}
-                                onChange={event => onConfirmPasswordChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                title={confirmPasswordErrorMessage}
+                                error={confirmPasswordErrorMessage && confirmPasswordErrorMessage !== MANDATORY_TITLE}
+                                onChange={event =>
+                                    onConfirmPasswordChange(event.target.value, password, setConfirmPassword, setConfirmPasswordErrorMessage)
+                                }
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -197,27 +167,25 @@ const CreateAccount = ({dispatch, history}) => {
                                 name="phone"
                                 label="Phone"
                                 type="phone"
-                                id="phone"
+                                id="phone-account"
                                 autoComplete="phone"
                                 value={phone}
-                                onChange={event => onPhoneChange(event.target.value)}
-                                error={!isEmpty(errorMessage)} // TODO
+                                onChange={event => onPhoneChange(event.target.value, setPhone, setPhoneErrorMessage)}
+                                title={phoneErrorMessage}
+                                error={phoneErrorMessage && phoneErrorMessage !== MANDATORY_TITLE}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl variant="outlined" className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
+                                <InputLabel id="create-account-select-outlined-label">Gender</InputLabel>
                                 <Select
                                     labelId="create-account-gender-label"
                                     id="create-account-gender"
                                     value={gender}
-                                    onChange={event => onGenderChange(event.target.value)}
-                                    error={!isEmpty(errorMessage)} // TODO
+                                    onChange={event => setGender(event.target.value)}
                                     label="Gender"
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
+                                    <MenuItem value=""><em>None</em></MenuItem>
                                     <MenuItem value={'Male'}>Male</MenuItem>
                                     <MenuItem value={'Female'}>Female</MenuItem>
                                 </Select>
@@ -231,6 +199,7 @@ const CreateAccount = ({dispatch, history}) => {
                         color="primary"
                         className={classes.submit}
                         onClick={createAccountAction}
+                        disabled={disabledButton}
                     >
                         Sign Up
                     </Button>
@@ -244,7 +213,7 @@ const CreateAccount = ({dispatch, history}) => {
                 </form>
             </div>
             <Box mt={5}>
-                <Copyright />
+                <Copyright/>
             </Box>
         </Container>
     );
