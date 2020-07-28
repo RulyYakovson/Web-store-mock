@@ -60,26 +60,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// TODO: VALIDATION !!!
-
 const ResetPassPage = ({dispatch, history, isLoading}) => {
     const classes = useStyles();
 
     const [email, setEmail] = useState(null);
     const [emailErrorMessage, setEmailErrorMessage] = useState(MANDATORY_TITLE);
     const [password, setPassword] = useState(null);
-    const [passwordErrorMessage, setPasswordErrorMessage] = useState(null);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState(MANDATORY_TITLE);
     const [token, setToken] = useState(null);
     const [afterReset, setAfterReset] = useState(false);
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState('');
-    const buttonDisabled = isLoading || (!afterReset && !!emailErrorMessage) || (afterReset && isEmpty(token))
-
-    const onTokenChange = token => {
-        // TODO: validate
-        // TODO: set error message if needed
-        setToken(token);
-    };
+    const [confirmPassword, setConfirmPassword] = useState(null);
+    const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState(MANDATORY_TITLE);
+    const buttonDisabled = isLoading || (!afterReset && !!emailErrorMessage) ||
+        (afterReset && (isEmpty(token) || !!passwordErrorMessage || !!confirmPasswordErrorMessage))
 
     const handleResetAction = async event => {
         event.preventDefault();
@@ -128,7 +121,7 @@ const ResetPassPage = ({dispatch, history, isLoading}) => {
                                         type="text"
                                         id="token"
                                         value={token}
-                                        onChange={event => onTokenChange(event.target.value)}
+                                        onChange={event => setToken(event.target.value)}
                                         title={isEmpty(token) && MANDATORY_TITLE}
                                     />
                                 </Grid>

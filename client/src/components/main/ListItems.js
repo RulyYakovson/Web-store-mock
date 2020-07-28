@@ -45,7 +45,7 @@ export const mainListItems = (setDisplayComponent) => (
             <ListItemIcon>
                 <HistoryIcon/>
             </ListItemIcon>
-            <ListItemText primary="Profile"/>
+            <ListItemText primary="Recent orders"/>
         </ListItem>
         <ListItem button onClick={() => setDisplayComponent(INNER_COMPONENTS.PROFILE)}>
             <ListItemIcon>
