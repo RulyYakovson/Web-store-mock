@@ -2,7 +2,7 @@
 ## Internet software engineering course
 
 Client side of this project was created with [Create React App](https://github.com/facebook/create-react-app).\
-Server side was created with [Express Generator](https://www.npmjs.com/package/express-generator)
+Server side was created with [Express Generator](https://www.npmjs.com/package/express-generator).
 
 ### In order to run it you should have:
 
