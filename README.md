@@ -2,7 +2,7 @@
 ## Internet software engineering course
 
 Client side of this project was created with [Create React App](https://github.com/facebook/create-react-app).\
-Server side was created with [Express Generator](https://www.npmjs.com/package/express-generator)\
+Server side was created with [Express Generator](https://www.npmjs.com/package/express-generator)
 
 ### In order to run it you should have:
 
@@ -14,12 +14,12 @@ npm install
 npm run init-db  #(To insert an admin user. require mongoDB to be installed on your PC)
 npm run start-all
 ```
-Then, go to localhost:3000 from your browser.\
+Then, go to [localhost:3000](https://localhost:3000/) from your browser.\
 Enter:\
 &nbsp;&nbsp;username: email@gmail.com\
 &nbsp;&nbsp;password: 123456
 
-In order to be able to upload picture and/or send emails (from "forgot password" feature):
+### In order to be able to upload picture and/or send emails (from "forgot password" feature):
 1. add "secret" directory under the server directory
 2. add "vars.js" file under the secrets directory
 3. put in the vars file your secrets like the example below
