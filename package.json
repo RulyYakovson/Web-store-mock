@@ -8,6 +8,8 @@
     "start-all": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
     "start-client": "cd client && npm start",
     "start-server": "cd server && npm start",
+    "init-db": "cd server && npm run init-db",
+    "init-orders-db": "cd server && npm run init-orders-db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ruli Yakovson & Itzchak Weiss",

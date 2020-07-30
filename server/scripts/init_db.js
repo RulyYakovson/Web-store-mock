@@ -92,17 +92,17 @@ const initNeeded = result =>
         //     await initBranchesDB();
         // }
         //
-        let result = await flowerHelper.getAllFlowers();
-        if (initNeeded(result)) {
-            await initFlowersDB();
-        }
+        // let result = await flowerHelper.getAllFlowers();
+        // if (initNeeded(result)) {
+        //     await initFlowersDB();
+        // }
+        //
+        // result = await customerHelper.getAllCustomers();
+        // if (initNeeded(result)) {
+        //     await initCustomersDB();
+        // }
 
-        result = await customerHelper.getAllCustomers();
-        if (initNeeded(result)) {
-            await initCustomersDB();
-        }
-
-        result = await employeeHelper.getAllEmployees();
+        let result = await employeeHelper.getAllEmployees();
         if (initNeeded(result)) {
             await initEmployeesDB();
         }
