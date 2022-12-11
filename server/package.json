@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@mongoosejs/double": "^0.2.0",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "bootstrap-4-migrate": "^1.0.1",
     "bootstrap-colorselector": "^0.1.0",
     "braintree": "^2.23.0",
@@ -21,7 +21,7 @@
     "datauri": "^3.0.0",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
-    "express": "~4.16.1",
+    "express": "~4.18.2",
     "express-session": "^1.16.2",
     "gridfs-stream": "^1.1.1",
     "http-errors": "~1.6.3",
